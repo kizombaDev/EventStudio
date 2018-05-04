@@ -101,3 +101,18 @@ derby.log
 ######################
 
 .factorypath
+
+web/backend/src/main/resources/public/
+web/backend/target
+web/frontend/dist/
+web/frontend/node/
+web/frontend/node_modules/
+web/frontend/npm-debug.log
+web/frontend/target
+web/frontend/test-output
+web/frontend/test/e2e/reports
+web/frontend/test/unit/coverage
+web/frontend/yarn-error.log
+web/frontend/yarn.lock
+web/security/target/
+web/selenium-debug.log

@@ -4,20 +4,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.kizombadev.app</groupId>
-    <artifactId>app</artifactId>
+    <artifactId>web</artifactId>
     <version>0.1.0</version>
     <packaging>pom</packaging>
 
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.1.RELEASE</version>
+        <groupId>org.kizombadev.app</groupId>
+        <artifactId>app</artifactId>
+        <version>0.1.0</version>
     </parent>
 
 
     <modules>
-        <module>pipeline</module>
-        <module>web</module>
+        <module>backend</module>
+        <module>frontend</module>
     </modules>
 </project>
