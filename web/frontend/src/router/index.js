@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Dashboard from '@/components/Dashboard'
+import PingDashboard from '@/components/ping/PingDashboard'
+import PingElement from '@/components/ping/PingElement'
 import Foo from '@/components/Foo'
 
 Vue.use(Router);
@@ -8,14 +9,19 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/dashboard',
-      name: 'Dashboard',
-      component: Dashboard
+      path: '/ping/dashboard',
+      name: 'PingDashboard',
+      component: PingDashboard
     },
     {
       path: '/foo',
       name: 'Foo',
       component: Foo
+    },
+    {
+      path: '/ping/:id',
+      name: 'PingElement',
+      component: PingElement
     }
   ]
 })

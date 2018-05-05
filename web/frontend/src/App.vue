@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <h1>Hello App!</h1>
     <p>
-      <router-link to="/dashboard">Dashboard</router-link>
+      <router-link to="/ping/dashboard">PingDashboard</router-link>
       <router-link to="/foo">Foo</router-link>
     </p>
     <router-view/>
