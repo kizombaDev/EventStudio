@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/rest/v1/logs")
+@RequestMapping("/api/v1/logs")
 public class RestApiService {
 
     private static final ObjectMapper mapper = new ObjectMapper();
