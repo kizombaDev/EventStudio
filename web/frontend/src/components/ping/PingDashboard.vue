@@ -8,10 +8,10 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import PingLight from './PingLight'
+import axios from 'axios'
+import PingLight from './PingLight'
 
-  export default {
+export default {
   name: 'PingDashboard',
   components: {
     PingLight
