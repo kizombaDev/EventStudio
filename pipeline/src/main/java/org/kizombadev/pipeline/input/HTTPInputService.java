@@ -3,8 +3,6 @@ package org.kizombadev.pipeline.input;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.kizombadev.pipeline.controller.PipelineManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +20,6 @@ import java.util.Map;
 public class HTTPInputService {
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private PipelineManager pipelineManager;
 
     @Autowired
@@ -57,4 +54,6 @@ public class HTTPInputService {
             throw new RuntimeException(e);
         }
     }
+
+
 }
