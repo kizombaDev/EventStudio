@@ -1,18 +1,19 @@
-package org.kizombadev.app.web.backend;
+package org.kizomba.pipeline.output;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kizombadev.pipeline.Application;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-public class BackendApplicationTests {
+@SpringBootTest(classes = Application.class)
+public class ElasticsearchOutputTest  {
 
     @Test
     @Ignore
-    public void contextLoads() {
-    }
+    public void test(){
 
+    }
 }
