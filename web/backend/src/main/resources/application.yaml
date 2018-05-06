@@ -3,3 +3,5 @@ backend:
   nodes:
     - ip: localhost
       port: 9300
+server:
+  port: 8082

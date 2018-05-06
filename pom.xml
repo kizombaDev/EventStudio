@@ -17,6 +17,7 @@
 
 
     <modules>
+        <module>clients</module>
         <module>pipeline</module>
         <module>web</module>
     </modules>

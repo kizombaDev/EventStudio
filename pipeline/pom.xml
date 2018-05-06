@@ -40,18 +40,18 @@
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-test-framework</artifactId>
-            <version>7.2.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch.test</groupId>
-            <artifactId>framework</artifactId>
-            <version>6.2.4</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.lucene</groupId>-->
+            <!--<artifactId>lucene-test-framework</artifactId>-->
+            <!--<version>7.2.1</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.elasticsearch.test</groupId>-->
+            <!--<artifactId>framework</artifactId>-->
+            <!--<version>6.2.4</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
     </dependencies>
 
     <properties>

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/rest/v1/log")
+@RequestMapping("/api/v1/log")
 public class HTTPInputService {
 
     private static final ObjectMapper mapper = new ObjectMapper();

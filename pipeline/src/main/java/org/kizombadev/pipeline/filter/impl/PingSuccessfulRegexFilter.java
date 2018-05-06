@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class PingSuccessfulRegexFilter implements Filter {
-    private static final Pattern PING_PATTERN = Pattern.compile("Antwort von ([.\\d]*): Bytes=(\\d*) Zeit=(\\d*)ms TTL=(\\d*)");
+    private static final Pattern PING_PATTERN = Pattern.compile("Antwort von ([.\\d]*): Bytes=(\\d*) Zeit[=<](\\d*)ms TTL=(\\d*)");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override

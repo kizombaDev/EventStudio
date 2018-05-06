@@ -28,8 +28,6 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/api/v1/logs")
 public class RestApiService {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final TransportClient transportClient;
 
     @Autowired
@@ -40,7 +38,7 @@ public class RestApiService {
     @RequestMapping(path = "/{id}/last", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getLastElementById(@PathVariable String id) throws ExecutionException, InterruptedException {
 
-        SearchResponse searchResponse = transportClient.prepareSearch("ping2")
+        SearchResponse searchResponse = transportClient.prepareSearch("ping")
                 .setSize(1)
                 .setQuery(QueryBuilders.termQuery("id", id))
                 .addSort("timestamp", SortOrder.DESC)
@@ -68,7 +66,7 @@ public class RestApiService {
                         .terms(group_by_field_identifier)
                         .field(groupBy));
 
-        SearchResponse searchResponse = transportClient.prepareSearch("ping2")
+        SearchResponse searchResponse = transportClient.prepareSearch("ping")
                 .addAggregation(filterAggregationBuilder)
                 .setSize(0)
                 .execute()

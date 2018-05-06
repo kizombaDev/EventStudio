@@ -13,7 +13,6 @@ import java.util.Map;
 
 @Service
 public class ElasticsearchOutput implements Output {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private TransportClient transportClient;
 
@@ -24,7 +23,7 @@ public class ElasticsearchOutput implements Output {
 
     @Override
     public void write(Map<String, Object> json) {
-        IndexResponse indexResponse = transportClient.prepareIndex("ping2", "ping2").setSource(json).get();
+        IndexResponse indexResponse = transportClient.prepareIndex("ping", "ping").setSource(json).get();
         if (indexResponse.status() != RestStatus.CREATED) {
             throw new RuntimeException("Invalid response status: " + indexResponse.status());
         }
