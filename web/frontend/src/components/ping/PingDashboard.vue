@@ -34,7 +34,7 @@ export default {
               this.pings.push({
                 'key': ping.key,
                 'source': null
-              });
+              })
               this.loadLastPing(ping.key)
             }
           })

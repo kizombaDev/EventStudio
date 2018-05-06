@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <p>
-      <router-link to="/ping/dashboard">PingDashboard</router-link>
-      <router-link to="/foo">Foo</router-link>
+      <router-link :to="{ name: 'pingDashboard' }">PingDashboard</router-link>
+      <router-link :to="{ name: 'foo' }">Foo</router-link>
     </p>
     <router-view/>
   </div>
