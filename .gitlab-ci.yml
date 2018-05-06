@@ -18,3 +18,5 @@ test:
   stage: test
   script:
     - mvn $MAVEN_CLI_OPTS test
+    - cd web/frontend/
+    - npm test
