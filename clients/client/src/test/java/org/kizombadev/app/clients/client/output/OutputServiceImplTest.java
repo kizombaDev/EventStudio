@@ -15,14 +15,14 @@ import java.util.Map;
 @SpringBootTest
 public class OutputServiceImplTest {
 
-    @Autowired
-    private OutputServiceImpl outputServiceImpl;
-
     @MockBean
     private ConsoleOutput consoleOutput;
 
     @MockBean
     private HttpOutput httpOutput;
+
+    @Autowired
+    private OutputServiceImpl outputServiceImpl;
 
     @Test
     public void test() {

@@ -26,7 +26,6 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 @RunWith(SpringRunner.class)
 @RestClientTest(HttpOutput.class)
-@SpringBootTest
 public class HttpOutputTest {
 
     @Autowired
