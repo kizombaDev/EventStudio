@@ -1,7 +1,7 @@
 package org.kizombadev.pipeline.output;
 
-import java.util.Map;
+import org.kizombadev.pipeline.Dataset;
 
 public interface Output {
-    void write(Map<String, Object> json);
+    void write(Dataset data);
 }

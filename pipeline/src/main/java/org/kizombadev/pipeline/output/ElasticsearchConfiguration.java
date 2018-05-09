@@ -1,10 +1,10 @@
-package org.kizombadev.pipeline.output.config;
+package org.kizombadev.pipeline.output;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
-import org.kizombadev.pipeline.PipelineProperties;
+import org.kizombadev.pipeline.properties.ElasticsearchProperties;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,12 +19,12 @@ import java.net.UnknownHostException;
 @ConfigurationProperties("pipeline")
 public class ElasticsearchConfiguration implements FactoryBean<TransportClient>, InitializingBean, DisposableBean {
 
+    private final ElasticsearchProperties elasticsearchProperties;
     private TransportClient transportClient;
-    private final PipelineProperties pipelineProperties;
 
     @Autowired
-    public ElasticsearchConfiguration(PipelineProperties pipelineProperties) {
-        this.pipelineProperties = pipelineProperties;
+    public ElasticsearchConfiguration(ElasticsearchProperties elasticsearchProperties) {
+        this.elasticsearchProperties = elasticsearchProperties;
     }
 
     @Override
@@ -56,12 +56,12 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
 
     private void buildClient() throws UnknownHostException {
         transportClient = new PreBuiltTransportClient(getSettings());
-        for (PipelineProperties.Nodes node : pipelineProperties.getNodes()) {
+        for (ElasticsearchProperties.Nodes node : elasticsearchProperties.getNodes()) {
             transportClient.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(node.getIp()), node.getPort()));
         }
     }
 
     private Settings getSettings() {
-        return Settings.builder().put("cluster.name", pipelineProperties.getClusterName()).build();
+        return Settings.builder().put("cluster.name", elasticsearchProperties.getClusterName()).build();
     }
 }

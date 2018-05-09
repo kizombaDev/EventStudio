@@ -1,7 +1,41 @@
 pipeline:
-  clustername: elasticsearch
-  nodes:
-    - ip: localhost
-      port: 9300
+  elasticsearch:
+    clustername: elasticsearch
+    nodes:
+      - ip: localhost
+        port: 9300
+    indexname: ping
+  filter:
+    - name: RegexFilter
+      type: ping
+      configuration:
+        - key: regex
+          value: 'Antwort von ([.\d]*): Bytes=(\d*) Zeit[=<](\d*)ms TTL=(\d*)'
+        - key: group-1
+          value: ip
+        - key: group-2
+          value: bytes
+        - key: group-3
+          value: time
+        - key: group-4
+          value: ttl
+    - name: ExtensionFilter
+      type: ping
+      configuration:
+        - key: regex
+          value: 'PING: Fehler bei der Übertragung. Allgemeiner Fehler.'
+        - key: key
+          value: status
+        - key: value
+          value: failed
+    - name: ExtensionFilter
+      type: ping
+      configuration:
+        - key: regex
+          value: 'Antwort von ([.\d]*): Bytes=(\d*) Zeit[=<](\d*)ms TTL=(\d*)'
+        - key: key
+          value: status
+        - key: value
+          value: ok
 server:
   port: 8081

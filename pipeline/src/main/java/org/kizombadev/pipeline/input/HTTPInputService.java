@@ -2,7 +2,7 @@ package org.kizombadev.pipeline.input;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.kizombadev.pipeline.controller.PipelineManager;
+import org.kizombadev.pipeline.controller.PipelineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,41 +19,29 @@ import java.util.Map;
 @RequestMapping("/api/v1/log")
 public class HTTPInputService {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-    private PipelineManager pipelineManager;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private PipelineService pipelineService;
 
     @Autowired
-    public HTTPInputService(PipelineManager pipelineManager) {
-        this.pipelineManager = pipelineManager;
+    public HTTPInputService(PipelineService pipelineService) {
+        this.pipelineService = pipelineService;
     }
 
     @RequestMapping(path = "/single", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void insertSingleLog(@RequestBody String json) {
-
-        try {
-            Map<String, Object> map = mapper.readValue(json, new TypeReference<HashMap<String, Object>>() {
-            });
-            pipelineManager.run(map);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void insertSingleLog(@RequestBody String json) throws IOException {
+        Map<String, Object> map = OBJECT_MAPPER.readValue(json, new TypeReference<HashMap<String, Object>>() {
+        });
+        pipelineService.run(map);
     }
 
     @RequestMapping(path = "/multiple", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void insertMultipleLogs(@RequestBody String json) {
+    public void insertMultipleLogs(@RequestBody String json) throws IOException {
 
-        try {
-            List<Map<String, Object>> logCollection = mapper.readValue(json, new TypeReference<List<HashMap<String, Object>>>() {
-            });
+        List<Map<String, Object>> logCollection = OBJECT_MAPPER.readValue(json, new TypeReference<List<HashMap<String, Object>>>() {
+        });
 
-            for (Map<String, Object> data : logCollection) {
-                pipelineManager.run(data);
-
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        for (Map<String, Object> data : logCollection) {
+            pipelineService.run(data);
         }
     }
-
-
 }

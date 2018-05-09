@@ -28,6 +28,11 @@
             <artifactId>transport</artifactId>
             <version>6.2.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>25.0-jre</version>
+        </dependency>
 
         <!-- test scope -->
         <dependency>
@@ -41,16 +46,16 @@
             <scope>test</scope>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.apache.lucene</groupId>-->
-            <!--<artifactId>lucene-test-framework</artifactId>-->
-            <!--<version>7.2.1</version>-->
-            <!--<scope>test</scope>-->
+        <!--<groupId>org.apache.lucene</groupId>-->
+        <!--<artifactId>lucene-test-framework</artifactId>-->
+        <!--<version>7.2.1</version>-->
+        <!--<scope>test</scope>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.elasticsearch.test</groupId>-->
-            <!--<artifactId>framework</artifactId>-->
-            <!--<version>6.2.4</version>-->
-            <!--<scope>test</scope>-->
+        <!--<groupId>org.elasticsearch.test</groupId>-->
+        <!--<artifactId>framework</artifactId>-->
+        <!--<version>6.2.4</version>-->
+        <!--<scope>test</scope>-->
         <!--</dependency>-->
     </dependencies>
 
