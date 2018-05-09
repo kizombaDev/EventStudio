@@ -1,0 +1,24 @@
+client:
+  pipeline:
+    port: 8081
+  clients:
+    - id: facebook
+      name: PingOperation
+      configuration:
+        - key: host
+          value: www.facebook.de
+    - id: google
+      name: PingOperation
+      configuration:
+        - key: host
+          value: www.google.de
+    - id: fau
+      name: PingOperation
+      configuration:
+        - key: host
+          value: www.fau.de
+    - id: localhost
+      name: PingOperation
+      configuration:
+        - key: host
+          value: 172.0.0.1

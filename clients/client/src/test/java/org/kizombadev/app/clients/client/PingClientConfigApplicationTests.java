@@ -8,11 +8,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PingClientApplicationTests {
+public class PingClientConfigApplicationTests {
 
-	@Test
-	@Ignore
-	public void contextLoads() {
-	}
+    @Test
+    @Ignore
+    public void contextLoads() {
+    }
 
 }

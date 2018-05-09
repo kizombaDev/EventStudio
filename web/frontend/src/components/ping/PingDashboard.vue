@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     loadAllPingTypes () {
-      axios.get('api/v1/logs?type=ping&group-by=id')
+      axios.get('api/v1/logs?id=ping&group-by=id')
         .then(response => {
           response.data.forEach(ping => {
             if (this.pings.filter(e => e.key === ping.key).length === 0) {

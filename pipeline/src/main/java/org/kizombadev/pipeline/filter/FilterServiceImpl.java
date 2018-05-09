@@ -16,12 +16,12 @@ public class FilterServiceImpl implements FilterService {
 
     @Autowired
     public FilterServiceImpl(ApplicationContext applicationContext, FilterProperties filterProperties) {
-        for (FilterProperties.Filter filterDefinition : filterProperties.getFilter()) {
-            Filter filter = (Filter) applicationContext.getBean(filterDefinition.getName());
+        for (FilterProperties.FilterConfig filterConfigDefinition : filterProperties.getFilters()) {
+            Filter filter = (Filter) applicationContext.getBean(filterConfigDefinition.getName());
             filter = filter.instanceCopy();
-            filter.init(filterDefinition.getConfigrationAsMap());
+            filter.init(filterConfigDefinition.getConfigurationAsMap());
 
-            FilterInstance filterInstance = new FilterInstance(filterDefinition.getType(), filter);
+            FilterInstance filterInstance = new FilterInstance(filterConfigDefinition.getType(), filter);
             filters.add(filterInstance);
         }
     }
