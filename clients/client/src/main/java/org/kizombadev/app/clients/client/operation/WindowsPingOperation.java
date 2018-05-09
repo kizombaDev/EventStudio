@@ -13,8 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("PingOperation")
-public class PingOperation implements ClientOperation {
+@Component("WindowsPingOperation")
+public class WindowsPingOperation implements ClientOperation {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private String id;
@@ -34,13 +34,10 @@ public class PingOperation implements ClientOperation {
             String line;
             int lineIndex = 0;
             while ((line = reader.readLine()) != null) {
-
                 if (lineIndex != 2) {
                     lineIndex++;
                     continue;
                 }
-
-
                 Map<String, Object> data = new HashMap<>();
                 data.put("origin", line);
                 data.put("type", "ping");
@@ -64,6 +61,6 @@ public class PingOperation implements ClientOperation {
 
     @Override
     public ClientOperation instanceCopy() {
-        return new PingOperation();
+        return new WindowsPingOperation();
     }
 }

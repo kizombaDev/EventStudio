@@ -1,7 +1,9 @@
 package org.kizombadev.app.clients.client.operation;
 
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang.SystemUtils;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kizombadev.app.clients.client.output.OutputService;
@@ -13,21 +15,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
-public class PingOperationTest {
+public class WindowsPingOperationTest {
 
-    private PingOperation pingOperation = new PingOperation();
+    private WindowsPingOperation windowsPingOperation = new WindowsPingOperation();
 
     @MockBean
     private OutputService outputService;
 
     @Test
     public void testRun() {
+        Assume.assumeTrue(SystemUtils.IS_OS_WINDOWS);
         //Arrange
         Map<String, String> configuration = ImmutableMap.of("host", "127.0.0.1");
 
         //Act
-        pingOperation.init("localhost", outputService, configuration);
-        pingOperation.run();
+        windowsPingOperation.init("localhost", outputService, configuration);
+        windowsPingOperation.run();
 
         //Assert
         ArgumentCaptor<Map<String, Object>> mapArgumentCaptor = ArgumentCaptor.forClass(Map.class);
@@ -43,9 +46,9 @@ public class PingOperationTest {
     @Test
     public void testInstanceCopy() {
         //Act
-        ClientOperation clientOperation = pingOperation.instanceCopy();
+        ClientOperation clientOperation = windowsPingOperation.instanceCopy();
 
         //Assert
-        Assert.assertTrue(clientOperation instanceof PingOperation);
+        Assert.assertTrue(clientOperation instanceof WindowsPingOperation);
     }
 }
