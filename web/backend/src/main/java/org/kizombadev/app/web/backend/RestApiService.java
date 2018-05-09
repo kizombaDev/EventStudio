@@ -49,7 +49,7 @@ public class RestApiService {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         SearchHit searchHit = searchResponse.getHits().getAt(0);
-        return new ResponseEntity<>(searchHit.getSource(), HttpStatus.OK);
+        return new ResponseEntity<>(searchHit.getSourceAsString(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})

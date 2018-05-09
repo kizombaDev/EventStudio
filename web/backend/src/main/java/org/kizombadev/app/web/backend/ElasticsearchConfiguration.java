@@ -2,7 +2,7 @@ package org.kizombadev.app.web.backend;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +59,7 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
     private void buildClient() throws UnknownHostException {
         transportClient = new PreBuiltTransportClient(getSettings());
         for (BackendProperties.Nodes node : backendProperties.getNodes()) {
-            transportClient.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(node.getIp()), node.getPort()));
+            transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(node.getIp()), node.getPort()));
         }
     }
 

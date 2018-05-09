@@ -15,6 +15,5 @@ public class PingClientConfigApplicationITCase {
 
     @Test
     public void contextLoads() {
-        Assert.fail();
     }
 }
