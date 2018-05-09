@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.OptionalInt;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +24,15 @@ public class RegexFilter implements Filter {
             return;
         }
 
-        //TODO assert group index
+        OptionalInt max = groupDefinitions.keySet().stream().mapToInt(Integer::intValue).max();
+
+        if (!max.isPresent()) {
+            return;
+        }
+
+        if (max.getAsInt() > matcher.groupCount()) {
+            throw new IllegalStateException(String.format("the group count '%s' does not exit in the regex result", max.getAsInt()));
+        }
 
         for (Map.Entry<Integer, String> pair : groupDefinitions.entrySet()) {
             json.put(pair.getValue(), matcher.group(pair.getKey()));
