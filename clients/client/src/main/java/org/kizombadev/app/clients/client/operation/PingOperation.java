@@ -1,6 +1,8 @@
 package org.kizombadev.app.clients.client.operation;
 
 import org.kizombadev.app.clients.client.output.OutputService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -14,6 +16,7 @@ import java.util.Map;
 @Component("PingOperation")
 public class PingOperation implements ClientOperation {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private String id;
     private String host;
     private OutputService outputService;
@@ -27,12 +30,16 @@ public class PingOperation implements ClientOperation {
             Process p = rt.exec(commandAndArguments);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
             String line;
+            int lineIndex = 0;
             while ((line = reader.readLine()) != null) {
 
-                if (!line.startsWith("Antwort")) {
+                if (lineIndex != 2) {
+                    lineIndex++;
                     continue;
                 }
+
 
                 Map<String, Object> data = new HashMap<>();
                 data.put("origin", line);
@@ -40,10 +47,11 @@ public class PingOperation implements ClientOperation {
                 data.put("id", "ping_" + id);
                 data.put("timestamp", DATE_TIME_FORMATTER.format(LocalDateTime.now()));
                 outputService.handleSend(data);
+                break;
             }
             reader.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("error", e);
         }
     }
 

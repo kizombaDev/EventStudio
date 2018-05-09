@@ -19,7 +19,7 @@ public class HttpOutput implements ClientOutput {
             ObjectMapper mapperObj = new ObjectMapper();
             String jsonResp = mapperObj.writeValueAsString(data);
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
             HttpEntity<String> request = new HttpEntity<>(jsonResp, headers);
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.exchange("http://localhost:8081/api/v1/log/single", HttpMethod.POST, request, Object.class);

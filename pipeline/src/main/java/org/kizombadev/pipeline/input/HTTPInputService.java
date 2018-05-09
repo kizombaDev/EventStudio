@@ -36,7 +36,6 @@ public class HTTPInputService {
 
     @RequestMapping(path = "/multiple", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void insertMultipleLogs(@RequestBody String json) throws IOException {
-
         List<Map<String, Object>> logCollection = OBJECT_MAPPER.readValue(json, new TypeReference<List<HashMap<String, Object>>>() {
         });
 

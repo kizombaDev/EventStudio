@@ -16,7 +16,7 @@ public class FilterServiceImpl implements FilterService {
 
     @Autowired
     public FilterServiceImpl(ApplicationContext applicationContext, FilterProperties filterProperties) {
-        for (FilterProperties.FilterConfig filterConfigDefinition : filterProperties.getFilters()) {
+        for (FilterProperties.FilterConfig filterConfigDefinition : filterProperties.getFilter()) {
             Filter filter = (Filter) applicationContext.getBean(filterConfigDefinition.getName());
             filter = filter.instanceCopy();
             filter.init(filterConfigDefinition.getConfigurationAsMap());
@@ -28,7 +28,6 @@ public class FilterServiceImpl implements FilterService {
 
     @Override
     public void handle(Dataset data) {
-
         for (FilterInstance filter : filters) {
             if (filter.getType().equals(data.getType())) {
                 filter.getFilter().handle(data.getSource());

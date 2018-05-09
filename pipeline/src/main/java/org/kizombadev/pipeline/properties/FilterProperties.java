@@ -14,10 +14,10 @@ import java.util.Map;
 public class FilterProperties {
     private static final String PROPERTY_ROOT = "pipeline.";
 
-    private final List<FilterConfig> filterConfig = new ArrayList<>();
+    private final List<FilterConfig> filter = new ArrayList<>();
 
-    public List<FilterConfig> getFilters() {
-        return filterConfig;
+    public List<FilterConfig> getFilter() {
+        return filter;
     }
 
     public static class FilterConfig {
