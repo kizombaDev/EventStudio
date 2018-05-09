@@ -1,18 +1,18 @@
 package org.kizombadev.app.clients.client.output;
 
 import com.google.common.collect.ImmutableMap;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 public class OutputServiceImplTest {
 
     @MockBean
@@ -21,8 +21,15 @@ public class OutputServiceImplTest {
     @MockBean
     private HttpOutput httpOutput;
 
-    @Autowired
-    private OutputServiceImpl outputServiceImpl;
+    private OutputServiceImpl outputServiceImpl = null;
+
+    @Before
+    public void init() {
+        List<ClientOutput> outputs = new ArrayList<>();
+        outputs.add(consoleOutput);
+        outputs.add(httpOutput);
+        outputServiceImpl = new OutputServiceImpl(outputs);
+    }
 
     @Test
     public void test() {

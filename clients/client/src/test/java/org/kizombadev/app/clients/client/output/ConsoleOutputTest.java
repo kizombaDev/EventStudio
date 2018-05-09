@@ -3,8 +3,6 @@ package org.kizombadev.app.clients.client.output;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Map;
@@ -12,8 +10,7 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 public class ConsoleOutputTest {
 
-    @Autowired
-    private ConsoleOutput consoleOutput;
+    private ConsoleOutput consoleOutput = new ConsoleOutput();
 
     @Test
     public void test() {
