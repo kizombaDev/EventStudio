@@ -2,6 +2,7 @@ package org.kizombadev.app.clients.client.output;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,6 +14,11 @@ import java.util.Map;
 
 @Service
 public class HttpOutput implements ClientOutput {
+    private final RestTemplate restTemplate;
+
+    public HttpOutput(RestTemplateBuilder restTemplateBuilder) {
+        restTemplate = restTemplateBuilder.build();
+    }
 
     public void send(Map<String, Object> data) {
         try {
@@ -21,7 +27,6 @@ public class HttpOutput implements ClientOutput {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
             HttpEntity<String> request = new HttpEntity<>(jsonResp, headers);
-            RestTemplate restTemplate = new RestTemplate();
             restTemplate.exchange("http://localhost:8081/api/v1/log/single", HttpMethod.POST, request, Object.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

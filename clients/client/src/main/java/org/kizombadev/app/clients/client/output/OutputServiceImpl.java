@@ -1,7 +1,5 @@
 package org.kizombadev.app.clients.client.output;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +8,6 @@ import java.util.Map;
 
 @Service
 public class OutputServiceImpl implements OutputService {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private List<ClientOutput> clientOutputList;
 
     @Autowired
