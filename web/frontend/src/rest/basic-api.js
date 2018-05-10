@@ -10,7 +10,7 @@ export default {
   getLastPingById (id) {
     return HTTP.get('/v1/logs/' + id + '/?size=1&from=0')
   },
-  getDateHistogram () {
-    return HTTP.get('/v1/logs/date-histogram')
+  getDateHistogram (filters) {
+    return HTTP.post('/v1/logs/date-histogram', filters)
   }
 }

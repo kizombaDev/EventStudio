@@ -27,28 +27,33 @@ export default {
     this.gradient.addColorStop(0.5, 'rgba(255, 0, 0, 0.25)')
     this.gradient.addColorStop(1, 'rgba(255, 0, 0, 0)')
 
-    this.renderChart({
-      labels: this.labels,
-      datasets: [
-        {
-          label: this.primaryLabel,
-          borderColor: '#FC2525',
-          pointBackgroundColor: 'white',
-          borderWidth: 1,
-          pointBorderColor: 'white',
-          backgroundColor: this.gradient,
-          data: this.primaryData
-        },
-        {
-          label: this.secondaryLabel,
-          borderColor: '#05CBE1',
-          pointBackgroundColor: 'white',
-          pointBorderColor: 'white',
-          borderWidth: 1,
-          backgroundColor: this.gradient2,
-          data: this.secondaryData
-        }
-      ]
-    }, {responsive: true, maintainAspectRatio: false})
+    // this.doRenderChart()
+  },
+  methods: {
+    doRenderChart () {
+      this.renderChart({
+        labels: this.labels,
+        datasets: [
+          {
+            label: this.primaryLabel,
+            borderColor: '#FC2525',
+            pointBackgroundColor: 'white',
+            borderWidth: 1,
+            pointBorderColor: 'white',
+            backgroundColor: this.gradient,
+            data: this.primaryData
+          },
+          {
+            label: this.secondaryLabel,
+            borderColor: '#05CBE1',
+            pointBackgroundColor: 'white',
+            pointBorderColor: 'white',
+            borderWidth: 1,
+            backgroundColor: this.gradient2,
+            data: this.secondaryData
+          }
+        ]
+      }, {responsive: true, maintainAspectRatio: false})
+    }
   }
 }
