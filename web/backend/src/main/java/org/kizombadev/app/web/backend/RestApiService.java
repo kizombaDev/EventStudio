@@ -1,6 +1,5 @@
 package org.kizombadev.app.web.backend;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -9,9 +8,8 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.Filter;
 import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -82,6 +80,47 @@ public class RestApiService {
             Map<String, Object> map = new HashMap<>(2);
             map.put("key", entry.getKeyAsString());
             map.put("count", entry.getDocCount());
+            result.add(map);
+        }
+
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/structure", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getTypeIdStructure() throws ExecutionException, InterruptedException {
+
+        final String group_by_type_identifier = "group_by_type";
+        final String group_by_id_identifier = "group_by_id";
+
+        TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders
+                .terms(group_by_type_identifier).field("type")
+                .subAggregation(AggregationBuilders
+                        .terms(group_by_id_identifier)
+                        .field("id"));
+
+        SearchResponse searchResponse = transportClient.prepareSearch("ping")
+                .addAggregation(termsAggregationBuilder)
+                .setSize(0)
+                .execute()
+                .get();
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        StringTerms typeTerms = searchResponse.getAggregations().get(group_by_type_identifier);
+        for (StringTerms.Bucket typeBucket : typeTerms.getBuckets()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("type", typeBucket.getKeyAsString());
+
+            StringTerms idTerms = typeBucket.getAggregations().get(group_by_id_identifier);
+            List<String> ids = new ArrayList<>(idTerms.getBuckets().size());
+            for (StringTerms.Bucket entry : idTerms.getBuckets()) {
+                ids.add(entry.getKeyAsString());
+            }
+            map.put("ids", ids);
             result.add(map);
         }
 

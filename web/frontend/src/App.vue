@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <p>
-      <router-link :to="{ name: 'pingDashboard' }">PingDashboard</router-link>
-      <router-link :to="{ name: 'foo' }">Foo</router-link>
-    </p>
-    <router-view/>
+    <Navigation/>
+    <div class="mb-4"/>
+    <main class="container">
+      <router-view/>
+    </main>
   </div>
 </template>
 
 <script>
+import Navigation from './components/Navigation'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {Navigation}
 }
 </script>
 
@@ -21,6 +23,5 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
   }
 </style>

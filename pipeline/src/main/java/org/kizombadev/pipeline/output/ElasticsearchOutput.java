@@ -31,7 +31,7 @@ public class ElasticsearchOutput implements Output {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         prepareIndex();
     }
 

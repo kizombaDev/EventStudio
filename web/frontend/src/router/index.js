@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import PingDashboard from '@/components/ping/PingDashboard'
 import PingDetail from '@/components/ping/PingDetail'
 import PingDiagram from '@/components/ping/PingDiagram'
-import Foo from '@/components/Foo'
+import Home from '@/components/Home'
+import Browse from '@/components/browse/Browse'
 
 Vue.use(Router)
 
@@ -15,9 +16,14 @@ export default new Router({
       component: PingDashboard
     },
     {
-      path: '/foo',
-      name: 'foo',
-      component: Foo
+      path: '/home',
+      name: 'home',
+      component: Home
+    },
+    {
+      path: '/browse/:type',
+      name: 'browse',
+      component: Browse
     },
     {
       path: '/ping/:id/detail',

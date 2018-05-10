@@ -18,15 +18,12 @@ import java.net.UnknownHostException;
 @Component
 public class ElasticsearchConfiguration implements FactoryBean<TransportClient>, InitializingBean, DisposableBean {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final BackendProperties backendProperties;
     private TransportClient transportClient;
 
     @Autowired
     public ElasticsearchConfiguration(BackendProperties backendProperties) {
         this.backendProperties = backendProperties;
-        log.info("getClusterName: " + backendProperties.getClusterName());
-        log.info("getNodes: " + backendProperties.getNodes());
     }
 
     @Override

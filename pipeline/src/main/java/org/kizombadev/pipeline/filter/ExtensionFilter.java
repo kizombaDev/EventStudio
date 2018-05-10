@@ -1,7 +1,5 @@
 package org.kizombadev.pipeline.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -10,7 +8,6 @@ import java.util.regex.Pattern;
 
 @Component("ExtensionFilter")
 public class ExtensionFilter implements Filter {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private Pattern pattern = null;
     private String key = null;
     private String value = null;

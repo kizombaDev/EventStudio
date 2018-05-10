@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>Ping-Dashboard</h1>
+    <h1>Ping Dashboard</h1>
       <div v-for="(ping, index) in pings" v-bind:key="index">
         <PingLight v-bind:ping="ping"></PingLight>
       </div>
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     loadAllPingTypes () {
-      axios.get('api/v1/logs?id=ping&group-by=id')
+      axios.get('api/v1/logs?type=ping&group-by=id')
         .then(response => {
           response.data.forEach(ping => {
             if (this.pings.filter(e => e.key === ping.key).length === 0) {
@@ -57,6 +57,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>
