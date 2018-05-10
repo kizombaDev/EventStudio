@@ -75,10 +75,6 @@
                     <httpPort>9200</httpPort>
                 </configuration>
                 <executions>
-                    <!--
-                        The elasticsearch maven plugin goals are by default bound to the
-                        pre-integration-test and post-integration-test phases
-                    -->
                     <execution>
                         <id>start-elasticsearch</id>
                         <phase>pre-integration-test</phase>
