@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import {HTTP} from '../../rest/http-common'
+import basicApi from '../../rest/basic-api'
 import moment from 'moment'
 
 export default {
@@ -45,18 +45,30 @@ export default {
       return this.ping.status
     },
     time: function () {
+      if (this.ping === null) {
+        return 'loading...'
+      }
+      if (this.ping.timestamp === undefined) {
+        return 'undefined'
+      }
       return moment(this.ping.timestamp).format('HH:mm:ss')
     },
     date: function () {
+      if (this.ping === null) {
+        return 'loading...'
+      }
+      if (this.ping.timestamp === undefined) {
+        return 'undefined'
+      }
       return moment(this.ping.timestamp).format('DD.MM.YYYY')
     }
   },
-  mounted () {
+  created () {
     this.loadLastLogById(this.pingId)
   },
   methods: {
     loadLastLogById (id) {
-      HTTP.get('/v1/logs/' + id + '/last').then(response => {
+      basicApi.getLastPingById(id).then(response => {
         this.ping = response.data
       }).catch(e => {
         console.error(e)

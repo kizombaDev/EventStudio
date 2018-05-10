@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     fetchData () {
-      console.log('fetchData')
+      console.log('test')
     },
     fetchData2 () {
       console.log('fetchData2')

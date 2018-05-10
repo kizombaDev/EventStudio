@@ -1,9 +1,6 @@
 <template>
   <div>
     <h1>Ping Detail</h1>
-    <p>
-      <router-link :to="{ name: 'pingDiagram', params: { id: id } }">Go to the Diagram</router-link>
-    </p>
     <div v-show="ping !== null">
       <b-table striped hover :items="pingKeyValues"></b-table>
     </div>
@@ -11,7 +8,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import basicApi from '../../rest/basic-api'
 
 export default {
   name: 'Ping',
@@ -38,7 +35,7 @@ export default {
   },
   methods: {
     loadLastPing (id) {
-      axios.get('api/v1/logs/' + id + '/last')
+      basicApi.getLastPingById(id)
         .then(response => {
           this.ping = response.data
         })

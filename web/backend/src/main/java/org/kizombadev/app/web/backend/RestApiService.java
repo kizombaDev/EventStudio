@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +34,13 @@ public class RestApiService {
         this.transportClient = transportClient;
     }
 
-    @RequestMapping(path = "/{id}/last", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> getLastElementById(@PathVariable String id) throws ExecutionException, InterruptedException {
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getLastElementById(@PathVariable String id, @RequestParam("from") @NotNull Integer from, @RequestParam("size") @NotNull Integer size)
+            throws ExecutionException, InterruptedException {
 
         SearchResponse searchResponse = transportClient.prepareSearch("ping")
-                .setSize(1)
+                .setSize(size)
+                .setFrom(from)
                 .setQuery(QueryBuilders.termQuery("id", id))
                 .addSort("timestamp", SortOrder.DESC)
                 .execute()
