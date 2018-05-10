@@ -4,9 +4,11 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.filter.Filter;
-import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.filter.*;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -129,6 +131,54 @@ public class RestApiService {
 
         if (result.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/date-histogram", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getDateHistogram() throws ExecutionException, InterruptedException {
+        final String primary_filter = "primary_filter";
+        final String secondary_filter = "secondary_filter";
+        final String date_grouping = "date_grouping";
+
+
+        FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
+                .filters(primary_filter,
+                        QueryBuilders
+                                .boolQuery()
+                                .must(QueryBuilders.termQuery("type", "ping"))
+                                .must(QueryBuilders.termQuery("id", "ping_localhost")))
+                .subAggregation(AggregationBuilders
+                        .dateHistogram(date_grouping)
+                        .dateHistogramInterval(DateHistogramInterval.DAY)
+                        .field("timestamp")
+                        .format("dd-MM-yyyy").subAggregation(
+                                AggregationBuilders.filters(secondary_filter,
+                                        QueryBuilders
+                                                .boolQuery()
+                                                .must(QueryBuilders.termQuery("status", "failed")))));
+
+        SearchResponse searchResponse = transportClient.prepareSearch("ping")
+                .addAggregation(filterAggregationBuilder)
+                .setSize(0)
+                .execute()
+                .get();
+
+        List<Map<String, Object>>  result = new ArrayList<>();
+
+        Filters filters = searchResponse.getAggregations().get(primary_filter);
+        Filters.Bucket bucket = filters.getBuckets().get(0);
+        Histogram aggregation = bucket.getAggregations().get(date_grouping);
+        for(Histogram.Bucket item : aggregation.getBuckets()){
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("key", item.getKeyAsString());
+            map.put("primary_count", item.getDocCount());
+            Filters f = item.getAggregations().get(secondary_filter);
+            Filters.Bucket bucket1 = f.getBuckets().get(0);
+            map.put("secondary_count", bucket1.getDocCount());
+            result.add(map);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);

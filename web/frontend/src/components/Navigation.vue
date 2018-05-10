@@ -10,6 +10,7 @@
       <b-navbar-nav>
         <b-nav-item :to="{ name: 'home' }">Home</b-nav-item>
         <b-nav-item :to="{ name: 'pingDashboard' }">Ping Dashboard</b-nav-item>
+        <b-nav-item :to="{ name: 'dateHistogram' }">Date Histogram</b-nav-item>
         <b-nav-item-dropdown text="Browse Logs" right >
           <b-dropdown-item v-for="(type, index) in types" v-bind:key="index" :to="{ name: 'browse', params: { type: type } }" >{{ type }}</b-dropdown-item>
         </b-nav-item-dropdown>
