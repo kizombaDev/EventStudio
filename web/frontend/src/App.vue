@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Navigation/>
+    <breadcrumbs/>
     <div class="mb-4"/>
     <main class="container">
       <router-view/>

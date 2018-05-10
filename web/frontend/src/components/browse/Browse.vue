@@ -16,6 +16,20 @@ export default {
     type: function () {
       return this.$route.params.type
     }
+  },
+  created () {
+    this.fetchData()
+  },
+  watch: {
+    '$route': 'fetchData2'
+  },
+  methods: {
+    fetchData () {
+      console.log('fetchData')
+    },
+    fetchData2 () {
+      console.log('fetchData2')
+    }
   }
 }
 </script>

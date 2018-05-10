@@ -2,8 +2,7 @@
   <div>
     <h1>Ping Detail</h1>
     <p>
-      <router-link :to="{ name: 'pingDetail', params: { id: id } }">Details</router-link>
-      <router-link :to="{ name: 'pingDiagram', params: { id: id } }">Diagram</router-link>
+      <router-link :to="{ name: 'pingDiagram', params: { id: id } }">Go to the Diagram</router-link>
     </p>
     <div v-show="ping !== null">
       <b-table striped hover :items="pingKeyValues"></b-table>

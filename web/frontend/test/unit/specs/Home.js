@@ -1,11 +1,11 @@
 import Vue from 'vue'
-import Foo from '@/components/Foo'
+import Home from '@/components/Home'
 
-describe('Foo.vue', () => {
+describe('Home.vue', () => {
   it('should render correct contents', () => {
-    const Constructor = Vue.extend(Foo)
+    const Constructor = Vue.extend(Home)
     const vm = new Constructor().$mount()
     expect(vm.$el.querySelector('h1').textContent)
-      .to.equal('Foo AAA')
+      .to.equal('Home')
   })
 })

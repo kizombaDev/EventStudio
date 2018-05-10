@@ -23,7 +23,7 @@ pipeline:
       type: ping
       configuration:
         - key: regex
-          value: 'PING: Fehler bei der Übertragung. Allgemeiner Fehler.|Zeitüberschreitung der Anforderung.'
+          value: 'PING: Fehler bei der Übertragung. Allgemeiner Fehler.|berschreitung der Anforderung.'
         - key: key
           value: status
         - key: value

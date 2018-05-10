@@ -2,8 +2,7 @@
   <div>
     <h1>Ping Diagram</h1>
     <p>
-      <router-link :to="{ name: 'pingDetail', params: { id: id }}">Details</router-link>
-      <router-link :to="{ name: 'pingDiagram', params: { id: id }}">Diagram</router-link>
+      <router-link :to="{ name: 'pingDetail', params: { id: id }}">Go to the details</router-link>
     </p>
     <p v-show="ping !== null">Diagram</p>
   </div>

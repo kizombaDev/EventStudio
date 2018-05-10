@@ -1,58 +1,34 @@
 <template>
-  <div class="hello">
-    <h1>Ping Dashboard</h1>
-      <div v-for="(ping, index) in pings" v-bind:key="index">
-        <PingLight v-bind:ping="ping"></PingLight>
-      </div>
+  <div class="row">
+    <div class="col-12">
+      <h1>Ping Dashboard</h1>
+    </div>
+    <div v-for="(pingId, index) in pingIds" v-bind:key="index" class="col-md-3 mb-4">
+      <PingCard v-bind:pingId="pingId"></PingCard>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import PingLight from './PingLight'
+import PingCard from './PingCard'
+import basicApi from '../../rest/basic-api'
 
 export default {
   name: 'PingDashboard',
   components: {
-    PingLight
+    PingCard
   },
   data () {
     return {
-      pings: [],
-      errors: []
+      pingIds: []
     }
   },
   beforeMount () {
-    this.loadAllPingTypes()
+    this.loadAllPingIds()
   },
   methods: {
-    loadAllPingTypes () {
-      axios.get('api/v1/logs?type=ping&group-by=id')
-        .then(response => {
-          response.data.forEach(ping => {
-            if (this.pings.filter(e => e.key === ping.key).length === 0) {
-              this.pings.push({
-                'key': ping.key,
-                'source': null
-              })
-              this.loadLastPing(ping.key)
-            }
-          })
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-    },
-    loadLastPing (id) {
-      axios.get('api/v1/logs/' + id + '/last')
-        .then(response => {
-          this.pings.filter(e => e.key === response.data.id).forEach(ping => {
-            ping.source = response.data
-          })
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
+    loadAllPingIds () {
+      this.pingIds = basicApi.getPingIds()
     }
   }
 }
