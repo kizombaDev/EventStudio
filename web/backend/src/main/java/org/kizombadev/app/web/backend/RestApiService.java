@@ -54,8 +54,11 @@ public class RestApiService {
         if (searchResponse.getHits().getHits().length == 0) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        SearchHit searchHit = searchResponse.getHits().getAt(0);
-        return new ResponseEntity<>(searchHit.getSourceAsString(), HttpStatus.OK);
+        List<Map<String, Object>> result = new ArrayList<>();
+        for(SearchHit hit : searchResponse.getHits()) {
+            result.add(hit.getSourceAsMap());
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
