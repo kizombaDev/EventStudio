@@ -9,11 +9,7 @@ export default {
     }
   },
   props: {
-    labels: Array,
-    primaryData: Array,
-    secondaryData: Array,
-    primaryLabel: String,
-    secondaryLabel: String
+    lineDiagramData: Object
   },
   mounted () {
     this.gradient = this.$refs.canvas.getContext('2d').createLinearGradient(0, 0, 0, 450)
@@ -32,25 +28,25 @@ export default {
   methods: {
     doRenderChart () {
       this.renderChart({
-        labels: this.labels,
+        labels: this.lineDiagramData.labels,
         datasets: [
           {
-            label: this.primaryLabel,
+            label: this.lineDiagramData.primaryLabel,
             borderColor: '#FC2525',
             pointBackgroundColor: 'white',
             borderWidth: 1,
             pointBorderColor: 'white',
             backgroundColor: this.gradient,
-            data: this.primaryData
+            data: this.lineDiagramData.primaryData
           },
           {
-            label: this.secondaryLabel,
+            label: this.lineDiagramData.secondaryLabel,
             borderColor: '#05CBE1',
             pointBackgroundColor: 'white',
             pointBorderColor: 'white',
             borderWidth: 1,
             backgroundColor: this.gradient2,
-            data: this.secondaryData
+            data: this.lineDiagramData.secondaryData
           }
         ]
       }, {responsive: true, maintainAspectRatio: false})

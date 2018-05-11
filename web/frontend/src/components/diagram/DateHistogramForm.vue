@@ -45,11 +45,7 @@ export default {
         field: '',
         value: '',
         type: 'primary'
-      },
-      foods: [
-        { text: 'Select One', value: null },
-        'Carrots', 'Beans', 'Tomatoes', 'Corn'
-      ]
+      }
     }
   },
   props: {

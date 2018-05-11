@@ -1,13 +1,26 @@
 <template>
   <div>
     <h1>Date Histogram</h1>
-    <p>{{filters}}</p>
-    <DateHistogramForm :show="true" v-on:filterAdded="filterAdded"/>
-    <b-button @click="updateDiagram">Show diagram</b-button>
-    <LineDiagram ref="diagram"
-                 :labels="labels"
-                 :primaryData="primaryData" :secondaryData="secondaryData"
-                 :primaryLabel="primaryLabel" :secondaryLabel="secondaryLabel"
+    <b-button :pressed.sync="toggleButtonState" variant="primary">{{toggleButtonText}}</b-button>
+    <div class="pb-4" />
+    <div v-if="showEdit">
+      <div v-if="this.filters.length > 0">
+        <h3>The current filter criteria</h3>
+        <b-table responsive striped hover :items="filters" :fields="fields">
+          <template slot="action" slot-scope="row">
+            <b-button size="sm" @click="deleteFilterCriteria(row.item)">
+              Delete
+            </b-button>
+          </template>
+        </b-table>
+        <div class="pb-4" />
+      </div>
+      <h3>Add new filter criteria</h3>
+      <DateHistogramForm :show="showEdit" v-on:filterAdded="filterAdded"/>
+    </div>
+    <LineDiagram v-if="showDiagram"
+                  ref="diagram"
+                 :lineDiagramData="lineDiagramData"
     />
   </div>
 </template>
@@ -27,28 +40,57 @@ export default {
   },
   data () {
     return {
-      labels: [],
-      primaryData: [],
-      secondaryData: [],
-      primaryLabel: 'Primary Filter',
-      secondaryLabel: 'Secondary Filter',
+      lineDiagramData: {
+        labels: [],
+        primaryData: [],
+        secondaryData: [],
+        primaryLabel: 'Primary Filter',
+        secondaryLabel: 'Secondary Filter'
+      },
       filters: [
         { 'field': 'type', 'value': 'ping', 'type': 'primary' },
         { 'field': 'id', 'value': 'ping_localhost', 'type': 'primary' },
         { 'field': 'status', 'value': 'failed', 'type': 'secondary' }
-      ]
+      ],
+      fields: [ 'field', 'value', 'type', 'action' ],
+      toggleButtonState: false
+    }
+  },
+  computed: {
+    showEdit () {
+      return this.toggleButtonState
+    },
+    showDiagram () {
+      return !this.toggleButtonState
+    },
+    toggleButtonText () {
+      if (this.toggleButtonState) {
+        return 'switch to the diagram'
+      } else {
+        return 'switch to the edit mode'
+      }
+    }
+  },
+  created () {
+    this.loadData(this.filters)
+  },
+  watch: {
+    showDiagram: function (value) {
+      if (value) {
+        this.loadData(this.filters)
+      }
     }
   },
   methods: {
     loadData (filters) {
       basicApi.getDateHistogram(filters).then(response => {
-        this.labels = []
-        this.primaryData = []
-        this.secondaryData = []
+        this.lineDiagramData.labels = []
+        this.lineDiagramData.primaryData = []
+        this.lineDiagramData.secondaryData = []
         response.data.forEach(item => {
-          this.labels.push(item.key)
-          this.primaryData.push(item.primary_count)
-          this.secondaryData.push(item.secondary_count)
+          this.lineDiagramData.labels.push(item.key)
+          this.lineDiagramData.primaryData.push(item.primary_count)
+          this.lineDiagramData.secondaryData.push(item.secondary_count)
         })
         this.$refs.diagram.doRenderChart()
       }).catch(e => {
@@ -58,8 +100,8 @@ export default {
     filterAdded (filter) {
       this.filters.push(filter)
     },
-    updateDiagram () {
-      this.loadData(this.filters)
+    deleteFilterCriteria (filter) {
+      this.filters.splice(this.filters.indexOf(filter), 1)
     }
   }
 }
