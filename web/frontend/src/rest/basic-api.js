@@ -12,5 +12,8 @@ export default {
   },
   getDateHistogram (filters) {
     return HTTP.post('/v1/logs/date-histogram', filters)
+  },
+  getLogsByFilter (filters, size, from) {
+    return HTTP.post('/v1/logs?from=' + from + '&size=' + size, filters)
   }
 }

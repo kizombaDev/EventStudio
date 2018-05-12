@@ -2,7 +2,19 @@
   <b-card :border-variant="borderVariant"
           :header="pingId"
           class="text-center">
-    <p class="card-text">Status: {{status}}<br>Time: {{ time }}<br>Date: {{date}}</p>
+    <!--<b-row class="mb-2">-->
+      <!--<b-col class="text-sm-right"><b>Status:</b></b-col>-->
+      <!--<b-col class="text-sm-left">{{status}}</b-col>-->
+    <!--</b-row>-->
+    <!--<b-row class="mb-2">-->
+      <!--<b-col class="text-sm-right"><b>Time:</b></b-col>-->
+      <!--<b-col class="text-sm-left">{{time}}</b-col>-->
+    <!--</b-row>-->
+    <!--<b-row class="mb-2">-->
+      <!--<b-col class="text-sm-right"><b>Date:</b></b-col>-->
+      <!--<b-col class="text-sm-left"> {{date}}</b-col>-->
+    <!--</b-row>-->
+    <p class="card-text"><b>Status:</b> {{status}}<br><b>Time:</b> {{ time }}<br><b>Date:</b> {{date}}</p>
     <b-button :to="{ name: 'pingDetail', params:  { id: pingId }}" variant="primary">Details</b-button>
   </b-card>
 </template>
@@ -69,7 +81,9 @@ export default {
   methods: {
     loadLastLogById (id) {
       basicApi.getLastPingById(id).then(response => {
-        this.ping = response.data
+        if (response.data.length > 0) {
+          this.ping = response.data[0]
+        }
       }).catch(e => {
         console.error(e)
       })

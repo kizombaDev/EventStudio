@@ -37,7 +37,9 @@ export default {
     loadLastPing (id) {
       basicApi.getLastPingById(id)
         .then(response => {
-          this.ping = response.data
+          if (response.data.length > 0) {
+            this.ping = response.data[0]
+          }
         })
         .catch(e => {
           console.error(e)

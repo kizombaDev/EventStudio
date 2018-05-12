@@ -9,43 +9,13 @@ import java.util.List;
 @Configuration
 @ConfigurationProperties("backend")
 public class BackendProperties {
-    private String clusterName;
-    private List<Nodes> nodes = new ArrayList<>();
+   private String indexName;
 
-    public String getClusterName() {
-        return clusterName;
+    public String getIndexName() {
+        return indexName;
     }
 
-    public void setClusterName(String clusterName) {
-        this.clusterName = clusterName;
-    }
-
-    public List<Nodes> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(List<Nodes> nodes) {
-        this.nodes = nodes;
-    }
-
-    public static class Nodes {
-        private String ip;
-        private Integer port;
-
-        public String getIp() {
-            return ip;
-        }
-
-        public void setIp(String ip) {
-            this.ip = ip;
-        }
-
-        public Integer getPort() {
-            return port;
-        }
-
-        public void setPort(Integer port) {
-            this.port = port;
-        }
+    public void setIndexName(String indexName) {
+        this.indexName = indexName;
     }
 }

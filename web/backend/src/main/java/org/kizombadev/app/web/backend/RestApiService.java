@@ -4,7 +4,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.Filter;
 import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
@@ -14,7 +13,7 @@ import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInter
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.sort.SortOrder;
+import org.kizombadev.app.web.backend.model.FilterCriteriaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,10 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -33,33 +29,32 @@ import java.util.concurrent.ExecutionException;
 public class RestApiService {
 
     private final TransportClient transportClient;
+    private ElasticSearchService elasticSearchService;
 
     @Autowired
-    public RestApiService(TransportClient transportClient) {
+    public RestApiService(TransportClient transportClient, ElasticSearchService elasticSearchService) {
         this.transportClient = transportClient;
+        this.elasticSearchService = elasticSearchService;
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> getLastElementById(@PathVariable String id, @RequestParam("from") @NotNull Integer from, @RequestParam("size") @NotNull Integer size)
-            throws ExecutionException, InterruptedException {
+    public ResponseEntity<Object> getElements(@PathVariable String id, @RequestParam("from") @NotNull Integer from, @RequestParam("size") @NotNull Integer size) {
 
-        SearchResponse searchResponse = transportClient.prepareSearch("ping")
-                .setSize(size)
-                .setFrom(from)
-                .setQuery(QueryBuilders.termQuery("id", id))
-                .addSort("timestamp", SortOrder.DESC)
-                .execute()
-                .get();
-
-        if (searchResponse.getHits().getHits().length == 0) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        List<Map<String, Object>> result = new ArrayList<>();
-        for(SearchHit hit : searchResponse.getHits()) {
-            result.add(hit.getSourceAsMap());
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        FilterCriteriaDto filterCriteriaDto = new FilterCriteriaDto();
+        filterCriteriaDto.setField("id");
+        filterCriteriaDto.setValue(id);
+        List<FilterCriteriaDto> filters = Collections.singletonList(filterCriteriaDto);
+        List<Map<String, Object>> items = elasticSearchService.getElementsByFilter(filters, from, size);
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getElementsByFilter(@RequestBody @NotNull List<FilterCriteriaDto> filters, @NotNull Integer from, @RequestParam("size") @NotNull Integer size) {
+
+        List<Map<String, Object>> items = elasticSearchService.getElementsByFilter(filters, from, size);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
 
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getFieldValuesByType(@RequestParam("type") String type, @RequestParam("group-by") String groupBy) throws ExecutionException, InterruptedException {

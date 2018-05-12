@@ -3,6 +3,6 @@ backend:
   nodes:
     - ip: localhost
       port: 9300
-  indexname: ping
+  indexname: test
 server:
   port: 8082
