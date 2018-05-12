@@ -1,1 +1,1 @@
-[![coverage report](https://gitlab.cs.fau.de/po10luty/masterarbeit/badges/master/coverage.svg)](https://gitlab.cs.fau.de/po10luty/masterarbeit/commits/master)
+[![pipeline status](https://gitlab.cs.fau.de/po10luty/masterarbeit/badges/master/pipeline.svg)](https://gitlab.cs.fau.de/po10luty/masterarbeit/commits/master)
