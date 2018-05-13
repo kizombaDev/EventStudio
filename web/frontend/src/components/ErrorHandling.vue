@@ -18,7 +18,6 @@ export default {
     '$route': 'clearErrors'
   },
   created () {
-    console.log(this)
     this.$events.on('error', this.errorListener)
   },
   methods: {

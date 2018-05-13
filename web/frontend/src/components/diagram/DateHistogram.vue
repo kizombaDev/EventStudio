@@ -1,26 +1,10 @@
 <template>
   <div>
     <h1>Date Histogram</h1>
-    <b-button :pressed.sync="toggleButtonState" variant="primary">{{toggleButtonState ? 'Show results' : 'Edit' }}</b-button>
+    <b-button :pressed.sync="showResults" variant="primary">{{showResults ? 'Show results' : 'Edit' }}</b-button>
     <div class="pb-4" />
-    <div v-if="showEdit">
-      <div v-if="this.filters.length > 0">
-        <h3>The current filter criteria</h3>
-        <b-table responsive striped hover :items="filters" :fields="fields">
-          <template slot="action" slot-scope="row">
-            <b-button size="sm" @click="deleteFilterCriteria(row.item)">
-              Delete
-            </b-button>
-          </template>
-        </b-table>
-        <div class="pb-4" />
-      </div>
-      <h3>Add new filter criteria</h3>
-      <DateHistogramForm :show="showEdit" v-on:filterAdded="filterAdded"/>
-    </div>
-    <LineDiagram v-if="showDiagram"
-                  ref="diagram"
-                 :lineDiagramData="lineDiagramData"
+    <FilterCriteria v-if="!showResults" :filters="filters" :choose-types="true"/>
+    <LineDiagram v-if="showResults" ref="diagram" :lineDiagramData="lineDiagramData"
     />
   </div>
 </template>
@@ -28,7 +12,7 @@
 <script>
 import LineDiagram from './LineDiagram'
 import BarExample from './BarExample'
-import DateHistogramForm from './DateHistogramForm'
+import FilterCriteria from '../common/FilterCriteria'
 import basicApi from '../../rest/basic-api'
 
 export default {
@@ -36,7 +20,7 @@ export default {
   components: {
     LineDiagram,
     BarExample,
-    DateHistogramForm
+    FilterCriteria
   },
   data () {
     return {
@@ -52,23 +36,14 @@ export default {
         { 'field': 'id', 'value': 'ping_localhost', 'type': 'primary' },
         { 'field': 'status', 'value': 'failed', 'type': 'secondary' }
       ],
-      fields: [ 'field', 'value', 'type', 'action' ],
-      toggleButtonState: false
-    }
-  },
-  computed: {
-    showEdit () {
-      return this.toggleButtonState
-    },
-    showDiagram () {
-      return !this.toggleButtonState
+      showResults: true
     }
   },
   created () {
     this.loadData(this.filters)
   },
   watch: {
-    showDiagram: function (value) {
+    showResults: function (value) {
       if (value) {
         this.loadData(this.filters)
       }
@@ -89,12 +64,6 @@ export default {
       }).catch(e => {
         this.$events.emit('error', e)
       })
-    },
-    filterAdded (filter) {
-      this.filters.push(filter)
-    },
-    deleteFilterCriteria (filter) {
-      this.filters.splice(this.filters.indexOf(filter), 1)
     }
   }
 }

@@ -12,7 +12,7 @@
       <div class="pb-4" />
     </div>
     <h3>Add a new filter criteria</h3>
-    <FilterCriteriaForm :chooseType="false" v-on:filterAdded="filterAdded"/>
+    <FilterCriteriaForm :chooseType="chooseTypes" v-on:filterAdded="filterAdded"/>
   </div>
 </template>
 
@@ -20,15 +20,20 @@
 import FilterCriteriaForm from './FilterCriteriaForm'
 
 export default {
-  name: 'Home',
+  name: 'FilterCriteria',
   components: {FilterCriteriaForm},
-  data () {
-    return {
-      fields: [ 'field', 'value', 'type', 'action' ]
-    }
-  },
   props: {
-    filters: Array
+    filters: Array,
+    chooseTypes: Boolean
+  },
+  computed: {
+    fields () {
+      if (this.chooseTypes) {
+        return [ 'field', 'value', 'type', 'action' ]
+      } else {
+        return [ 'field', 'value', 'action' ]
+      }
+    }
   },
   methods: {
     deleteFilterCriteria (filter) {

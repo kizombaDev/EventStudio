@@ -30,9 +30,7 @@ export default {
   name: 'Browse',
   data: function () {
     return {
-      filters: [
-        { 'field': 'type', 'value': 'ping', 'type': 'primary' }
-      ],
+      filters: [],
       showResults: true,
       pings: [],
       fields: ['id', 'type', 'timestamp', 'show_details']
@@ -40,6 +38,7 @@ export default {
   },
   components: {FilterCriteria},
   created () {
+    this.initDefaultFilter()
     this.loadData()
   },
   watch: {
@@ -52,7 +51,6 @@ export default {
   },
   methods: {
     initDefaultFilter () {
-      console.log('initDefaultFilter')
       let type = this.$route.params.type
       if (type === 'all') {
         this.filters = []
