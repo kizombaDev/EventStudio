@@ -35,7 +35,7 @@ export default {
           }
         })
       }).catch(e => {
-        console.error(e)
+        this.$events.emit('error', e)
       })
     }
   }

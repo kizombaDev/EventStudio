@@ -20,6 +20,8 @@
     "moment": "^2.22.1",
     "vue": "^2.5.2",
     "vue-chartjs": "^3.3.1",
+    "vue-events": "^3.1.0",
+    "vue-headful": "^2.0.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

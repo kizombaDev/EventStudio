@@ -1,8 +1,13 @@
 <template>
   <div id="app">
+    <vue-headful
+      title="Log-Application"
+      description="Description from the Log-Application"
+    />
     <Navigation/>
     <div class="mb-4"/>
     <main class="container">
+      <ErrorHandling />
       <router-view/>
     </main>
   </div>
@@ -10,9 +15,12 @@
 
 <script>
 import Navigation from './components/Navigation'
+import vueHeadful from 'vue-headful'
+import ErrorHandling from './components/ErrorHandling'
+
 export default {
   name: 'App',
-  components: {Navigation}
+  components: {ErrorHandling, Navigation, vueHeadful}
 }
 </script>
 

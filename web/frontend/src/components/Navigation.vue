@@ -36,12 +36,13 @@ export default {
   },
   methods: {
     loadNavigationData () {
+      this.$emit('test', 'hi')
       basicApi.getAllTypes().then(response => {
         response.data.forEach(item => {
           this.types.push(item.type)
         })
       }).catch(e => {
-        console.error(e)
+        this.$events.emit('error', e)
       })
     }
   }

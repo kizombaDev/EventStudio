@@ -67,7 +67,7 @@ export default {
       basicApi.getLogsByFilter(this.filters, 100, 0).then(response => {
         this.pings = response.data
       }).catch(e => {
-        console.error(e)
+        this.$events.emit('error', e)
       })
     },
     convertToPair (ping) {

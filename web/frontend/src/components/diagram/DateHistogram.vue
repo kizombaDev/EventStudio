@@ -87,7 +87,7 @@ export default {
         })
         this.$refs.diagram.doRenderChart()
       }).catch(e => {
-        console.error(e)
+        this.$events.emit('error', e)
       })
     },
     filterAdded (filter) {

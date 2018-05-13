@@ -83,7 +83,7 @@ export default {
           this.fieldOptions.push({value: data.field, text: data.field})
         })
       }).catch(e => {
-        console.error(e)
+        this.$events.emit('error', e)
       })
     }
   }
