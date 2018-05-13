@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Date Histogram</h1>
-    <b-button :pressed.sync="toggleButtonState" variant="primary">{{toggleButtonText}}</b-button>
+    <b-button :pressed.sync="toggleButtonState" variant="primary">{{toggleButtonState ? 'Show results' : 'Edit' }}</b-button>
     <div class="pb-4" />
     <div v-if="showEdit">
       <div v-if="this.filters.length > 0">
@@ -62,13 +62,6 @@ export default {
     },
     showDiagram () {
       return !this.toggleButtonState
-    },
-    toggleButtonText () {
-      if (this.toggleButtonState) {
-        return 'switch to the diagram'
-      } else {
-        return 'switch to the edit mode'
-      }
     }
   },
   created () {

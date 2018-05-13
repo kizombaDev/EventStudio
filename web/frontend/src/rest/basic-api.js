@@ -15,5 +15,8 @@ export default {
   },
   getLogsByFilter (filters, size, from) {
     return HTTP.post('/v1/logs?from=' + from + '&size=' + size, filters)
+  },
+  getAllFieldNames () {
+    return HTTP.get('v1/logs/structure/fields')
   }
 }

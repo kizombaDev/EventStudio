@@ -12,7 +12,7 @@
         <b-nav-item :to="{ name: 'pingDashboard' }">Ping Dashboard</b-nav-item>
         <b-nav-item :to="{ name: 'dateHistogram' }">Date Histogram</b-nav-item>
         <b-nav-item-dropdown text="Browse Logs" right >
-          <b-dropdown-item :to="{ name: 'browse'}" >All</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'browse', params: { type: 'all' }}" >All</b-dropdown-item>
           <b-dropdown-divider></b-dropdown-divider>
           <b-dropdown-item v-for="(type, index) in types" v-bind:key="index" :to="{ name: 'browse', params: { type: type } }" >{{ type }}</b-dropdown-item>
         </b-nav-item-dropdown>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Browse {{ type }} Logs</h1>
+    <h1>Browse logs</h1>
     <b-button :pressed.sync="showResults" variant="primary">{{showResults ? 'Edit' : 'Show results'}}</b-button>
     <div class="pb-4"></div>
     <FilterCriteria v-if="!showResults" :filters="filters"/>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import FilterCriteria from './FilterCriteria'
+import FilterCriteria from '../common/FilterCriteria'
 import basicApi from '../../rest/basic-api'
 
 export default {
@@ -39,23 +39,29 @@ export default {
     }
   },
   components: {FilterCriteria},
-  computed: {
-    type: function () {
-      return this.$route.params.type
-    }
-  },
   created () {
     this.loadData()
   },
   watch: {
-    '$route': 'fetchData2'
+    '$route': 'initDefaultFilter',
+    showResults: function (value) {
+      if (value) {
+        this.loadData()
+      }
+    }
   },
   methods: {
-    fetchData () {
-      console.log('test')
-    },
-    fetchData2 () {
-      console.log('fetchData2')
+    initDefaultFilter () {
+      console.log('initDefaultFilter')
+      let type = this.$route.params.type
+      if (type === 'all') {
+        this.filters = []
+      } else {
+        this.filters = [
+          { 'field': 'type', 'value': type, 'type': 'primary' }
+        ]
+      }
+      this.loadData()
     },
     loadData () {
       basicApi.getLogsByFilter(this.filters, 100, 0).then(response => {

@@ -48,7 +48,7 @@ public class RestApiService {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getElementsByFilter(@RequestBody @NotNull List<FilterCriteriaDto> filters, @NotNull Integer from, @RequestParam("size") @NotNull Integer size) {
 
         List<Map<String, Object>> items = elasticSearchService.getElementsByFilter(filters, from, size);
@@ -93,6 +93,12 @@ public class RestApiService {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
 
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/structure/fields", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getFields() {
+        List<Map<String, String>> result = elasticSearchService.getFieldStructure();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

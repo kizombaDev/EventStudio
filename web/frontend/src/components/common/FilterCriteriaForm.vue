@@ -4,14 +4,12 @@
       <b-form @submit="onSubmit" @reset="onReset">
         <b-form-group id="field"
                       label="Field name:"
-                      label-for="fieldInput"
-                      description="Description ">
-          <b-form-input id="fieldInput"
-                        type="text"
+                      label-for="fieldInput">
+          <b-form-select id="fieldInput"
+                         :options="fieldOptions"
                         v-model="form.field"
-                        required
-                        placeholder="Enter the field name">
-          </b-form-input>
+                        required>
+          </b-form-select>
         </b-form-group>
         <b-form-group id="value"
                       label="Expected value:"
@@ -37,6 +35,8 @@
 </template>
 
 <script>
+import basicApi from '../../rest/basic-api'
+
 export default {
   name: 'FilterCriteriaForm',
   data () {
@@ -45,11 +45,16 @@ export default {
         field: '',
         value: '',
         type: 'primary'
-      }
+      },
+      fieldData: [],
+      fieldOptions: []
     }
   },
   props: {
     chooseType: Boolean
+  },
+  created () {
+    this.loadFieldNames()
   },
   methods: {
     onSubmit (evt) {
@@ -70,6 +75,16 @@ export default {
       /* Trick to reset/clear native browser form validation state */
       this.show = false
       this.$nextTick(() => { this.show = true })
+    },
+    loadFieldNames () {
+      basicApi.getAllFieldNames().then(response => {
+        this.fieldData = response.data
+        this.fieldData.forEach(data => {
+          this.fieldOptions.push({value: data.field, text: data.field})
+        })
+      }).catch(e => {
+        console.error(e)
+      })
     }
   }
 }
