@@ -1,6 +1,6 @@
 package org.kizombadev.pipeline.controller;
 
-import org.kizombadev.pipeline.Dataset;
+import org.kizombadev.pipeline.LogEntry;
 import org.kizombadev.pipeline.filter.FilterService;
 import org.kizombadev.pipeline.output.Output;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +23,21 @@ public class PipelineServiceImpl implements PipelineService {
 
     @Override
     public void run(Map<String, Object> data) {
-        Dataset dataset = new Dataset(data);
-        filterService.handle(dataset);
+        LogEntry logEntry = new LogEntry(data);
+        filterService.handle(logEntry);
         for (Output output : outputs) {
-            output.write(dataset);
+            output.write(logEntry);
         }
     }
 
     @Override
-    public void run(List<Dataset> datasets) {
-        for (Dataset dataset : datasets) {
-            filterService.handle(dataset);
+    public void run(List<LogEntry> logEntries) {
+        for (LogEntry logEntry : logEntries) {
+            filterService.handle(logEntry);
         }
 
         for (Output output : outputs) {
-            output.write(datasets);
+            output.write(logEntries);
         }
 
     }

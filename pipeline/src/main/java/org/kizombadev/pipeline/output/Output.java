@@ -1,11 +1,11 @@
 package org.kizombadev.pipeline.output;
 
-import org.kizombadev.pipeline.Dataset;
+import org.kizombadev.pipeline.LogEntry;
 
 import java.util.List;
 
 public interface Output {
-    void write(Dataset data);
+    void write(LogEntry data);
 
-    void write(List<Dataset> datasets);
+    void write(List<LogEntry> logEntries);
 }

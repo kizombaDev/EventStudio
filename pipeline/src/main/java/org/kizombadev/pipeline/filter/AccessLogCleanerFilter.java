@@ -10,6 +10,7 @@ public class AccessLogCleanerFilter implements Filter {
     public void handle(Map<String, Object> json) {
         for (Map.Entry<String, Object> entry : json.entrySet()) {
             String value = entry.getValue().toString();
+            //TODO only remove the character on integer fields
             value = value.replace("-", "");
             value = value.replace(" ", "");
 

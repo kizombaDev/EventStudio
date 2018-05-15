@@ -1,5 +1,6 @@
 package org.kizombadev.pipeline.filter;
 
+import org.kizombadev.pipeline.EntryKeys;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -8,13 +9,17 @@ import java.util.regex.Pattern;
 
 @Component("ExtensionFilter")
 public class ExtensionFilter implements Filter {
+    private static final String REGEX_CONFIGURATION = "regex";
+    private static final String KEY_CONFIGURATION = "key";
+    private static final String VALUE_CONFIGURATION = "value";
+
     private Pattern pattern = null;
     private String key = null;
     private String value = null;
 
     @Override
     public void handle(Map<String, Object> json) {
-        String origin = String.valueOf(json.get("origin"));
+        String origin = String.valueOf(getPropertyOrThrow(EntryKeys.ORIGIN, json));
         Matcher matcher = pattern.matcher(origin);
         if (!matcher.find()) {
             return;
@@ -25,9 +30,9 @@ public class ExtensionFilter implements Filter {
 
     @Override
     public void init(Map<String, String> configuration) {
-        pattern = Pattern.compile(configuration.get("regex"));
-        key = configuration.get("key");
-        value = configuration.get("value");
+        pattern = Pattern.compile(getConfigurationOrThrow(REGEX_CONFIGURATION, configuration));
+        key = getConfigurationOrThrow(KEY_CONFIGURATION, configuration);
+        value = getConfigurationOrThrow(VALUE_CONFIGURATION, configuration);
     }
 
     @Override

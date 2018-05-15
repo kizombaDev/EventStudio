@@ -1,6 +1,6 @@
 package org.kizombadev.pipeline.filter;
 
-import org.kizombadev.pipeline.Dataset;
+import org.kizombadev.pipeline.LogEntry;
 import org.kizombadev.pipeline.properties.FilterProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -27,10 +27,10 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
-    public void handle(Dataset data) {
+    public void handle(LogEntry logEntry) {
         for (FilterInstance filter : filters) {
-            if (filter.getType().equals(data.getType())) {
-                filter.getFilter().handle(data.getSource());
+            if (filter.getType().equals(logEntry.getType())) {
+                filter.getFilter().handle(logEntry.getSource());
             }
         }
     }

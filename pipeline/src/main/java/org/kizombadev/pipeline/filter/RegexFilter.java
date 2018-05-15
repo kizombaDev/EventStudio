@@ -2,6 +2,7 @@ package org.kizombadev.pipeline.filter;
 
 import com.google.code.regexp.Matcher;
 import com.google.code.regexp.Pattern;
+import org.kizombadev.pipeline.EntryKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -11,12 +12,11 @@ import java.util.Map;
 
 @Component("RegexFilter")
 public class RegexFilter implements Filter {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private Pattern pattern = null;
 
     @Override
     public void handle(Map<String, Object> json) {
-        String origin = String.valueOf(json.get("origin"));
+        String origin = String.valueOf(getPropertyOrThrow(EntryKeys.ORIGIN, json));
         Matcher matcher = pattern.matcher(origin);
         if (!matcher.find()) {
             return;
@@ -37,8 +37,7 @@ public class RegexFilter implements Filter {
 
     @Override
     public void init(Map<String, String> configuration) {
-        pattern = Pattern.compile(configuration.get("regex"));
-
+        pattern = Pattern.compile(getConfigurationOrThrow("regex", configuration));
     }
 
     @Override

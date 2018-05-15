@@ -2,15 +2,10 @@ package org.kizombadev.app.web.backend;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.Filter;
 import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.filter.Filters;
-import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
-import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.kizombadev.app.web.backend.model.FilterCriteriaDto;
@@ -144,54 +139,8 @@ public class RestApiService {
     }
 
     @RequestMapping(path = "/date-histogram", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> getDateHistogram(@RequestBody List<Map<String, String>> filters) throws ExecutionException, InterruptedException {
-        final String primary_filter = "primary_filter";
-        final String secondary_filter = "secondary_filter";
-        final String date_grouping = "date_grouping";
-
-        BoolQueryBuilder primaryFilter = QueryBuilders.boolQuery();
-
-        filters.stream().filter(x -> x.get("type").equals("primary")).
-                forEach(x -> primaryFilter.must(QueryBuilders.termQuery(x.get("field"), x.get("value"))));
-
-        BoolQueryBuilder secondaryFilter = QueryBuilders
-                .boolQuery();
-
-        filters.stream().filter(x -> x.get("type").equals("secondary")).
-                forEach(x -> secondaryFilter.must(QueryBuilders.termQuery(x.get("field"), x.get("value"))));
-
-        FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
-                .filters(primary_filter, primaryFilter)
-                .subAggregation(AggregationBuilders
-                        .dateHistogram(date_grouping)
-                        .dateHistogramInterval(DateHistogramInterval.DAY)
-                        .field("timestamp")
-                        .format("dd-MM-yyyy").subAggregation(
-                                AggregationBuilders.filters(secondary_filter,
-                                        secondaryFilter)));
-
-        SearchResponse searchResponse = transportClient.prepareSearch("ping")
-                .addAggregation(filterAggregationBuilder)
-                .setSize(0)
-                .execute()
-                .get();
-
-        List<Map<String, Object>> result = new ArrayList<>();
-
-        Filters responseFilter = searchResponse.getAggregations().get(primary_filter);
-        Filters.Bucket bucket = responseFilter.getBuckets().get(0);
-        Histogram aggregation = bucket.getAggregations().get(date_grouping);
-        for (Histogram.Bucket item : aggregation.getBuckets()) {
-
-            Map<String, Object> map = new HashMap<>();
-            map.put("key", item.getKeyAsString());
-            map.put("primary_count", item.getDocCount());
-            Filters f = item.getAggregations().get(secondary_filter);
-            Filters.Bucket bucket1 = f.getBuckets().get(0);
-            map.put("secondary_count", bucket1.getDocCount());
-            result.add(map);
-        }
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> getDateHistogram(@RequestBody @NotNull List<FilterCriteriaDto> filters) {
+        List<Map<String, Object>> data = elasticSearchService.getDateHistogram(filters);
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 public class TimestampConverterFilterTest {
 
     private TimestampConverterFilter filter;
@@ -14,8 +16,6 @@ public class TimestampConverterFilterTest {
     @Before
     public void setup() {
         filter = new TimestampConverterFilter();
-
-
     }
 
     @Test
@@ -36,6 +36,11 @@ public class TimestampConverterFilterTest {
         }};
         filter.init(configuration);
         assertTimestampConversion("2018-05-13T20:08:03", "13/Mai/2018:20:08:03 +0200");
+    }
+
+    @Test
+    public void testInstanceCopy() {
+        assertThat(filter.instanceCopy()).isExactlyInstanceOf(TimestampConverterFilter.class);
     }
 
 

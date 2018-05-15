@@ -10,7 +10,7 @@ import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
-import org.kizombadev.pipeline.Dataset;
+import org.kizombadev.pipeline.LogEntry;
 import org.kizombadev.pipeline.properties.ElasticsearchProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class ElasticsearchOutput implements Output {
     }
 
     @Override
-    public void write(Dataset data) {
+    public void write(LogEntry data) {
         prepareMapping(data);
         String indexName = elasticsearchProperties.getIndexName();
         IndexResponse indexResponse = transportClient.prepareIndex(indexName, DEFAULT_DOC_TYPE).setSource(data.getSource()).get();
@@ -48,13 +48,13 @@ public class ElasticsearchOutput implements Output {
     }
 
     @Override
-    public void write(List<Dataset> datasets) {
-        datasets.forEach(this::prepareMapping);
+    public void write(List<LogEntry> logEntries) {
+        logEntries.forEach(this::prepareMapping);
         String indexName = elasticsearchProperties.getIndexName();
 
         BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
-        for (Dataset data : datasets) {
+        for (LogEntry data : logEntries) {
             bulkRequest.add(transportClient.prepareIndex(indexName, DEFAULT_DOC_TYPE).setSource(data.getSource()));
         }
 
@@ -64,7 +64,7 @@ public class ElasticsearchOutput implements Output {
         }
     }
 
-    private void prepareMapping(Dataset data) {
+    private void prepareMapping(LogEntry data) {
         final String KEYWORD_TYPE = "keyword";
         final String DATE_TYPE = "date";
         final String IP_TYPE = "ip";

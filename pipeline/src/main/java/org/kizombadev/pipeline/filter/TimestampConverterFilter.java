@@ -1,5 +1,6 @@
 package org.kizombadev.pipeline.filter;
 
+import org.kizombadev.pipeline.EntryKeys;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -10,23 +11,26 @@ import java.util.Map;
 @Component("TimestampConverterFilter")
 public class TimestampConverterFilter implements Filter {
 
-    private DateTimeFormatter DATE_TIME_FORMATTER;
-    private DateTimeFormatter A = DateTimeFormatter.ISO_DATE_TIME;
+    private static final String PATTERN_CONFIGURATION = "pattern";
+    private static final String LANGUAGE_CONFIGURATION = "lang";
+
+    private DateTimeFormatter inputDateTimeFormatter;
+    private DateTimeFormatter outputDateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME;
 
 
     @Override
     public void handle(Map<String, Object> json) {
-        String timestampAsString = json.get("timestamp").toString();
-        LocalDateTime timestamp = LocalDateTime.parse(timestampAsString, DATE_TIME_FORMATTER);
-        json.put("timestamp", timestamp.format(A));
+        String timestampAsString = getPropertyOrThrow(EntryKeys.TIMESTAMP, json).toString();
+        LocalDateTime timestamp = LocalDateTime.parse(timestampAsString, inputDateTimeFormatter);
+        json.put(EntryKeys.TIMESTAMP, timestamp.format(outputDateTimeFormatter));
     }
 
     @Override
     public void init(Map<String, String> configuration) {
-        String pattern = configuration.get("pattern");
-        String lang = configuration.get("lang");
+        String pattern = getConfigurationOrThrow(PATTERN_CONFIGURATION, configuration);
+        String lang = getConfigurationOrThrow(LANGUAGE_CONFIGURATION, configuration);
 
-        DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(pattern).withLocale(new Locale(lang));
+        inputDateTimeFormatter = DateTimeFormatter.ofPattern(pattern).withLocale(new Locale(lang));
     }
 
     @Override
