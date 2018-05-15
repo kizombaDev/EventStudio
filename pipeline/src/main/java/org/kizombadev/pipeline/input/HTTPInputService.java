@@ -2,6 +2,7 @@ package org.kizombadev.pipeline.input;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.kizombadev.pipeline.Dataset;
 import org.kizombadev.pipeline.controller.PipelineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/log")
@@ -39,8 +41,6 @@ public class HTTPInputService {
         List<Map<String, Object>> logCollection = OBJECT_MAPPER.readValue(json, new TypeReference<List<HashMap<String, Object>>>() {
         });
 
-        for (Map<String, Object> data : logCollection) {
-            pipelineService.run(data);
-        }
+        pipelineService.run(logCollection.stream().map(Dataset::new).collect(Collectors.toList()));
     }
 }

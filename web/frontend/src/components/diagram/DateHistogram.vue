@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Date Histogram</h1>
-    <b-button :pressed.sync="showResults" variant="primary">{{showResults ? 'Show results' : 'Edit' }}</b-button>
+    <b-button :pressed.sync="showResults" variant="primary">{{showResults ?  'Edit' : 'Show results'}}</b-button>
     <div class="pb-4" />
     <FilterCriteria v-if="!showResults" :filters="filters" :choose-types="true"/>
     <LineDiagram v-if="showResults" ref="diagram" :lineDiagramData="lineDiagramData"

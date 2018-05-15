@@ -4,30 +4,30 @@ import os
 url = 'http://localhost:8081/api/v1/log/multiple'
 headers = {'content-type': 'application/json'}
 
-files = os.listdir("logs")
+files = os.listdir(".logs")
 
 for file in files:
-    with open("logs/" + file) as f:
+    with open(".logs/" + file) as f:
         content = f.readlines()
 
     content = [x.strip() for x in content]
 
-    multi_data = '['
+    data_list = []
+    data_list.append('[')
 
     counter = 1
     for line in content:
-        data = '{"id": "test", "type": "access_log", "origin": "' + \
-            line.replace('\"', '\\\"') + '"}'
+        data_list.append('{"id": "access_log_fc_schnaittach", "type": "access_log", "origin": "' +
+                         line.replace('\\', '\\\\"').replace('\"', '\\\"') + '"}')
 
-        print(str(file) + ' line: ' + str(counter))
-        counter = counter + 1
-        multi_data = multi_data + data + ', '
+        data_list.append(', ')
 
-    multi_data = multi_data[:-1]
-    multi_data = multi_data[:-1]
-    multi_data = multi_data + ']'
+    data_list = data_list[:-1]
+    data_list.append(']')
 
-    print(multi_data)
+    data = ''.join(data_list)
+    # print(data)
+    print(file)
 
-    response = requests.post(url, data=multi_data, headers=headers)
+    response = requests.post(url, data=data, headers=headers)
     print(str(response.status_code))

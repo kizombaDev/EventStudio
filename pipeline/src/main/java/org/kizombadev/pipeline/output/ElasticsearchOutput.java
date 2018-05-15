@@ -3,6 +3,8 @@ package org.kizombadev.pipeline.output;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -42,6 +44,23 @@ public class ElasticsearchOutput implements Output {
         IndexResponse indexResponse = transportClient.prepareIndex(indexName, DEFAULT_DOC_TYPE).setSource(data.getSource()).get();
         if (indexResponse.status() != RestStatus.CREATED) {
             throw new RuntimeException("Invalid response status: " + indexResponse.status());
+        }
+    }
+
+    @Override
+    public void write(List<Dataset> datasets) {
+        datasets.forEach(this::prepareMapping);
+        String indexName = elasticsearchProperties.getIndexName();
+
+        BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
+
+        for (Dataset data : datasets) {
+            bulkRequest.add(transportClient.prepareIndex(indexName, DEFAULT_DOC_TYPE).setSource(data.getSource()));
+        }
+
+        BulkResponse bulkResponse = bulkRequest.get();
+        if (bulkResponse.hasFailures()) {
+            throw new IllegalStateException(bulkResponse.toString());
         }
     }
 

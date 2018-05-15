@@ -29,4 +29,16 @@ public class PipelineServiceImpl implements PipelineService {
             output.write(dataset);
         }
     }
+
+    @Override
+    public void run(List<Dataset> datasets) {
+        for (Dataset dataset : datasets) {
+            filterService.handle(dataset);
+        }
+
+        for (Output output : outputs) {
+            output.write(datasets);
+        }
+
+    }
 }
