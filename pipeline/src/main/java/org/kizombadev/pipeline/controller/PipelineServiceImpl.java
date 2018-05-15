@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PipelineServiceImpl implements PipelineService {
@@ -22,15 +21,6 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public void run(Map<String, Object> data) {
-        LogEntry logEntry = new LogEntry(data);
-        filterService.handle(logEntry);
-        for (Output output : outputs) {
-            output.write(logEntry);
-        }
-    }
-
-    @Override
     public void run(List<LogEntry> logEntries) {
         for (LogEntry logEntry : logEntries) {
             filterService.handle(logEntry);
@@ -39,6 +29,5 @@ public class PipelineServiceImpl implements PipelineService {
         for (Output output : outputs) {
             output.write(logEntries);
         }
-
     }
 }

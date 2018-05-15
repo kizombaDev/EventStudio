@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component("ExtensionFilter")
-public class ExtensionFilter implements Filter {
+public class ExtensionFilter extends Filter {
     private static final String REGEX_CONFIGURATION = "regex";
     private static final String KEY_CONFIGURATION = "key";
     private static final String VALUE_CONFIGURATION = "value";

@@ -13,11 +13,11 @@ public class AccessLogCleanerFilterTest {
 
     @Test
     public void testFixIPNormalization() {
-            Map<String, Object> json = new HashMap<String, Object>() {{
-                put("ip", "78.78.4.x");
-            }};
-            filter.handle(json);
-            assertThat(json.get("ip").toString()).isEqualTo("78.78.4.0");
+        Map<String, Object> json = new HashMap<String, Object>() {{
+            put("ip", "78.78.4.x");
+        }};
+        filter.handle(json);
+        assertThat(json.get("ip").toString()).isEqualTo("78.78.4.0");
     }
 
     @Test

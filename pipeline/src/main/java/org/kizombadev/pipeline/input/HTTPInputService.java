@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,16 +32,17 @@ public class HTTPInputService {
 
     @RequestMapping(path = "/single", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void insertSingleLog(@RequestBody String json) throws IOException {
-        Map<String, Object> map = OBJECT_MAPPER.readValue(json, new TypeReference<HashMap<String, Object>>() {
+        Map<String, Object> source = OBJECT_MAPPER.readValue(json, new TypeReference<HashMap<String, Object>>() {
         });
-        pipelineService.run(map);
+
+        pipelineService.run(Collections.singletonList(new LogEntry(source)));
     }
 
     @RequestMapping(path = "/multiple", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void insertMultipleLogs(@RequestBody String json) throws IOException {
-        List<Map<String, Object>> logCollection = OBJECT_MAPPER.readValue(json, new TypeReference<List<HashMap<String, Object>>>() {
+        List<Map<String, Object>> source = OBJECT_MAPPER.readValue(json, new TypeReference<List<HashMap<String, Object>>>() {
         });
 
-        pipelineService.run(logCollection.stream().map(LogEntry::new).collect(Collectors.toList()));
+        pipelineService.run(source.stream().map(LogEntry::new).collect(Collectors.toList()));
     }
 }

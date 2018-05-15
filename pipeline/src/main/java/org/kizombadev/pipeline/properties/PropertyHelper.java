@@ -12,7 +12,7 @@ public class PropertyHelper {
     }
 
     public static void validateNotEmpty(String propertyName, Object propertyValue) {
-        String message = String.format("the property %s has no value", propertyName);
+        String message = String.format("The property %s has no value", propertyName);
         if (propertyValue == null) {
             throw new IllegalStateException(message);
         }

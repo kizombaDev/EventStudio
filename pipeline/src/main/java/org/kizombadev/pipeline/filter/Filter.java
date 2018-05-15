@@ -2,24 +2,24 @@ package org.kizombadev.pipeline.filter;
 
 import java.util.Map;
 
-public interface Filter extends Cloneable {
-    void handle(Map<String, Object> json);
+public abstract class Filter {
+    abstract void handle(Map<String, Object> source);
 
-    void init(Map<String, String> configuration);
+    abstract void init(Map<String, String> configuration);
 
-    Filter instanceCopy();
+    abstract Filter instanceCopy();
 
-    default String getConfigurationOrThrow(String property, Map<String, String> configuration){
-        if(!configuration.containsKey(property)) {
-            throw new IllegalArgumentException(String.format("The configuration property '%s' is missing", property));
+    String getConfigurationOrThrow(String property, Map<String, String> configuration) {
+        if (!configuration.containsKey(property)) {
+            throw new IllegalStateException(String.format("The configuration property '%s' is missing", property));
         }
 
         return configuration.get(property);
     }
 
-    default Object getPropertyOrThrow(String property, Map<String, Object> entry){
-        if(!entry.containsKey(property)) {
-            throw new IllegalArgumentException(String.format("The property '%s' is missing in the entry", property));
+    Object getPropertyOrThrow(String property, Map<String, Object> entry) {
+        if (!entry.containsKey(property)) {
+            throw new IllegalStateException(String.format("The property '%s' is missing in the entry", property));
         }
 
         return entry.get(property);

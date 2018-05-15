@@ -5,11 +5,9 @@ import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.rest.RestStatus;
 import org.kizombadev.pipeline.LogEntry;
 import org.kizombadev.pipeline.properties.ElasticsearchProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +33,6 @@ public class ElasticsearchOutput implements Output {
     @PostConstruct
     public void init() {
         prepareIndex();
-    }
-
-    @Override
-    public void write(LogEntry data) {
-        prepareMapping(data);
-        String indexName = elasticsearchProperties.getIndexName();
-        IndexResponse indexResponse = transportClient.prepareIndex(indexName, DEFAULT_DOC_TYPE).setSource(data.getSource()).get();
-        if (indexResponse.status() != RestStatus.CREATED) {
-            throw new RuntimeException("Invalid response status: " + indexResponse.status());
-        }
     }
 
     @Override

@@ -11,6 +11,6 @@ public final class EntryKeys {
     public static final String TYPE = "type";
     public static final String ID = "id";
 
-    private  EntryKeys() {
+    private EntryKeys() {
     }
 }

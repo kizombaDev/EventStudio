@@ -67,4 +67,17 @@ public class LogEntryTest {
 
         new LogEntry(source);
     }
+
+    @Test
+    public void testWithIdAsInteger() {
+        Map<String, Object> source = new HashMap<String, Object>() {{
+            put(EntryKeys.TYPE, "ping");
+            put(EntryKeys.ID, 5);
+        }};
+
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("The log entry contains no correct property 'id' with a String.");
+
+        new LogEntry(source);
+    }
 }

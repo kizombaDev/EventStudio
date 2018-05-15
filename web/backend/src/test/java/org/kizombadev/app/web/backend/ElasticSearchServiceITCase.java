@@ -1,7 +1,6 @@
 package org.kizombadev.app.web.backend;
 
 import org.elasticsearch.client.transport.TransportClient;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -10,11 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,7 +22,7 @@ public class ElasticSearchServiceITCase {
     private ElasticSearchService elasticSearchService;
 
     @Before
-    public void init(){
+    public void init() {
         transportClient.admin().indices().prepareCreate("test").get();
     }
 
