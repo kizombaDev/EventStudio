@@ -1,20 +1,18 @@
 package org.kizombadev.pipeline.filter;
 
+import com.google.code.regexp.Matcher;
+import com.google.code.regexp.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.OptionalInt;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component("RegexFilter")
 public class RegexFilter implements Filter {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private Pattern pattern = null;
-    private Map<Integer, String> groupDefinitions = new HashMap<>();
 
     @Override
     public void handle(Map<String, Object> json) {
@@ -24,35 +22,23 @@ public class RegexFilter implements Filter {
             return;
         }
 
-        OptionalInt max = groupDefinitions.keySet().stream().mapToInt(Integer::intValue).max();
+        List<Map<String, String>> maps = matcher.namedGroups();
 
-        if (!max.isPresent()) {
+        if (maps.isEmpty()) {
             return;
         }
 
-        if (max.getAsInt() > matcher.groupCount()) {
-            throw new IllegalStateException(String.format("the group count '%s' does not exit in the regex result", max.getAsInt()));
-        }
+        Map<String, String> properties = maps.get(0);
 
-        for (Map.Entry<Integer, String> pair : groupDefinitions.entrySet()) {
-            json.put(pair.getValue(), matcher.group(pair.getKey()));
-
+        for (Map.Entry<String, String> pair : properties.entrySet()) {
+            json.put(pair.getKey(), pair.getValue());
         }
     }
 
     @Override
     public void init(Map<String, String> configuration) {
         pattern = Pattern.compile(configuration.get("regex"));
-        initGroupDefinitions(configuration);
 
-    }
-
-    private void initGroupDefinitions(Map<String, String> configuration) {
-        for (int index = 0; index < 1000; index++) {
-            if (configuration.containsKey("group-" + index)) {
-                groupDefinitions.put(index, configuration.get("group-" + index));
-            }
-        }
     }
 
     @Override

@@ -52,6 +52,7 @@ public class ElasticsearchOutput implements Output {
         final String INTEGER_TYPE = "integer";
         final String TEXT_TYPE = "text";
 
+        //TODO extract to config file
         Map<String, String> types = new HashMap<>();
         types.put("id", KEYWORD_TYPE);
         types.put("type", KEYWORD_TYPE);
@@ -63,6 +64,16 @@ public class ElasticsearchOutput implements Output {
         types.put("ttl", INTEGER_TYPE);
         types.put("ip", IP_TYPE);
         types.put("bytes", INTEGER_TYPE);
+
+        types.put("length", INTEGER_TYPE);
+        types.put("request_method", KEYWORD_TYPE);
+        types.put("path", KEYWORD_TYPE);
+        types.put("request_version", KEYWORD_TYPE);
+        types.put("response_status", INTEGER_TYPE);
+        types.put("host", KEYWORD_TYPE);
+        types.put("referrer", KEYWORD_TYPE);
+        types.put("user_agent", KEYWORD_TYPE);
+        types.put("remote_log_name", KEYWORD_TYPE);
 
         for (Map.Entry<String, Object> pair : data.getSource().entrySet()) {
 

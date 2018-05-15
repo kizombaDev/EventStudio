@@ -17,7 +17,6 @@
 
     <modules>
         <module>ping-client</module>
-        <module>access-log-client</module>
     </modules>
 
 </project>

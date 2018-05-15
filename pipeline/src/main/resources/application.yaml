@@ -10,15 +10,7 @@ pipeline:
       type: ping
       configuration:
         - key: regex
-          value: 'Antwort von ([.\d]*): Bytes=(\d*) Zeit[=<](\d*)ms TTL=(\d*)'
-        - key: group-1
-          value: ip
-        - key: group-2
-          value: bytes
-        - key: group-3
-          value: time
-        - key: group-4
-          value: ttl
+          value: 'Antwort von (?<ip>[.\d]*): Bytes=(?<bytes>\d*) Zeit[=<](?<time>\d*)ms TTL=(?<ttl>\d*)'
     - name: ExtensionFilter
       type: ping
       configuration:
@@ -37,5 +29,19 @@ pipeline:
           value: status
         - key: value
           value: ok
+    - name: RegexFilter
+      type: access_log
+      configuration:
+        - key: regex
+          value: '(?<ip>.*?) (?<remote_log_name>.*?) \[(?<timestamp>.*?)\] \"(?<request_method>.*?) (?<path>.*?) (?<request_version>HTTP\/.*)?\" (?<response_status>.*?) (?<length>.*?) (?<host>.*?) \"(?<referrer>.*?)\" \"(?<user_agent>.*?)\"'
+    - name: TimestampConverterFilter
+      type: access_log
+      configuration:
+        - key: pattern
+          value: 'dd/MMM/yyyy:kk:mm:ss Z'
+        - key: lang
+          value: en
+    - name: AccessLogCleanerFilter
+      type: access_log
 server:
   port: 8081
