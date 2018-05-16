@@ -32,9 +32,9 @@ export default {
         secondaryLabel: 'Secondary Filter'
       },
       filters: [
-        {field: 'type', value: 'ping', type: 'primary', operator: 'equals'},
-        {field: 'id', value: 'ping_localhost', type: 'primary', operator: 'equals'},
-        {field: 'status', value: 'failed', type: 'secondary', operator: 'equals'}
+        {field: 'type', value: 'access_log', type: 'primary', operator: 'equals'},
+        {field: 'id', value: 'access_log_fc_schnaittach', type: 'primary', operator: 'equals'},
+        {field: 'length', value: '250', type: 'secondary', operator: 'lt'}
       ],
       showResults: true
     }

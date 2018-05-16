@@ -56,7 +56,7 @@ export default {
         this.filters = []
       } else {
         this.filters = [
-          { 'field': 'type', 'value': type, 'type': 'primary' }
+          { field: 'type', value: type, type: 'primary', operator: 'equals' }
         ]
       }
       this.loadData()
