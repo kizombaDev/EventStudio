@@ -32,9 +32,9 @@ export default {
         secondaryLabel: 'Secondary Filter'
       },
       filters: [
-        { 'field': 'type', 'value': 'ping', 'type': 'primary' },
-        { 'field': 'id', 'value': 'ping_localhost', 'type': 'primary' },
-        { 'field': 'status', 'value': 'failed', 'type': 'secondary' }
+        {field: 'type', value: 'ping', type: 'primary', operator: 'equals'},
+        {field: 'id', value: 'ping_localhost', type: 'primary', operator: 'equals'},
+        {field: 'status', value: 'failed', type: 'secondary', operator: 'equals'}
       ],
       showResults: true
     }

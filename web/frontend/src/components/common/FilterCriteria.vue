@@ -29,9 +29,9 @@ export default {
   computed: {
     fields () {
       if (this.chooseTypes) {
-        return [ 'field', 'value', 'type', 'action' ]
+        return [ 'field', 'operator', 'value', 'type', 'action' ]
       } else {
-        return [ 'field', 'value', 'action' ]
+        return [ 'field', 'operator', 'value', 'action' ]
       }
     }
   },

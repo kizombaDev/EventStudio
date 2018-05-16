@@ -11,6 +11,15 @@
                         required>
           </b-form-select>
         </b-form-group>
+        <b-form-group id="field"
+                      label="Field name:"
+                      label-for="fieldInput">
+          <b-form-select id="fieldInput"
+                         :options="operators"
+                         v-model="form.operator"
+                         required>
+          </b-form-select>
+        </b-form-group>
         <b-form-group id="value"
                       label="Expected value:"
                       label-for="valueInput">
@@ -44,10 +53,18 @@ export default {
       form: {
         field: '',
         value: '',
-        type: 'primary'
+        type: 'primary',
+        operator: 'equals'
       },
       fieldData: [],
-      fieldOptions: []
+      fieldOptions: [],
+      operators: [
+        {value: 'equals', text: 'equals'},
+        {value: 'gte', text: 'greater than or equal to'},
+        {value: 'gt', text: 'greater than'},
+        {value: 'lte', text: 'less than or equal to'},
+        {value: 'lt', text: 'less than'}
+      ]
     }
   },
   props: {
