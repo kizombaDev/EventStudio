@@ -38,6 +38,8 @@ public class RestApiService {
         FilterCriteriaDto filterCriteriaDto = new FilterCriteriaDto();
         filterCriteriaDto.setField("id");
         filterCriteriaDto.setValue(id);
+        filterCriteriaDto.setOperator("equals");
+        filterCriteriaDto.setType("primary");
         List<FilterCriteriaDto> filters = Collections.singletonList(filterCriteriaDto);
         List<Map<String, Object>> items = elasticSearchService.getElementsByFilter(filters, from, size);
         return new ResponseEntity<>(items, HttpStatus.OK);
