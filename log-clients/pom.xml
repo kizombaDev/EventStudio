@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.kizombadev.app</groupId>
-    <artifactId>clients</artifactId>
+    <artifactId>log-clients</artifactId>
     <version>0.1.0</version>
     <packaging>pom</packaging>
 
 
     <parent>
         <groupId>org.kizombadev.app</groupId>
-        <artifactId>app</artifactId>
+        <artifactId>log-application</artifactId>
         <version>0.1.0</version>
     </parent>
 

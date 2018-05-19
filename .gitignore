@@ -1,5 +1,4 @@
 # Directories #
-build/
 bin/
 target/
 libs/
@@ -92,17 +91,17 @@ derby.log
 
 .factorypath
 
-web/backend/src/main/resources/public/
-web/backend/target
-web/frontend/dist/
-web/frontend/node/
-web/frontend/node_modules/
-web/frontend/npm-debug.log
-web/frontend/target
-web/frontend/test-output
-web/frontend/test/e2e/reports
-web/frontend/test/unit/coverage
-web/frontend/yarn-error.log
-web/frontend/yarn.lock
-web/security/target/
-web/selenium-debug.log
+log-visualisation/backend/src/main/resources/public/
+log-visualisation/backend/target
+log-visualisation/webapplication/dist/
+log-visualisation/webapplication/node/
+log-visualisation/webapplication/node_modules/
+log-visualisation/webapplication/npm-debug.log
+log-visualisation/webapplication/target
+log-visualisation/webapplication/test-output
+log-visualisation/webapplication/test/e2e/reports
+log-visualisation/webapplication/test/unit/coverage
+log-visualisation/webapplication/yarn-error.log
+log-visualisation/webapplication/yarn.lock
+log-visualisation/security/target/
+log-visualisation/selenium-debug.log

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.kizombadev.app</groupId>
-    <artifactId>app</artifactId>
+    <artifactId>log-application</artifactId>
     <version>0.1.0</version>
     <packaging>pom</packaging>
 
@@ -22,9 +22,9 @@
     </properties>
 
     <modules>
-        <module>clients</module>
-        <module>pipeline</module>
-        <module>web</module>
+        <module>log-clients</module>
+        <module>log-pipeline</module>
+        <module>log-visualisation</module>
     </modules>
 
     <dependencyManagement>
