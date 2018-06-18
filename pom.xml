@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.kizombadev.app</groupId>
-    <artifactId>log-application</artifactId>
+    <groupId>org.kizombadev.eventstudio</groupId>
+    <artifactId>application-pom</artifactId>
     <version>0.1.0</version>
     <packaging>pom</packaging>
 
@@ -22,9 +22,9 @@
     </properties>
 
     <modules>
-        <module>log-clients</module>
-        <module>log-pipeline</module>
-        <module>log-visualisation</module>
+        <module>event-clients</module>
+        <module>event-pipeline</module>
+        <module>event-apps</module>
     </modules>
 
     <dependencyManagement>
