@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <vue-headful
-      title="Log-Application"
-      description="Description from the Log-Application"
+      title="EventStudio"
+      description="Description from the EventStudio"
     />
     <Navigation/>
     <div class="mb-4"/>
