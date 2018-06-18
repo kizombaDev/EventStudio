@@ -51,7 +51,7 @@ public class EventEntryTest {
         }};
 
         thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("The log entry contains no correct property 'id' which is mandatory.");
+        thrown.expectMessage("The event entry contains no correct property 'id' which is mandatory.");
 
         new EventEntry(source);
     }
@@ -63,7 +63,7 @@ public class EventEntryTest {
         }};
 
         thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("The log entry contains no correct property 'type' which is mandatory.");
+        thrown.expectMessage("The event entry contains no correct property 'type' which is mandatory.");
 
         new EventEntry(source);
     }
@@ -76,7 +76,7 @@ public class EventEntryTest {
         }};
 
         thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("The log entry contains no correct property 'id' with a String.");
+        thrown.expectMessage("The event entry contains no correct property 'id' with a String.");
 
         new EventEntry(source);
     }
