@@ -17,14 +17,13 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Configuration
-//@ConfigurationProperties("pipeline")
 public class ElasticsearchConfiguration implements FactoryBean<TransportClient>, InitializingBean, DisposableBean {
 
-    private final ElasticsearchProperties elasticsearchProperties;
+    private ElasticsearchProperties elasticsearchProperties;
     private TransportClient transportClient;
 
     @Autowired
-    public ElasticsearchConfiguration(ElasticsearchProperties elasticsearchProperties) {
+    public void setElasticsearchProperties(ElasticsearchProperties elasticsearchProperties) {
         this.elasticsearchProperties = elasticsearchProperties;
     }
 
