@@ -1,7 +1,7 @@
 package org.kizombadev.eventstudio.eventpipeline.controller;
 
+import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.output.Output;
-import org.kizombadev.eventstudio.eventpipeline.LogEntry;
 import org.kizombadev.eventstudio.eventpipeline.filter.FilterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,9 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public void run(List<LogEntry> logEntries) {
-        for (LogEntry logEntry : logEntries) {
-            filterService.handle(logEntry);
+    public void run(List<EventEntry> logEntries) {
+        for (EventEntry eventEntry : logEntries) {
+            filterService.handle(eventEntry);
         }
 
         for (Output output : outputs) {

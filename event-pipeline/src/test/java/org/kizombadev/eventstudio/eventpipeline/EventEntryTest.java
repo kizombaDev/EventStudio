@@ -10,18 +10,18 @@ import java.util.Map;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 
-public class LogEntryTest {
+public class EventEntryTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private LogEntry createDefaultTestLogEntry() {
+    private EventEntry createDefaultTestLogEntry() {
         Map<String, Object> source = new HashMap<String, Object>() {{
             put(EntryKeys.ID, "ping_google");
             put(EntryKeys.TYPE, "ping");
             put(EntryKeys.BYTES, "32");
         }};
-        return new LogEntry(source);
+        return new EventEntry(source);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class LogEntryTest {
 
     @Test
     public void testToString() {
-        assertThat(createDefaultTestLogEntry().toString()).isEqualTo("LogEntry{id=ping_google, type=ping}");
+        assertThat(createDefaultTestLogEntry().toString()).isEqualTo("EventEntry{id=ping_google, type=ping}");
     }
 
     @Test
@@ -53,7 +53,7 @@ public class LogEntryTest {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("The log entry contains no correct property 'id' which is mandatory.");
 
-        new LogEntry(source);
+        new EventEntry(source);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class LogEntryTest {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("The log entry contains no correct property 'type' which is mandatory.");
 
-        new LogEntry(source);
+        new EventEntry(source);
     }
 
     @Test
@@ -78,6 +78,6 @@ public class LogEntryTest {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("The log entry contains no correct property 'id' with a String.");
 
-        new LogEntry(source);
+        new EventEntry(source);
     }
 }

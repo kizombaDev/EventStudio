@@ -8,7 +8,7 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.kizombadev.eventstudio.eventpipeline.LogEntry;
+import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.properties.ElasticsearchProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,13 +36,13 @@ public class ElasticsearchOutput implements Output {
     }
 
     @Override
-    public void write(List<LogEntry> logEntries) {
+    public void write(List<EventEntry> logEntries) {
         logEntries.forEach(this::prepareMapping);
         String indexName = elasticsearchProperties.getIndexName();
 
         BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
-        for (LogEntry data : logEntries) {
+        for (EventEntry data : logEntries) {
             bulkRequest.add(transportClient.prepareIndex(indexName, DEFAULT_DOC_TYPE).setSource(data.getSource()));
         }
 
@@ -52,7 +52,7 @@ public class ElasticsearchOutput implements Output {
         }
     }
 
-    private void prepareMapping(LogEntry data) {
+    private void prepareMapping(EventEntry data) {
         final String KEYWORD_TYPE = "keyword";
         final String DATE_TYPE = "date";
         final String IP_TYPE = "ip";

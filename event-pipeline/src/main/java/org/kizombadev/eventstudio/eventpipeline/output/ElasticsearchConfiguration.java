@@ -11,12 +11,13 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Configuration
-@ConfigurationProperties("pipeline")
+//@ConfigurationProperties("pipeline")
 public class ElasticsearchConfiguration implements FactoryBean<TransportClient>, InitializingBean, DisposableBean {
 
     private final ElasticsearchProperties elasticsearchProperties;

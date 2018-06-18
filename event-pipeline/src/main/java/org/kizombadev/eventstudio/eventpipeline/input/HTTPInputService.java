@@ -2,7 +2,7 @@ package org.kizombadev.eventstudio.eventpipeline.input;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.kizombadev.eventstudio.eventpipeline.LogEntry;
+import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.controller.PipelineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,7 +35,7 @@ public class HTTPInputService {
         Map<String, Object> source = OBJECT_MAPPER.readValue(json, new TypeReference<HashMap<String, Object>>() {
         });
 
-        pipelineService.run(Collections.singletonList(new LogEntry(source)));
+        pipelineService.run(Collections.singletonList(new EventEntry(source)));
     }
 
     @RequestMapping(path = "/multiple", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -43,6 +43,6 @@ public class HTTPInputService {
         List<Map<String, Object>> source = OBJECT_MAPPER.readValue(json, new TypeReference<List<HashMap<String, Object>>>() {
         });
 
-        pipelineService.run(source.stream().map(LogEntry::new).collect(Collectors.toList()));
+        pipelineService.run(source.stream().map(EventEntry::new).collect(Collectors.toList()));
     }
 }

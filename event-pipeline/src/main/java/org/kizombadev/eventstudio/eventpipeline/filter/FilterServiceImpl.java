@@ -1,6 +1,6 @@
 package org.kizombadev.eventstudio.eventpipeline.filter;
 
-import org.kizombadev.eventstudio.eventpipeline.LogEntry;
+import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.properties.FilterProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -27,10 +27,10 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
-    public void handle(LogEntry logEntry) {
+    public void handle(EventEntry eventEntry) {
         for (FilterInstance filter : filters) {
-            if (filter.getType().equals(logEntry.getType())) {
-                filter.getFilter().handle(logEntry.getSource());
+            if (filter.getType().equals(eventEntry.getType())) {
+                filter.getFilter().handle(eventEntry.getSource());
             }
         }
     }

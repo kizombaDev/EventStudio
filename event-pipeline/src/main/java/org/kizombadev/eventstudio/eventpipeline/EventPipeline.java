@@ -1,13 +1,12 @@
-package org.kizombadev.eventstudio.apps.restapiapp;
+package org.kizombadev.eventstudio.eventpipeline;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BackendApplication {
+public class EventPipeline {
 
     public static void main(String[] args) {
-        SpringApplication.run(BackendApplication.class, args);
+        SpringApplication.run(EventPipeline.class, args);
     }
-
 }

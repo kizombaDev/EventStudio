@@ -2,10 +2,10 @@ package org.kizombadev.eventstudio.eventpipeline.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.filter.FilterService;
 import org.kizombadev.eventstudio.eventpipeline.output.Output;
 import org.kizombadev.eventstudio.eventpipeline.EntryKeys;
-import org.kizombadev.eventstudio.eventpipeline.LogEntry;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -31,13 +31,13 @@ public class PipelineServiceImplTest {
             put(EntryKeys.ID, "ping_google");
             put(EntryKeys.TYPE, "ping");
         }};
-        LogEntry logEntry = new LogEntry(source);
+        EventEntry eventEntry = new EventEntry(source);
 
         //Act
-        pipelineService.run(Arrays.asList(logEntry));
+        pipelineService.run(Arrays.asList(eventEntry));
 
         //Assert
         Mockito.verify(output, Mockito.times(1)).write(Mockito.any());
-        Mockito.verify(filterService, Mockito.times(1)).handle(logEntry);
+        Mockito.verify(filterService, Mockito.times(1)).handle(eventEntry);
     }
 }

@@ -6,9 +6,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class PingClientApplication {
+public class PingClient {
 
     public static void main(String[] args) {
-        SpringApplication.run(PingClientApplication.class, args);
+        SpringApplication.run(PingClient.class, args);
     }
 }

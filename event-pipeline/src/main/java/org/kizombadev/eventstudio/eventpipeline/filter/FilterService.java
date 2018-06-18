@@ -1,7 +1,7 @@
 package org.kizombadev.eventstudio.eventpipeline.filter;
 
-import org.kizombadev.eventstudio.eventpipeline.LogEntry;
+import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 
 public interface FilterService {
-    void handle(LogEntry logEntry);
+    void handle(EventEntry eventEntry);
 }

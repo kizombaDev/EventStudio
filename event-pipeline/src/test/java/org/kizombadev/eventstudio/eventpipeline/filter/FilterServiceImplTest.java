@@ -3,9 +3,9 @@ package org.kizombadev.eventstudio.eventpipeline.filter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.properties.FilterProperties;
 import org.kizombadev.eventstudio.eventpipeline.EntryKeys;
-import org.kizombadev.eventstudio.eventpipeline.LogEntry;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -51,7 +51,7 @@ public class FilterServiceImplTest {
         }};
 
         FilterService filterService = new FilterServiceImpl(applicationContext, filterProperties);
-        filterService.handle(new LogEntry(source));
+        filterService.handle(new EventEntry(source));
 
         Mockito.verify(filter, Mockito.times(1)).init(Mockito.any());
         Mockito.verify(filter, Mockito.times(1)).handle(source);
@@ -65,7 +65,7 @@ public class FilterServiceImplTest {
         }};
 
         FilterService filterService = new FilterServiceImpl(applicationContext, filterProperties);
-        filterService.handle(new LogEntry(source));
+        filterService.handle(new EventEntry(source));
 
         Mockito.verify(filter, Mockito.times(1)).init(Mockito.any());
         Mockito.verify(filter, Mockito.never()).handle(Mockito.any());
