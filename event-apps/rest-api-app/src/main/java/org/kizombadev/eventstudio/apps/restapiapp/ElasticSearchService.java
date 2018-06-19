@@ -26,16 +26,16 @@ import java.util.*;
 public class ElasticSearchService {
 
     private final TransportClient transportClient;
-    private final BackendProperties backendProperties;
+    private final RestApiAppProperties restApiAppProperties;
 
     @Autowired
-    public ElasticSearchService(TransportClient transportClient, BackendProperties backendProperties) {
+    public ElasticSearchService(TransportClient transportClient, RestApiAppProperties restApiAppProperties) {
         this.transportClient = transportClient;
-        this.backendProperties = backendProperties;
+        this.restApiAppProperties = restApiAppProperties;
     }
 
     public List<Map<String, Object>> getElementsByFilter(List<FilterCriteriaDto> filters, Integer from, Integer size) {
-        SearchResponse searchResponse = transportClient.prepareSearch(backendProperties.getIndexName())
+        SearchResponse searchResponse = transportClient.prepareSearch(restApiAppProperties.getIndexName())
                 .setSize(size)
                 .setFrom(from)
                 .setQuery(createMustFilter(filters, "primary"))
@@ -51,9 +51,9 @@ public class ElasticSearchService {
     }
 
     public List<Map<String, String>> getFieldStructure() {
-        GetMappingsResponse getMappingsResponse = transportClient.admin().indices().prepareGetMappings(backendProperties.getIndexName()).get();
+        GetMappingsResponse getMappingsResponse = transportClient.admin().indices().prepareGetMappings(restApiAppProperties.getIndexName()).get();
         ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> mappings = getMappingsResponse.getMappings();
-        ImmutableOpenMap<String, MappingMetaData> ping = mappings.get(backendProperties.getIndexName());
+        ImmutableOpenMap<String, MappingMetaData> ping = mappings.get(restApiAppProperties.getIndexName());
         MappingMetaData ping1 = ping.get("ping");
         Map<String, Object> sourceAsMap = ping1.getSourceAsMap();
         Map<String, Map<String, Object>> properties = (Map<String, Map<String, Object>>) sourceAsMap.get("properties");
@@ -87,7 +87,7 @@ public class ElasticSearchService {
                                 AggregationBuilders.filters(secondary_filter,
                                         createMustFilter(filters, "secondary"))));
 
-        SearchResponse searchResponse = transportClient.prepareSearch(backendProperties.getIndexName())
+        SearchResponse searchResponse = transportClient.prepareSearch(restApiAppProperties.getIndexName())
                 .addAggregation(filterAggregationBuilder)
                 .setSize(0)
                 .get();

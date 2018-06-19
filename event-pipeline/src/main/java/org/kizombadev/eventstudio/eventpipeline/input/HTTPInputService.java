@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/log")
+@RequestMapping("/api/v1/event")
 public class HTTPInputService {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

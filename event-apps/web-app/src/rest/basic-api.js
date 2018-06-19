@@ -2,21 +2,21 @@ import {HTTP} from './http-common'
 
 export default {
   getAllTypes () {
-    return HTTP.get('/v1/logs/structure')
+    return HTTP.get('/v1/events/structure')
   },
   getPingIds () {
-    return HTTP.get('/v1/logs?type=ping&group-by=id')
+    return HTTP.get('/v1/events?type=ping&group-by=id')
   },
   getLastPingById (id) {
-    return HTTP.get('/v1/logs/' + id + '/?size=1&from=0')
+    return HTTP.get('/v1/events/' + id + '/?size=1&from=0')
   },
   getDateHistogram (filters) {
-    return HTTP.post('/v1/logs/date-histogram', filters)
+    return HTTP.post('/v1/events/date-histogram', filters)
   },
   getLogsByFilter (filters, size, from) {
-    return HTTP.post('/v1/logs?from=' + from + '&size=' + size, filters)
+    return HTTP.post('/v1/events?from=' + from + '&size=' + size, filters)
   },
   getAllFieldNames () {
-    return HTTP.get('v1/logs/structure/fields')
+    return HTTP.get('v1/events/structure/fields')
   }
 }

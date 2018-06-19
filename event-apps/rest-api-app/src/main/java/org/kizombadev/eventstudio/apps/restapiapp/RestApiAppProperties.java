@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties("backend")
-public class BackendProperties {
+public class RestApiAppProperties {
     private String indexName;
 
     public String getIndexName() {

@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/api/v1/logs")
+@RequestMapping("/api/v1/events")
 public class RestApiService {
 
     private final TransportClient transportClient;

@@ -38,7 +38,7 @@ public class RestApiServiceTest {
         Mockito.when(elasticSearchService.getElementsByFilter(Mockito.any(), Mockito.eq(0), Mockito.eq(1))).thenReturn(json);
 
         //Act
-        ResponseEntity<String> response = testRestTemplate.getForEntity("/api/v1/logs/ping_google?size=1&from=0", String.class);
+        ResponseEntity<String> response = testRestTemplate.getForEntity("/api/v1/events/ping_google?size=1&from=0", String.class);
 
         //Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
