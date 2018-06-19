@@ -33,7 +33,7 @@ public class ElasticSearchServiceITCase {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void test() {
         List<Map<String, Object>> result = elasticSearchService.getElementsByFilter(new ArrayList<>(), 0, 1);
         assertThat(result).hasSize(1);

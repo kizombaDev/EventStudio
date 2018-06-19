@@ -27,7 +27,7 @@ public class HttpOutput implements ClientOutput {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
             HttpEntity<String> request = new HttpEntity<>(jsonResp, headers);
-            restTemplate.exchange("http://localhost:8081/api/v1/log/single", HttpMethod.POST, request, Object.class);
+            restTemplate.exchange("http://localhost:8081/api/v1/event/single", HttpMethod.POST, request, Object.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
