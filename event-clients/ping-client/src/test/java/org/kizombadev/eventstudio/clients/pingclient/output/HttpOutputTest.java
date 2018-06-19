@@ -28,7 +28,7 @@ public class HttpOutputTest {
     @Test
     public void test() {
         //Arrange
-        server.expect(once(), requestTo("http://localhost:8081/api/v1/log/single")).andRespond(withSuccess("", MediaType.APPLICATION_JSON));
+        server.expect(once(), requestTo("http://localhost:8081/api/v1/event/single")).andRespond(withSuccess("", MediaType.APPLICATION_JSON));
         Map<String, Object> map = ImmutableMap.of("id", "google", "type", "ping");
 
         //Act
