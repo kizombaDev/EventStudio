@@ -199,8 +199,57 @@ public class RestApiAppITCase {
         //Assert
         response.then().log().ifValidationFails().assertThat().statusCode(HttpStatus.OK.value());
         response.then()
-                .body("key", hasItems("01-01-2013", "02-01-2013"))
-                .body("primary_count", hasItems(1, 2))
-                .body("secondary_count", hasItems(0, 2));
+                .body("key[0]", is("01-01-2013"))
+                .body("primary_count[0]", is(1))
+                .body("secondary_count[0]", is(0))
+                .body("key[1]", is( "02-01-2013"))
+                .body("primary_count[1]", is(2))
+                .body("secondary_count[1]", is( 2));
+    }
+
+    @Test
+    public void testGetFieldValuesByType() {
+        //Act
+        Response response = given().port(8082)
+                .when()
+                .queryParam("type", "ping")
+                .queryParam("group-by", "id")
+                .get("/api/v1/events");
+
+        //Assert
+        response.then().log().ifValidationFails().assertThat().statusCode(HttpStatus.OK.value());
+        response.then()
+                .body("key", hasItems("ping_fau", "ping_google"))
+                .body("count", hasItems(3, 1));
+    }
+
+    @Test
+    public void testGetFields() {
+        //Act
+        Response response = given().port(8082)
+                .when()
+                .get("/api/v1/events/structure/fields");
+
+        //Assert
+        response.then().log().ifValidationFails().assertThat().statusCode(HttpStatus.OK.value());
+        response.then()
+                .body("field[0]", is("bytes"))
+                .body("type[0]", is("integer"))
+                .body("field[1]", is("id"))
+                .body("type[1]", is("keyword"))
+                .body("field[2]", is("ip"))
+                .body("type[2]", is("ip"))
+                .body("field[3]", is("origin"))
+                .body("type[3]", is("text"))
+                .body("field[4]", is("status"))
+                .body("type[4]", is("keyword"))
+                .body("field[5]", is("time"))
+                .body("type[5]", is("integer"))
+                .body("field[6]", is("timestamp"))
+                .body("type[6]", is("date"))
+                .body("field[7]", is("ttl"))
+                .body("type[7]", is("integer"))
+                .body("field[8]", is("type"))
+                .body("type[8]", is("keyword"));
     }
 }
