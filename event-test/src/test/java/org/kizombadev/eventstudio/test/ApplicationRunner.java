@@ -35,9 +35,9 @@ public class ApplicationRunner implements Cloneable{
         }
     }
 
-    static void waitForResult() {
+    public void waitForResult() {
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

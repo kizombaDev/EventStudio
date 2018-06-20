@@ -37,16 +37,19 @@ public class EventPipelineITCase {
     @Test
     public void testSingleInsert() {
 
+        //Arrange
         JsonObject ping = new JsonObject();
         ping.addProperty("id", "ping_fau");
         ping.addProperty("type", "ping");
         ping.addProperty("timestamp", "2013-03-06T01:55:42+00:00");
         ping.addProperty("origin", "Antwort von 172.217.18.3: Bytes=32 Zeit=26ms TTL=57");
 
+        //Act
         given().port(8081).contentType(ContentType.APPLICATION_JSON.toString()).body(ping.toString())
                 .when().post("/api/v1/event/single")
                 .then().assertThat().statusCode(HttpStatus.OK.value());
 
+        //Assert
         applicationRunner.waitForResult();
 
 
@@ -65,6 +68,7 @@ public class EventPipelineITCase {
     @Test
     public void testMultipleInsert() {
 
+        //Arrange
         JsonObject ping = new JsonObject();
         ping.addProperty("id", "ping_fau");
         ping.addProperty("type", "ping");
@@ -81,10 +85,12 @@ public class EventPipelineITCase {
         pings.add(ping);
         pings.add(ping2);
 
+        //Act
         given().port(8081).contentType(ContentType.APPLICATION_JSON.toString()).body(pings.toString())
                 .when().post("/api/v1/event/multiple")
                 .then().assertThat().statusCode(HttpStatus.OK.value());
 
+        //Assert
         applicationRunner.waitForResult();
 
         Response response = given().port(8082)
