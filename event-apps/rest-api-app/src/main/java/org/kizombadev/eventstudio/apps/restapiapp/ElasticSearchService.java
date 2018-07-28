@@ -14,6 +14,7 @@ import org.elasticsearch.search.aggregations.bucket.filter.Filters;
 import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
 import org.kizombadev.eventstudio.apps.restapiapp.model.FilterCriteriaDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +106,36 @@ public class ElasticSearchService {
             Filters f = item.getAggregations().get(secondary_filter);
             Filters.Bucket bucket1 = f.getBuckets().get(0);
             map.put("secondary_count", bucket1.getDocCount());
+            result.add(map);
+        }
+
+        return result;
+    }
+
+    public List<Map<String, Object>> getTermDiagram(@NotNull List<FilterCriteriaDto> filters, @NotNull String termName, @NotNull Integer count) {
+        final String primary_filter = "primary_filter";
+        final String terms_grouping = "terms";
+
+        FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
+                .filters(primary_filter,
+                        createMustFilter(filters, "primary"))
+                .subAggregation(AggregationBuilders.terms(terms_grouping).field(termName).size(count));
+
+        SearchResponse searchResponse = transportClient.prepareSearch(restApiAppProperties.getIndexName())
+                .addAggregation(filterAggregationBuilder)
+                .setSize(0)
+                .get();
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        Filters responseFilter = searchResponse.getAggregations().get(primary_filter);
+        Filters.Bucket bucket = responseFilter.getBuckets().get(0);
+        Terms aggregation = bucket.getAggregations().get(terms_grouping);
+        for (Terms.Bucket item : aggregation.getBuckets()) {
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("key", item.getKeyAsString());
+            map.put("count", item.getDocCount());
             result.add(map);
         }
 

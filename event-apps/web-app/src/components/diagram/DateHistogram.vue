@@ -11,7 +11,7 @@
 
 <script>
 import LineDiagram from './LineDiagram'
-import BarExample from './BarExample'
+import BarExample from './BarDiagram'
 import FilterCriteria from '../common/FilterCriteria'
 import basicApi from '../../rest/basic-api'
 
@@ -33,7 +33,7 @@ export default {
       },
       filters: [
         {field: 'type', value: 'access_log', type: 'primary', operator: 'equals'},
-        {field: 'id', value: 'access_log_fc_schnaittach', type: 'primary', operator: 'equals'},
+        {field: 'id', value: 'fcs_webaccess', type: 'primary', operator: 'equals'},
         {field: 'length', value: '250', type: 'secondary', operator: 'lt'}
       ],
       showResults: true

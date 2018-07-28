@@ -11,6 +11,7 @@
         <b-nav-item :to="{ name: 'home' }">Home</b-nav-item>
         <b-nav-item :to="{ name: 'pingDashboard' }">Ping Dashboard</b-nav-item>
         <b-nav-item :to="{ name: 'dateHistogram' }">Date Histogram</b-nav-item>
+        <b-nav-item :to="{ name: 'termDiagram' }">Term Diagram</b-nav-item>
         <b-nav-item-dropdown text="Browse Events" right >
           <b-dropdown-item :to="{ name: 'browse', params: { type: 'all' }}" >All</b-dropdown-item>
           <b-dropdown-divider></b-dropdown-divider>

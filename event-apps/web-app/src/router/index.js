@@ -4,6 +4,7 @@ import PingDashboard from '@/components/ping/PingDashboard'
 import PingDetail from '@/components/ping/PingDetail'
 import Home from '@/components/Home'
 import DateHistogram from '@/components/diagram/DateHistogram'
+import TermDiagram from '@/components/diagram/TermDiagram'
 import Browse from '@/components/browse/Browse'
 
 Vue.use(Router)
@@ -34,6 +35,11 @@ export default new Router({
       path: '/date-histogram',
       name: 'dateHistogram',
       component: DateHistogram
+    },
+    {
+      path: '/term-diagram',
+      name: 'termDiagram',
+      component: TermDiagram
     }
   ]
 })

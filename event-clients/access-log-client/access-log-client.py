@@ -13,7 +13,7 @@ headers = {'content-type': 'application/json'}
 log_files = os.listdir(args.folder)
 
 for log_file in log_files:
-    with open(args.folder + log_file) as f:
+    with open(args.folder + '/' + log_file) as f:
         lines = f.readlines()
 
     lines = [x.strip() for x in lines]

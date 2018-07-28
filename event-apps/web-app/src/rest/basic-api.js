@@ -13,6 +13,9 @@ export default {
   getDateHistogram (filters) {
     return HTTP.post('/v1/events/date-histogram', filters)
   },
+  getTermDiagram (filters, termName, count) {
+    return HTTP.post('/v1/events/term-diagram?term-name=' + termName + '&count=' + count, filters)
+  },
   getLogsByFilter (filters, size, from) {
     return HTTP.post('/v1/events?from=' + from + '&size=' + size, filters)
   },

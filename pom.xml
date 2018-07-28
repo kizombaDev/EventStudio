@@ -73,12 +73,12 @@
             <dependency>
                 <groupId>org.kizombadev.eventstudio.clients</groupId>
                 <artifactId>ping-client</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1.0</version>
             </dependency>
             <dependency>
                 <groupId>org.kizombadev.eventstudio.apps</groupId>
                 <artifactId>rest-api-app</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

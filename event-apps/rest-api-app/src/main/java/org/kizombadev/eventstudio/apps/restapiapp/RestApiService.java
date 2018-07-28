@@ -145,4 +145,12 @@ public class RestApiService {
         List<Map<String, Object>> data = elasticSearchService.getDateHistogram(filters);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
+
+    @RequestMapping(path = "/term-diagram", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getDateHistogram(@RequestBody @NotNull List<FilterCriteriaDto> filters,
+                                                   @RequestParam("term-name") @NotNull String termName,
+                                                   @RequestParam("count") @NotNull Integer count) {
+        List<Map<String, Object>> data = elasticSearchService.getTermDiagram(filters, termName, count);
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
 }
