@@ -8,7 +8,7 @@
 
   <parent>
     <groupId>org.kizombadev.eventstudio.apps</groupId>
-    <artifactId>apps-pom</artifactId>
+    <artifactId>event-apps-pom</artifactId>
     <version>0.1.0</version>
   </parent>
 

@@ -40,7 +40,7 @@ export default {
       this.$emit('test', 'hi')
       basicApi.getAllTypes().then(response => {
         response.data.forEach(item => {
-          this.types.push(item.type)
+          this.types.push(item.key)
         })
       }).catch(e => {
         this.$events.emit('error', e)
