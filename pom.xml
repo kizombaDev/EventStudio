@@ -66,19 +66,19 @@
                 <version>2.8.0</version>
             </dependency>
             <dependency>
-                <groupId>org.kizombadev.eventstudio.pipeline</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>event-pipeline</artifactId>
                 <version>0.1.0</version>
             </dependency>
             <dependency>
-                <groupId>org.kizombadev.eventstudio.clients</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>ping-client</artifactId>
-                <version>0.1.0</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.kizombadev.eventstudio.apps</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>rest-api-app</artifactId>
-                <version>0.1.0</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

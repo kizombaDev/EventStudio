@@ -20,7 +20,7 @@ public class EventPipelineITCase {
 
     @Before
     public void init() {
-        given().port(9200).delete("/ping").then().statusCode(anyOf(is(HttpStatus.OK.value()), is(HttpStatus.NOT_FOUND.value())));
+        given().port(9200).delete("/eventstudio").then().statusCode(anyOf(is(HttpStatus.OK.value()), is(HttpStatus.NOT_FOUND.value())));
 
         applicationRunner = new ApplicationRunner();
         applicationRunner.initEventPipelineApplication();

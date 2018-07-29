@@ -20,7 +20,7 @@ public class RestApiAppITCase {
 
     @BeforeClass
     public static void init() {
-        given().port(9200).delete("/ping").then().statusCode(anyOf(is(HttpStatus.OK.value()), is(HttpStatus.NOT_FOUND.value())));
+        given().port(9200).delete("/eventstudio").then().statusCode(anyOf(is(HttpStatus.OK.value()), is(HttpStatus.NOT_FOUND.value())));
 
         applicationRunner = new ApplicationRunner();
         applicationRunner.initEventPipelineApplication();
@@ -183,6 +183,8 @@ public class RestApiAppITCase {
                 .body("id", hasItems("ping_google"))
                 .body("time", hasItems("26"));
     }
+
+    //TODO test getTermDiagram
 
     @Test
     public void testGetDateHistogram() {

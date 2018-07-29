@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     loadNavigationData () {
-      this.$emit('test', 'hi')
       basicApi.getAllTypes().then(response => {
         response.data.forEach(item => {
           this.types.push(item.key)

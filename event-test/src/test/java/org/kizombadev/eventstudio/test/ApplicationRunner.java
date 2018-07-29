@@ -17,7 +17,7 @@ public class ApplicationRunner implements Cloneable{
 
     public void initRestApiApplication() {
         restApiApp = new SpringApplicationBuilder(RestApiApp.class).run("--server.port=8082",
-                "--backend.indexname=ping",
+                "--backend.indexname=eventstudio",
                 "--backend.clustername=elasticsearch",
                 "--backend.nodes[0].ip=localhost",
                 "--backend.nodes[0].port=9300");
