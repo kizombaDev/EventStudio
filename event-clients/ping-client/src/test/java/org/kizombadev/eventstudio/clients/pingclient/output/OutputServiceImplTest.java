@@ -34,7 +34,7 @@ public class OutputServiceImplTest {
     @Test
     public void test() {
         //Arrange
-        Map<String, Object> map = ImmutableMap.of("id", "google", "type", "ping");
+        Map<String, Object> map = ImmutableMap.of("source_id", "google", "type", "ping");
 
         //Act
         outputServiceImpl.handleSend(map);

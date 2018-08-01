@@ -3,8 +3,8 @@
     <div class="col-12 mb-4">
       <h1>Ping Dashboard</h1>
     </div>
-    <div v-for="(pingId, index) in pingIds" v-bind:key="index" class="col-md-3 mb-4">
-      <PingCard v-bind:pingId="pingId"></PingCard>
+    <div v-for="(pingSourceId, index) in pingSourceIds" v-bind:key="index" class="col-md-3 mb-4">
+      <PingCard v-bind:pingSourceId="pingSourceId"></PingCard>
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@ export default {
   },
   data () {
     return {
-      pingIds: []
+      pingSourceIds: []
     }
   },
   created: function () {
@@ -28,10 +28,10 @@ export default {
   },
   methods: {
     loadAllPingIds () {
-      basicApi.getPingIds().then(response => {
+      basicApi.getPingSourceIds().then(response => {
         response.data.forEach(item => {
-          if (!this.pingIds.includes(item.key)) {
-            this.pingIds.push(item.key)
+          if (!this.pingSourceIds.includes(item.key)) {
+            this.pingSourceIds.push(item.key)
           }
         })
       }).catch(e => {

@@ -41,7 +41,7 @@ public class WindowsPingOperation implements ClientOperation {
                 Map<String, Object> data = new HashMap<>();
                 data.put("origin", line);
                 data.put("type", "ping");
-                data.put("id", "ping_" + id);
+                data.put("source_id", "ping_" + id);
                 data.put("timestamp", DATE_TIME_FORMATTER.format(LocalDateTime.now()));
                 outputService.handleSend(data);
                 break;

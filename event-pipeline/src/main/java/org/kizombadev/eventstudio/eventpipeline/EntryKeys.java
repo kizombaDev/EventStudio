@@ -9,7 +9,7 @@ public final class EntryKeys {
     public static final String BYTES = "bytes";
     public static final String TIMESTAMP = "timestamp";
     public static final String TYPE = "type";
-    public static final String ID = "id";
+    public static final String SOURCE_ID = "source_id";
 
     private EntryKeys() {
     }

@@ -27,7 +27,7 @@ export default new Router({
       component: Browse
     },
     {
-      path: '/ping/:id/detail',
+      path: '/ping/:source_id/detail',
       name: 'pingDetail',
       component: PingDetail
     },

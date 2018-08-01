@@ -1,13 +1,5 @@
 package org.kizombadev.eventstudio.apps.restapiapp;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.filter.Filter;
-import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.kizombadev.eventstudio.apps.restapiapp.model.FilterCriteriaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,30 +8,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/events")
 public class RestApiService {
 
-    private final TransportClient transportClient;
     private ElasticSearchService elasticSearchService;
 
     @Autowired
-    public RestApiService(TransportClient transportClient, ElasticSearchService elasticSearchService) {
-        this.transportClient = transportClient;
+    public RestApiService(ElasticSearchService elasticSearchService) {
         this.elasticSearchService = elasticSearchService;
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> getElements(@PathVariable String id,
+    @RequestMapping(path = "/{sourceId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getElements(@PathVariable("sourceId") String sourceId,
                                               @RequestParam("from") @NotNull Integer from,
                                               @RequestParam("size") @NotNull Integer size) {
 
         FilterCriteriaDto filterCriteriaDto = new FilterCriteriaDto();
-        filterCriteriaDto.setField("id");
-        filterCriteriaDto.setValue(id);
+        filterCriteriaDto.setField("source_id");
+        filterCriteriaDto.setValue(sourceId);
         filterCriteriaDto.setOperator("equals");
         filterCriteriaDto.setType("primary");
         List<FilterCriteriaDto> filters = Collections.singletonList(filterCriteriaDto);

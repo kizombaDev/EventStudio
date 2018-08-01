@@ -33,7 +33,7 @@ export default {
       filters: [],
       showResults: true,
       pings: [],
-      fields: ['id', 'type', 'timestamp', 'show_details']
+      fields: ['source_id', 'type', 'timestamp', 'show_details']
     }
   },
   components: {FilterCriteria},

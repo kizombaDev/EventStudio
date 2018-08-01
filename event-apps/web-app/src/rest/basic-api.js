@@ -4,11 +4,11 @@ export default {
   getAllTypes () {
     return HTTP.get('/v1/events/structure')
   },
-  getPingIds () {
-    return HTTP.get('/v1/events?type=ping&group-by=id')
+  getPingSourceIds () {
+    return HTTP.get('/v1/events?type=ping&group-by=source_id')
   },
-  getLastPingById (id) {
-    return HTTP.get('/v1/events/' + id + '/?size=1&from=0')
+  getLastPingBySourceId (sourceId) {
+    return HTTP.get('/v1/events/' + sourceId + '/?size=1&from=0')
   },
   getDateHistogram (filters) {
     return HTTP.post('/v1/events/date-histogram', filters)

@@ -6,12 +6,12 @@ import java.util.Map;
 
 public final class EventEntry {
     private final String type;
-    private final String id;
+    private final String sourceId;
     private final Map<String, Object> source;
 
     public EventEntry(Map<String, Object> source) {
         this.type = getStringValue(source, EntryKeys.TYPE);
-        this.id = getStringValue(source, EntryKeys.ID);
+        this.sourceId = getStringValue(source, EntryKeys.SOURCE_ID);
         this.source = source;
     }
 
@@ -19,8 +19,8 @@ public final class EventEntry {
         return type;
     }
 
-    public String getId() {
-        return id;
+    public String getSourceId() {
+        return sourceId;
     }
 
     public Map<String, Object> getSource() {
@@ -42,7 +42,7 @@ public final class EventEntry {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
+                .add("sourceId", sourceId)
                 .add("type", type)
                 .toString();
     }

@@ -46,7 +46,7 @@ public class FilterServiceImplTest {
     @Test
     public void test() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.ID, "ping_google");
+            put(EntryKeys.SOURCE_ID, "ping_google");
             put(EntryKeys.TYPE, "TestType");
         }};
 
@@ -60,7 +60,7 @@ public class FilterServiceImplTest {
     @Test
     public void testWithOtherFilterType() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.ID, "ping_google");
+            put(EntryKeys.SOURCE_ID, "ping_google");
             put(EntryKeys.TYPE, "XXX");
         }};
 

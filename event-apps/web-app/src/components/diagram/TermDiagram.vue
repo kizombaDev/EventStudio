@@ -51,7 +51,7 @@ export default {
       },
       filters: [
         {field: 'type', value: 'access_log', type: 'primary', operator: 'equals'},
-        {field: 'id', value: 'fcs_webaccess', type: 'primary', operator: 'equals'}
+        {field: 'source_id', value: 'fcs_webaccess', type: 'primary', operator: 'equals'}
       ],
       fieldName: 'ip',
       fieldData: [],

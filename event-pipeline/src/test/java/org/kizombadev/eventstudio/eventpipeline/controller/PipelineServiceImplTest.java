@@ -28,7 +28,7 @@ public class PipelineServiceImplTest {
         //Arrange
         PipelineService pipelineService = new PipelineServiceImpl(Arrays.asList(output), filterService);
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.ID, "ping_google");
+            put(EntryKeys.SOURCE_ID, "ping_google");
             put(EntryKeys.TYPE, "ping");
         }};
         EventEntry eventEntry = new EventEntry(source);

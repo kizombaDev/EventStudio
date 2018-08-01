@@ -37,7 +37,7 @@ public class WindowsPingOperationTest {
         Mockito.verify(outputService, Mockito.times(1)).handleSend(mapArgumentCaptor.capture());
 
         Map<String, Object> actualMap = mapArgumentCaptor.getValue();
-        Assert.assertEquals("ping_localhost", actualMap.get("id"));
+        Assert.assertEquals("ping_localhost", actualMap.get("source_id"));
         Assert.assertEquals("ping", actualMap.get("type"));
         Assert.assertTrue(actualMap.containsKey("origin"));
         Assert.assertTrue(actualMap.containsKey("timestamp"));

@@ -29,7 +29,7 @@ public class HttpOutputTest {
     public void test() {
         //Arrange
         server.expect(once(), requestTo("http://localhost:8081/api/v1/event/single")).andRespond(withSuccess("", MediaType.APPLICATION_JSON));
-        Map<String, Object> map = ImmutableMap.of("id", "google", "type", "ping");
+        Map<String, Object> map = ImmutableMap.of("source_id", "google", "type", "ping");
 
         //Act
         httpOutput.send(map);

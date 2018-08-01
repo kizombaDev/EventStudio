@@ -17,7 +17,7 @@ public class EventEntryTest {
 
     private EventEntry createDefaultTestLogEntry() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.ID, "ping_google");
+            put(EntryKeys.SOURCE_ID, "ping_google");
             put(EntryKeys.TYPE, "ping");
             put(EntryKeys.BYTES, "32");
         }};
@@ -31,7 +31,7 @@ public class EventEntryTest {
 
     @Test
     public void testGetId() {
-        assertThat(createDefaultTestLogEntry().getId()).isEqualTo("ping_google");
+        assertThat(createDefaultTestLogEntry().getSourceId()).isEqualTo("ping_google");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class EventEntryTest {
 
     @Test
     public void testToString() {
-        assertThat(createDefaultTestLogEntry().toString()).isEqualTo("EventEntry{id=ping_google, type=ping}");
+        assertThat(createDefaultTestLogEntry().toString()).isEqualTo("EventEntry{sourceId=ping_google, type=ping}");
     }
 
     @Test
@@ -51,7 +51,7 @@ public class EventEntryTest {
         }};
 
         thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("The event entry contains no correct property 'id' which is mandatory.");
+        thrown.expectMessage("The event entry contains no correct property 'source_id' which is mandatory.");
 
         new EventEntry(source);
     }
@@ -59,7 +59,7 @@ public class EventEntryTest {
     @Test
     public void testMissingType() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.ID, "ping_google");
+            put(EntryKeys.SOURCE_ID, "ping_google");
         }};
 
         thrown.expect(IllegalStateException.class);
@@ -72,11 +72,11 @@ public class EventEntryTest {
     public void testWithIdAsInteger() {
         Map<String, Object> source = new HashMap<String, Object>() {{
             put(EntryKeys.TYPE, "ping");
-            put(EntryKeys.ID, 5);
+            put(EntryKeys.SOURCE_ID, 5);
         }};
 
         thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("The event entry contains no correct property 'id' with a String.");
+        thrown.expectMessage("The event entry contains no correct property 'source_id' with a String.");
 
         new EventEntry(source);
     }

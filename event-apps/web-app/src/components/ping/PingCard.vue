@@ -1,21 +1,9 @@
 <template>
   <b-card :border-variant="borderVariant"
-          :header="pingId"
+          :header="pingSourceId"
           class="text-center">
-    <!--<b-row class="mb-2">-->
-      <!--<b-col class="text-sm-right"><b>Status:</b></b-col>-->
-      <!--<b-col class="text-sm-left">{{status}}</b-col>-->
-    <!--</b-row>-->
-    <!--<b-row class="mb-2">-->
-      <!--<b-col class="text-sm-right"><b>Time:</b></b-col>-->
-      <!--<b-col class="text-sm-left">{{time}}</b-col>-->
-    <!--</b-row>-->
-    <!--<b-row class="mb-2">-->
-      <!--<b-col class="text-sm-right"><b>Date:</b></b-col>-->
-      <!--<b-col class="text-sm-left"> {{date}}</b-col>-->
-    <!--</b-row>-->
     <p class="card-text"><b>Status:</b> {{status}}<br><b>Time:</b> {{ time }}<br><b>Date:</b> {{date}}</p>
-    <b-button :to="{ name: 'pingDetail', params:  { id: pingId }}" variant="primary">Details</b-button>
+    <b-button :to="{ name: 'pingDetail', params:  { source_id: pingSourceId }}" variant="primary">Details</b-button>
   </b-card>
 </template>
 
@@ -31,7 +19,7 @@ export default {
     }
   },
   props: {
-    pingId: String
+    pingSourceId: String
   },
   computed: {
     borderVariant: function () {
@@ -76,11 +64,11 @@ export default {
     }
   },
   created () {
-    this.loadLastLogById(this.pingId)
+    this.loadLastLogBySourceId(this.pingSourceId)
   },
   methods: {
-    loadLastLogById (id) {
-      basicApi.getLastPingById(id).then(response => {
+    loadLastLogBySourceId (sourceId) {
+      basicApi.getLastPingBySourceId(sourceId).then(response => {
         if (response.data.length > 0) {
           this.ping = response.data[0]
         }

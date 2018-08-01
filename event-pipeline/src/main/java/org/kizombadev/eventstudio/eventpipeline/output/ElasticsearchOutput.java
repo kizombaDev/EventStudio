@@ -61,7 +61,7 @@ public class ElasticsearchOutput implements Output {
 
         //TODO extract to config file
         Map<String, String> types = new HashMap<>();
-        types.put("id", KEYWORD_TYPE);
+        types.put("source_id", KEYWORD_TYPE);
         types.put("type", KEYWORD_TYPE);
         types.put("timestamp", DATE_TYPE);
         types.put("origin", TEXT_TYPE);

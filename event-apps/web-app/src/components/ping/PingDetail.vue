@@ -14,7 +14,7 @@ export default {
   name: 'Ping',
   data () {
     return {
-      id: this.$route.params.id,
+      sourceId: this.$route.params.source_id,
       ping: null
     }
   },
@@ -31,11 +31,11 @@ export default {
     }
   },
   beforeMount () {
-    this.loadLastPing(this.id)
+    this.loadLastPing(this.sourceId)
   },
   methods: {
-    loadLastPing (id) {
-      basicApi.getLastPingById(id)
+    loadLastPing (sourceId) {
+      basicApi.getLastPingBySourceId(sourceId)
         .then(response => {
           if (response.data.length > 0) {
             this.ping = response.data[0]
