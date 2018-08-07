@@ -1,6 +1,6 @@
 package org.kizombadev.eventstudio.test;
 
-import org.kizombadev.eventstudio.apps.restapiapp.RestApiApp;
+import org.kizombadev.eventstudio.apps.analyseapp.RestApiApp;
 import org.kizombadev.eventstudio.eventpipeline.EventPipeline;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;

@@ -1,0 +1,8 @@
+backend:
+  clustername: elasticsearch
+  nodes:
+    - ip: localhost
+      port: 9300
+  indexname: eventstudio
+server:
+  port: 8082

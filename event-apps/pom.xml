@@ -16,6 +16,6 @@
 
     <modules>
         <module>web-app</module>
-        <module>rest-api-app</module>
+        <module>analyse-app</module>
     </modules>
 </project>

@@ -91,8 +91,8 @@ derby.log
 
 .factorypath
 
-event-apps/rest-api-app/src/main/resources/public/
-event-apps/rest-api-app/target
+event-apps/analyse-app/src/main/resources/public/
+event-apps/analyse-app/target
 event-apps/web-app/dist/
 event-apps/web-app/node/
 event-apps/web-app/node_modules/
