@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kizombadev.eventstudio.eventpipeline.properties.FilterProperties;
 import org.kizombadev.eventstudio.eventpipeline.EventEntry;
-import org.kizombadev.eventstudio.eventpipeline.EntryKeys;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -46,8 +46,8 @@ public class FilterServiceImplTest {
     @Test
     public void test() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.SOURCE_ID, "ping_google");
-            put(EntryKeys.TYPE, "TestType");
+            put(EventKeys.SOURCE_ID, "ping_google");
+            put(EventKeys.TYPE, "TestType");
         }};
 
         FilterService filterService = new FilterServiceImpl(applicationContext, filterProperties);
@@ -60,8 +60,8 @@ public class FilterServiceImplTest {
     @Test
     public void testWithOtherFilterType() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.SOURCE_ID, "ping_google");
-            put(EntryKeys.TYPE, "XXX");
+            put(EventKeys.SOURCE_ID, "ping_google");
+            put(EventKeys.TYPE, "XXX");
         }};
 
         FilterService filterService = new FilterServiceImpl(applicationContext, filterProperties);

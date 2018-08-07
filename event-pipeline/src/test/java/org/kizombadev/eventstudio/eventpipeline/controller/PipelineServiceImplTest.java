@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.kizombadev.eventstudio.eventpipeline.filter.FilterService;
 import org.kizombadev.eventstudio.eventpipeline.output.Output;
 import org.kizombadev.eventstudio.eventpipeline.EventEntry;
-import org.kizombadev.eventstudio.eventpipeline.EntryKeys;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -28,8 +28,8 @@ public class PipelineServiceImplTest {
         //Arrange
         PipelineService pipelineService = new PipelineServiceImpl(Arrays.asList(output), filterService);
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.SOURCE_ID, "ping_google");
-            put(EntryKeys.TYPE, "ping");
+            put(EventKeys.SOURCE_ID, "ping_google");
+            put(EventKeys.TYPE, "ping");
         }};
         EventEntry eventEntry = new EventEntry(source);
 

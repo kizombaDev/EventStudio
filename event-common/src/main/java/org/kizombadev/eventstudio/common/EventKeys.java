@@ -1,6 +1,6 @@
-package org.kizombadev.eventstudio.eventpipeline;
+package org.kizombadev.eventstudio.common;
 
-public final class EntryKeys {
+public final class EventKeys {
 
     public static final String ORIGIN = "origin";
     public static final String IP = "ip";
@@ -11,6 +11,6 @@ public final class EntryKeys {
     public static final String TYPE = "type";
     public static final String SOURCE_ID = "source_id";
 
-    private EntryKeys() {
+    private EventKeys() {
     }
 }

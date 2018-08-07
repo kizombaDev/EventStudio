@@ -20,7 +20,7 @@ import java.util.*;
 public class ElasticsearchOutput implements Output {
 
     private static final List<String> EXISTING_FIELDS = Collections.synchronizedList(new ArrayList());
-    private static final String DEFAULT_DOC_TYPE = "ping";
+    private static final String DEFAULT_DOC_TYPE = "_doc";
     private TransportClient transportClient;
     private ElasticsearchProperties elasticsearchProperties;
 

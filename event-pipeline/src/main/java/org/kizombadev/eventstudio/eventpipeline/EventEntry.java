@@ -1,6 +1,7 @@
 package org.kizombadev.eventstudio.eventpipeline;
 
 import com.google.common.base.MoreObjects;
+import org.kizombadev.eventstudio.common.EventKeys;
 
 import java.util.Map;
 
@@ -10,8 +11,8 @@ public final class EventEntry {
     private final Map<String, Object> source;
 
     public EventEntry(Map<String, Object> source) {
-        this.type = getStringValue(source, EntryKeys.TYPE);
-        this.sourceId = getStringValue(source, EntryKeys.SOURCE_ID);
+        this.type = getStringValue(source, EventKeys.TYPE);
+        this.sourceId = getStringValue(source, EventKeys.SOURCE_ID);
         this.source = source;
     }
 

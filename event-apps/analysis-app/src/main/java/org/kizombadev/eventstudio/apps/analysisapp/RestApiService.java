@@ -1,7 +1,10 @@
 package org.kizombadev.eventstudio.apps.analysisapp;
 
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
+import org.kizombadev.eventstudio.common.elasticsearch.FilterOperation;
+import org.kizombadev.eventstudio.common.elasticsearch.FilterType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,10 +34,11 @@ public class RestApiService {
                                               @RequestParam("size") @NotNull Integer size) {
 
         FilterCriteriaDto filterCriteriaDto = new FilterCriteriaDto();
-        filterCriteriaDto.setField("source_id");
+        filterCriteriaDto.setField(EventKeys.SOURCE_ID);
         filterCriteriaDto.setValue(sourceId);
-        filterCriteriaDto.setOperator("equals");
-        filterCriteriaDto.setType("primary");
+        filterCriteriaDto.setOperator(FilterOperation.EQUALS);
+        filterCriteriaDto.setType(FilterType.PRIMARY.getValue());
+
         List<FilterCriteriaDto> filters = Collections.singletonList(filterCriteriaDto);
         List<Map<String, Object>> items = elasticSearchService.getElementsByFilter(filters, from, size);
         return new ResponseEntity<>(items, HttpStatus.OK);
@@ -55,10 +59,11 @@ public class RestApiService {
                                                        @RequestParam("group-by") String groupBy) {
 
         FilterCriteriaDto filterCriteriaDto = new FilterCriteriaDto();
-        filterCriteriaDto.setField("type");
+        filterCriteriaDto.setField(EventKeys.TYPE);
         filterCriteriaDto.setValue(type);
-        filterCriteriaDto.setOperator("equals");
-        filterCriteriaDto.setType("primary");
+        filterCriteriaDto.setOperator(FilterOperation.EQUALS);
+        filterCriteriaDto.setType(FilterType.PRIMARY.getValue());
+
         List<FilterCriteriaDto> filters = Collections.singletonList(filterCriteriaDto);
         List<Map<String, Object>> data = elasticSearchService.getTermDiagram(filters, groupBy, 99999);
         return new ResponseEntity<>(data, HttpStatus.OK);
@@ -73,7 +78,7 @@ public class RestApiService {
     @RequestMapping(path = "/structure", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getTypeIdStructure() {
 
-        List<Map<String, Object>> data = elasticSearchService.getTermDiagram(new ArrayList<>(),"type", 99999);
+        List<Map<String, Object>> data = elasticSearchService.getTermDiagram(new ArrayList<>(),EventKeys.TYPE, 99999);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 

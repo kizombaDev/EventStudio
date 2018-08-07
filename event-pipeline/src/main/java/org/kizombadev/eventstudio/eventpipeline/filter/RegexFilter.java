@@ -2,7 +2,7 @@ package org.kizombadev.eventstudio.eventpipeline.filter;
 
 import com.google.code.regexp.Matcher;
 import com.google.code.regexp.Pattern;
-import org.kizombadev.eventstudio.eventpipeline.EntryKeys;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class RegexFilter extends Filter {
 
     @Override
     public void handle(Map<String, Object> json) {
-        String origin = String.valueOf(getPropertyOrThrow(EntryKeys.ORIGIN, json));
+        String origin = String.valueOf(getPropertyOrThrow(EventKeys.ORIGIN, json));
         Matcher matcher = pattern.matcher(origin);
         if (!matcher.find()) {
             return;

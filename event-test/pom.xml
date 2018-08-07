@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>analyse-app</artifactId>
+            <artifactId>analysis-app</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

@@ -2,8 +2,11 @@ package org.kizombadev.eventstudio.apps.extendedanalysisapp.operation;
 
 import com.google.common.base.Strings;
 import org.kizombadev.eventstudio.apps.extendedanalysisapp.Properties;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
+import org.kizombadev.eventstudio.common.elasticsearch.FilterOperation;
+import org.kizombadev.eventstudio.common.elasticsearch.FilterType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ public class ReferenceAnalysis implements Runnable {
         if (result.isEmpty()) {
             log.info("No entries for the analysis found");
         }
+        else {
+            log.info("Found {} event groups for the analysis", result.size());
+        }
 
         result.parallelStream().map(item -> {
             String indicatorValue = item.get("key").toString();
@@ -40,7 +46,6 @@ public class ReferenceAnalysis implements Runnable {
                 referenceValue = UUID.randomUUID().toString();
             }
 
-            item.put("_temp", referenceValue);
             return new AbstractMap.SimpleEntry<>(indicatorValue, referenceValue);
         }).forEach(entry -> handleUpdate(entry.getKey(), entry.getValue()));
 
@@ -67,7 +72,7 @@ public class ReferenceAnalysis implements Runnable {
 
     private FilterCriteriaDto getNotExistReferenceFilter() {
         FilterCriteriaDto referenceFilter = getExistReferenceFilter();
-        referenceFilter.setOperator("not_exist");
+        referenceFilter.setOperator(FilterOperation.NOT_EXIST);
         return referenceFilter;
     }
 
@@ -75,17 +80,17 @@ public class ReferenceAnalysis implements Runnable {
         FilterCriteriaDto referenceFilter = new FilterCriteriaDto();
         referenceFilter.setField(properties.getReferenceField());
         referenceFilter.setValue("");
-        referenceFilter.setOperator("exist");
-        referenceFilter.setType("primary");
+        referenceFilter.setOperator(FilterOperation.EXIST);
+        referenceFilter.setType(FilterType.PRIMARY.getValue());
         return referenceFilter;
     }
 
     private FilterCriteriaDto getTypeFilter() {
         FilterCriteriaDto typeFilter = new FilterCriteriaDto();
-        typeFilter.setField("type");
+        typeFilter.setField(EventKeys.TYPE);
         typeFilter.setValue(properties.getEventType());
-        typeFilter.setOperator("equals");
-        typeFilter.setType("primary");
+        typeFilter.setOperator(FilterOperation.EQUALS);
+        typeFilter.setType(FilterType.PRIMARY.getValue());
         return typeFilter;
     }
 
@@ -93,8 +98,8 @@ public class ReferenceAnalysis implements Runnable {
         FilterCriteriaDto indicatorFilter = new FilterCriteriaDto();
         indicatorFilter.setField(properties.getIndicatorField());
         indicatorFilter.setValue(indicatorFieldValue);
-        indicatorFilter.setOperator("equals");
-        indicatorFilter.setType("primary");
+        indicatorFilter.setOperator(FilterOperation.EQUALS);
+        indicatorFilter.setType(FilterType.PRIMARY.getValue());
         return indicatorFilter;
     }
 }

@@ -1,6 +1,6 @@
 package org.kizombadev.eventstudio.eventpipeline.filter;
 
-import org.kizombadev.eventstudio.eventpipeline.EntryKeys;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -20,9 +20,9 @@ public class TimestampConverterFilter extends Filter {
 
     @Override
     public void handle(Map<String, Object> json) {
-        String timestampAsString = getPropertyOrThrow(EntryKeys.TIMESTAMP, json).toString();
+        String timestampAsString = getPropertyOrThrow(EventKeys.TIMESTAMP, json).toString();
         LocalDateTime timestamp = LocalDateTime.parse(timestampAsString, inputDateTimeFormatter);
-        json.put(EntryKeys.TIMESTAMP, timestamp.format(outputDateTimeFormatter));
+        json.put(EventKeys.TIMESTAMP, timestamp.format(outputDateTimeFormatter));
     }
 
     @Override

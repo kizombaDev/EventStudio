@@ -3,6 +3,7 @@ package org.kizombadev.eventstudio.eventpipeline;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.kizombadev.eventstudio.common.EventKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +18,9 @@ public class EventEntryTest {
 
     private EventEntry createDefaultTestLogEntry() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.SOURCE_ID, "ping_google");
-            put(EntryKeys.TYPE, "ping");
-            put(EntryKeys.BYTES, "32");
+            put(EventKeys.SOURCE_ID, "ping_google");
+            put(EventKeys.TYPE, "ping");
+            put(EventKeys.BYTES, "32");
         }};
         return new EventEntry(source);
     }
@@ -36,7 +37,7 @@ public class EventEntryTest {
 
     @Test
     public void testGetSource() {
-        assertThat(createDefaultTestLogEntry().getSource().get(EntryKeys.BYTES)).isEqualTo("32");
+        assertThat(createDefaultTestLogEntry().getSource().get(EventKeys.BYTES)).isEqualTo("32");
     }
 
     @Test
@@ -47,7 +48,7 @@ public class EventEntryTest {
     @Test
     public void testMissingId() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.TYPE, "ping");
+            put(EventKeys.TYPE, "ping");
         }};
 
         thrown.expect(IllegalStateException.class);
@@ -59,7 +60,7 @@ public class EventEntryTest {
     @Test
     public void testMissingType() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.SOURCE_ID, "ping_google");
+            put(EventKeys.SOURCE_ID, "ping_google");
         }};
 
         thrown.expect(IllegalStateException.class);
@@ -71,8 +72,8 @@ public class EventEntryTest {
     @Test
     public void testWithIdAsInteger() {
         Map<String, Object> source = new HashMap<String, Object>() {{
-            put(EntryKeys.TYPE, "ping");
-            put(EntryKeys.SOURCE_ID, 5);
+            put(EventKeys.TYPE, "ping");
+            put(EventKeys.SOURCE_ID, 5);
         }};
 
         thrown.expect(IllegalStateException.class);

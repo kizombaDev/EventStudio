@@ -1,9 +1,6 @@
 package org.kizombadev.eventstudio.common.elasticsearch;
 
-import org.elasticsearch.action.ActionRequest;
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
@@ -24,6 +21,7 @@ import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInter
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,6 @@ import java.util.*;
 
 @Service
 public class ElasticSearchService {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final TransportClient transportClient;
     private final ElasticsearchProperties elasticsearchProperties;
 
@@ -48,8 +45,8 @@ public class ElasticSearchService {
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
                 .setSize(size)
                 .setFrom(from)
-                .setQuery(createBoolFilter(filters, "primary"))
-                .addSort("timestamp", SortOrder.DESC)
+                .setQuery(createBoolFilter(filters, FilterType.PRIMARY.getValue()))
+                .addSort(EventKeys.TIMESTAMP, SortOrder.DESC)
                 .get();
 
         List<Map<String, Object>> result = new ArrayList<>();
@@ -63,8 +60,8 @@ public class ElasticSearchService {
     public List<Map<String, String>> getFieldStructure() {
         GetMappingsResponse getMappingsResponse = transportClient.admin().indices().prepareGetMappings(elasticsearchProperties.getIndexName()).get();
         ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> mappings = getMappingsResponse.getMappings();
-        ImmutableOpenMap<String, MappingMetaData> ping = mappings.get(elasticsearchProperties.getIndexName());
-        MappingMetaData ping1 = ping.get("ping");
+        ImmutableOpenMap<String, MappingMetaData> defaultMapping = mappings.get(elasticsearchProperties.getIndexName());
+        MappingMetaData ping1 = defaultMapping.get("_doc");
         Map<String, Object> sourceAsMap = ping1.getSourceAsMap();
         Map<String, Map<String, Object>> properties = (Map<String, Map<String, Object>>) sourceAsMap.get("properties");
 
@@ -88,14 +85,14 @@ public class ElasticSearchService {
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primary_filter,
-                        createBoolFilter(filters, "primary"))
+                        createBoolFilter(filters, FilterType.PRIMARY.getValue()))
                 .subAggregation(AggregationBuilders
                         .dateHistogram(date_grouping)
                         .dateHistogramInterval(DateHistogramInterval.DAY)
-                        .field("timestamp")
+                        .field(EventKeys.TIMESTAMP)
                         .format("dd-MM-yyyy").subAggregation(
                                 AggregationBuilders.filters(secondary_filter,
-                                        createBoolFilter(filters, "secondary"))));
+                                        createBoolFilter(filters, FilterType.SECONDARY.getValue()))));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
                 .addAggregation(filterAggregationBuilder)
@@ -127,7 +124,7 @@ public class ElasticSearchService {
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primary_filter,
-                        createBoolFilter(filters, "primary"))
+                        createBoolFilter(filters, FilterType.PRIMARY.getValue()))
                 .subAggregation(AggregationBuilders.terms(terms_grouping).field(termName).size(count));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
@@ -154,13 +151,13 @@ public class ElasticSearchService {
     public void updateField(@NotNull List<FilterCriteriaDto> filters, @NotNull String field, @NotNull String value) {
         UpdateByQueryRequestBuilder updateByQuery = UpdateByQueryAction.INSTANCE.newRequestBuilder(transportClient);
         updateByQuery.source(elasticsearchProperties.getIndexName())
-                .filter(createBoolFilter(filters, "primary"))
-                .script(new Script(ScriptType.INLINE, "painless",  "ctx._source." + field + " = params.value", Collections.singletonMap("value", value)));
+                .filter(createBoolFilter(filters, FilterType.PRIMARY.getValue()))
+                .script(new Script(ScriptType.INLINE, "painless", "ctx._source." + field + " = params.value", Collections.singletonMap("value", value)));
 
 
         BulkByScrollResponse response = updateByQuery.get();
         if (!response.getBulkFailures().isEmpty()) {
-           throw new IllegalStateException("The update failed");
+            throw new IllegalStateException("The update failed");
         }
     }
 
@@ -172,30 +169,22 @@ public class ElasticSearchService {
                 continue;
             }
 
-            switch (dto.getOperator()) {
-                case "equals":
-                    queryBuilder.must(QueryBuilders.termQuery(dto.getField(), dto.getValue()));
-                    break;
-                case "gt":
-                    queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).gt(dto.getValue()));
-                    break;
-                case "gte":
-                    queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).gte(dto.getValue()));
-                    break;
-                case "lt":
-                    queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).lt(dto.getValue()));
-                    break;
-                case "lte":
-                    queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).lte(dto.getValue()));
-                    break;
-                case "not_exist":
-                    queryBuilder.mustNot(QueryBuilders.existsQuery(dto.getField()));
-                    break;
-                case "exist":
-                    queryBuilder.must(QueryBuilders.existsQuery(dto.getField()));
-                    break;
-                default:
-                    throw new IllegalStateException(String.format("The filter operation '%s' is unknown.", dto.getOperator()));
+            if (FilterOperation.EQUALS.equals(dto.getOperator())) {
+                queryBuilder.must(QueryBuilders.termQuery(dto.getField(), dto.getValue()));
+            } else if (FilterOperation.GREATER_THEN.equals(dto.getOperator())) {
+                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).gt(dto.getValue()));
+            } else if (FilterOperation.GREATER_THEN_OR_EQUAL.equals(dto.getOperator())) {
+                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).gte(dto.getValue()));
+            } else if (FilterOperation.LESS_THEN.equals(dto.getOperator())) {
+                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).lt(dto.getValue()));
+            } else if (FilterOperation.LESS_THEN_OR_EQUAL.equals(dto.getOperator())) {
+                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).lte(dto.getValue()));
+            } else if (FilterOperation.NOT_EXIST.equals(dto.getOperator())) {
+                queryBuilder.mustNot(QueryBuilders.existsQuery(dto.getField()));
+            } else if (FilterOperation.EXIST.equals(dto.getOperator())) {
+                queryBuilder.must(QueryBuilders.existsQuery(dto.getField()));
+            } else {
+                throw new IllegalStateException(String.format("The filter operation '%s' is unknown.", dto.getOperator()));
             }
         }
 
