@@ -1,8 +1,0 @@
-backend:
-  clustername: elasticsearch
-  nodes:
-    - ip: localhost
-      port: 9300
-  indexname: test
-server:
-  port: 8082

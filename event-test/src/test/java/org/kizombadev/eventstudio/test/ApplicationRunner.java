@@ -1,6 +1,6 @@
 package org.kizombadev.eventstudio.test;
 
-import org.kizombadev.eventstudio.apps.analyseapp.AnalyseApp;
+import org.kizombadev.eventstudio.apps.analysisapp.AnalysisApp;
 import org.kizombadev.eventstudio.eventpipeline.EventPipeline;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -16,7 +16,7 @@ public class ApplicationRunner implements Cloneable{
     }
 
     public void initRestApiApplication() {
-        restApiApp = new SpringApplicationBuilder(AnalyseApp.class).run("--server.port=8082",
+        restApiApp = new SpringApplicationBuilder(AnalysisApp.class).run("--server.port=8082",
                 "--backend.indexname=eventstudio",
                 "--backend.clustername=elasticsearch",
                 "--backend.nodes[0].ip=localhost",

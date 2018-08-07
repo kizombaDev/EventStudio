@@ -9,7 +9,7 @@ import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.kizombadev.eventstudio.eventpipeline.EventEntry;
-import org.kizombadev.eventstudio.eventpipeline.properties.ElasticsearchProperties;
+import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
