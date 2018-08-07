@@ -16,12 +16,16 @@
     </parent>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
         <elasticsearch.version>6.2.4</elasticsearch.version>
         <lucene.version>7.0.1</lucene.version>
     </properties>
 
     <modules>
+        <module>event-common</module>
         <module>event-clients</module>
         <module>event-pipeline</module>
         <module>event-apps</module>
@@ -67,8 +71,13 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>event-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>event-pipeline</artifactId>
-                <version>0.1.0</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>

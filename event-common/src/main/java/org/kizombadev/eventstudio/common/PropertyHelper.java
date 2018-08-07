@@ -1,4 +1,4 @@
-package org.kizombadev.eventstudio.eventpipeline.properties;
+package org.kizombadev.eventstudio.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

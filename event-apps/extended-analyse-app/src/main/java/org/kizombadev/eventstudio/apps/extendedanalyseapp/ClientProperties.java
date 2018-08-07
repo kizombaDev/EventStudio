@@ -1,4 +1,4 @@
-package org.kizombadev.eventstudio.eventpipeline.properties;
+package org.kizombadev.eventstudio.apps.extendedanalyseapp;
 
 import com.google.common.base.MoreObjects;
 import org.kizombadev.eventstudio.common.PropertyHelper;
@@ -11,21 +11,21 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-@ConfigurationProperties("pipeline")
-public class FilterProperties {
-    private static final String PROPERTY_ROOT = "pipeline.";
+@ConfigurationProperties("client")
+public class ClientProperties {
+    private static final String PROPERTY_ROOT = "client.";
 
-    private final List<FilterConfig> filter = new ArrayList<>();
+    private final List<ClientConfig> clients = new ArrayList<>();
 
-    public List<FilterConfig> getFilter() {
-        return filter;
+    public List<ClientConfig> getClients() {
+        return clients;
     }
 
-    public static class FilterConfig {
-        private static final String PROPERTY_ROOT_FILTER = PROPERTY_ROOT + "filter.";
+    public static class ClientConfig {
+        private static final String PROPERTY_ROOT_FILTER = PROPERTY_ROOT + "clients.";
         private final List<KeyValue> configuration = new ArrayList<>();
         private String name;
-        private String type;
+        private String id;
 
         public String getName() {
             PropertyHelper.validateNotEmpty(PROPERTY_ROOT_FILTER + "name", name);
@@ -37,14 +37,14 @@ public class FilterProperties {
             this.name = name;
         }
 
-        public String getType() {
-            PropertyHelper.validateNotEmpty(PROPERTY_ROOT_FILTER + "type", type);
-            return type;
+        public String getId() {
+            PropertyHelper.validateNotEmpty(PROPERTY_ROOT_FILTER + "id", id);
+            return id;
         }
 
-        public void setType(String type) {
-            PropertyHelper.logPropertyValue(PROPERTY_ROOT_FILTER + "type", type);
-            this.type = type;
+        public void setId(String id) {
+            PropertyHelper.logPropertyValue(PROPERTY_ROOT_FILTER + "id", id);
+            this.id = id;
         }
 
         public List<KeyValue> getConfiguration() {
@@ -62,7 +62,7 @@ public class FilterProperties {
         public String toString() {
             return MoreObjects.toStringHelper(this)
                     .add("name", name)
-                    .add("type", type)
+                    .add("id", id)
                     .toString();
         }
 
@@ -71,7 +71,7 @@ public class FilterProperties {
             private String key;
             private String value;
 
-            public String getValue() {
+            String getValue() {
                 PropertyHelper.validateNotEmpty(PROPERTY_ROOT_FILTER_CONFIGURATION + "value", value);
                 return value;
             }
@@ -81,7 +81,7 @@ public class FilterProperties {
                 this.value = value;
             }
 
-            public String getKey() {
+            String getKey() {
                 PropertyHelper.validateNotEmpty(PROPERTY_ROOT_FILTER_CONFIGURATION + "key", key);
                 return key;
             }

@@ -1,7 +1,5 @@
 package org.kizombadev.eventstudio.clients.pingclient.operation;
 
-
-
 import org.kizombadev.eventstudio.clients.pingclient.output.OutputService;
 
 import java.util.Map;

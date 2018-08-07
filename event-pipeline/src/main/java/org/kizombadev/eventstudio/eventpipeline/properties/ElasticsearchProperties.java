@@ -1,5 +1,6 @@
 package org.kizombadev.eventstudio.eventpipeline.properties;
 
+import org.kizombadev.eventstudio.common.PropertyHelper;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 

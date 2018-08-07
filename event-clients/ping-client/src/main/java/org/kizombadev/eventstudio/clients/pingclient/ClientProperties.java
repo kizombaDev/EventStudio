@@ -1,6 +1,7 @@
 package org.kizombadev.eventstudio.clients.pingclient;
 
 import com.google.common.base.MoreObjects;
+import org.kizombadev.eventstudio.common.PropertyHelper;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 

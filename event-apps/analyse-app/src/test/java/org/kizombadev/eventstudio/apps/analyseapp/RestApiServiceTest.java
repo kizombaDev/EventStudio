@@ -2,6 +2,7 @@ package org.kizombadev.eventstudio.apps.analyseapp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kizombadev.eventstudio.apps.analyseapp.ElasticSearchService;
 import org.kizombadev.eventstudio.apps.analyseapp.model.FilterCriteriaDto;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;

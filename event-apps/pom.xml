@@ -17,5 +17,6 @@
     <modules>
         <module>web-app</module>
         <module>analyse-app</module>
+        <module>extended-analyse-app</module>
     </modules>
 </project>

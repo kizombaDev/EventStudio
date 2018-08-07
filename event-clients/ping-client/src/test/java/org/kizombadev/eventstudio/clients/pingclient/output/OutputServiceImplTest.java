@@ -1,9 +1,14 @@
 package org.kizombadev.eventstudio.clients.pingclient.output;
 
+
 import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kizombadev.eventstudio.clients.pingclient.output.ClientOutput;
+import org.kizombadev.eventstudio.clients.pingclient.output.ConsoleOutput;
+import org.kizombadev.eventstudio.clients.pingclient.output.HttpOutput;
+import org.kizombadev.eventstudio.clients.pingclient.output.OutputServiceImpl;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
