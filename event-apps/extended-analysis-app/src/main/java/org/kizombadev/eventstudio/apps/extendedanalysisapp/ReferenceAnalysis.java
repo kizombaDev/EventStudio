@@ -1,4 +1,4 @@
-package org.kizombadev.eventstudio.apps.extendedanalysisapp.operation;
+package org.kizombadev.eventstudio.apps.extendedanalysisapp;
 
 import com.google.common.base.Strings;
 import org.kizombadev.eventstudio.apps.extendedanalysisapp.Properties;

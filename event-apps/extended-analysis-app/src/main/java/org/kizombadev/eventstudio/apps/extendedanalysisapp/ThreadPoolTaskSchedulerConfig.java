@@ -1,4 +1,4 @@
-package org.kizombadev.eventstudio.apps.extendedanalysisapp.scheduling;
+package org.kizombadev.eventstudio.apps.extendedanalysisapp;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

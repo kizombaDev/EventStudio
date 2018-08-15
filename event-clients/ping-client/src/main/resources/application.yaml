@@ -1,4 +1,4 @@
-client:
+ping-client:
   pipeline:
     port: 8081
   clients:

@@ -1,6 +1,5 @@
-package org.kizombadev.eventstudio.apps.extendedanalysisapp.scheduling;
+package org.kizombadev.eventstudio.apps.housekeepingapp;
 
-import org.kizombadev.eventstudio.apps.extendedanalysisapp.operation.ReferenceAnalysis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.PeriodicTrigger;
@@ -10,19 +9,19 @@ import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class ExtendedAnalysisAppSchedulerService {
+public class HouseKeepingAppSchedulerService {
     private ThreadPoolTaskScheduler taskScheduler;
-    private ReferenceAnalysis operation;
+    private DeleteEvents operation;
 
     @Autowired
-    public ExtendedAnalysisAppSchedulerService(ThreadPoolTaskScheduler taskScheduler, ReferenceAnalysis operation) {
+    public HouseKeepingAppSchedulerService(ThreadPoolTaskScheduler taskScheduler, DeleteEvents operation) {
         this.taskScheduler = taskScheduler;
         this.operation = operation;
     }
 
     @PostConstruct
     public void enableScheduler() {
-        PeriodicTrigger periodicTrigger = new PeriodicTrigger(10, TimeUnit.SECONDS);
+        PeriodicTrigger periodicTrigger = new PeriodicTrigger(1, TimeUnit.MINUTES);
         taskScheduler.schedule(operation, periodicTrigger);
     }
 }

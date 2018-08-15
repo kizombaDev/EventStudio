@@ -1,0 +1,10 @@
+elasticsearch:
+  clustername: elasticsearch
+  nodes:
+  - ip: localhost
+    port: 9300
+  indexname: eventstudio
+house-keeping:
+  storageTime: 30
+server:
+  port: 8085

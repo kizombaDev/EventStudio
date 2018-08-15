@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-@ConfigurationProperties("client")
+@ConfigurationProperties("ping-client")
 public class ClientProperties {
-    private static final String PROPERTY_ROOT = "client.";
+    private static final String PROPERTY_ROOT = "ping-client.";
 
     private final List<ClientConfig> clients = new ArrayList<>();
 

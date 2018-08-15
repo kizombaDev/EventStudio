@@ -8,9 +8,7 @@ import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.reindex.BulkByScrollResponse;
-import org.elasticsearch.index.reindex.UpdateByQueryAction;
-import org.elasticsearch.index.reindex.UpdateByQueryRequestBuilder;
+import org.elasticsearch.index.reindex.*;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
@@ -28,6 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.TemporalUnit;
 import java.util.*;
 
 @Service
@@ -159,6 +160,15 @@ public class ElasticSearchService {
         if (!response.getBulkFailures().isEmpty()) {
             throw new IllegalStateException("The update failed");
         }
+    }
+
+    public long deleteByDate(int numberOfDays) {
+        BulkByScrollResponse response = DeleteByQueryAction.INSTANCE.newRequestBuilder(transportClient)
+                .filter(QueryBuilders.rangeQuery(EventKeys.TIMESTAMP).lt(LocalDate.now().minus(Period.ofDays(numberOfDays)).toString()))
+                .source(elasticsearchProperties.getIndexName())
+                .get();
+
+        return response.getDeleted();
     }
 
     private QueryBuilder createBoolFilter(List<FilterCriteriaDto> filters, String expectedType) {
