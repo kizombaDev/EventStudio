@@ -5,9 +5,11 @@ import java.util.Map;
 public abstract class Filter {
     abstract void handle(Map<String, Object> source);
 
-    abstract void init(Map<String, String> configuration);
-
     abstract Filter instanceCopy();
+
+    public void init(Map<String, String> configuration) {
+
+    }
 
     String getConfigurationOrThrow(String property, Map<String, String> configuration) {
         if (!configuration.containsKey(property)) {

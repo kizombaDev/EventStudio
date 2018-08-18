@@ -38,11 +38,6 @@ public class SequentialTimeIdFilter extends Filter {
     }
 
     @Override
-    public void init(Map<String, String> configuration) {
-        //nothing to do
-    }
-
-    @Override
     public Filter instanceCopy() {
         return new SequentialTimeIdFilter(elasticSearchService);
     }

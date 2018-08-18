@@ -17,13 +17,9 @@ public class RealTimeValidationFilter extends Filter {
         String timestampAsString = json.get(EventKeys.TIMESTAMP).toString();
         LocalDateTime timestamp = LocalDateTime.parse(timestampAsString, DATE_TIME_FORMATTER);
 
-        boolean timeManipulation = timestamp.isBefore(LocalDateTime.now().minusSeconds(5)) || timestamp.isAfter(LocalDateTime.now().plusSeconds(5));
+        boolean timeManipulation = timestamp.isBefore(LocalDateTime.now().minusSeconds(5))
+                || timestamp.isAfter(LocalDateTime.now().plusSeconds(5));
         json.put(EventKeys.TIME_MANIPULATION, timeManipulation);
-    }
-
-    @Override
-    public void init(Map<String, String> configuration) {
-        //nothing to do
     }
 
     @Override
