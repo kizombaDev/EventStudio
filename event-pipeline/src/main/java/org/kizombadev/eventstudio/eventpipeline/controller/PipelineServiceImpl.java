@@ -1,8 +1,8 @@
 package org.kizombadev.eventstudio.eventpipeline.controller;
 
-import org.kizombadev.eventstudio.eventpipeline.output.Output;
 import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.filter.FilterService;
+import org.kizombadev.eventstudio.eventpipeline.output.Output;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

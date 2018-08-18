@@ -8,7 +8,10 @@ import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.reindex.*;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.DeleteByQueryAction;
+import org.elasticsearch.index.reindex.UpdateByQueryAction;
+import org.elasticsearch.index.reindex.UpdateByQueryRequestBuilder;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
@@ -18,17 +21,15 @@ import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBui
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.max.Max;
 import org.elasticsearch.search.sort.SortOrder;
 import org.kizombadev.eventstudio.common.EventKeys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
 
 @Service
@@ -149,6 +150,26 @@ public class ElasticSearchService {
         return result;
     }
 
+    public double getMaxValue(@NotNull List<FilterCriteriaDto> filters, @NotNull String field) {
+        final String primaryFilter = "primary_filter";
+        final String maxAggregation = "max_aggregation";
+
+        FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
+                .filters(primaryFilter,
+                        createBoolFilter(filters, FilterType.PRIMARY.getValue()))
+                .subAggregation(AggregationBuilders.max(maxAggregation).field(field));
+
+        SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
+                .addAggregation(filterAggregationBuilder)
+                .setSize(0)
+                .get();
+
+        Filters responseFilter = searchResponse.getAggregations().get(primaryFilter);
+        Filters.Bucket bucket = responseFilter.getBuckets().get(0);
+        Max max = bucket.getAggregations().get(maxAggregation);
+        return max.getValue();
+    }
+
     public void updateField(@NotNull List<FilterCriteriaDto> filters, @NotNull String field, @NotNull String value) {
         UpdateByQueryRequestBuilder updateByQuery = UpdateByQueryAction.INSTANCE.newRequestBuilder(transportClient);
         updateByQuery.source(elasticsearchProperties.getIndexName())
@@ -162,9 +183,12 @@ public class ElasticSearchService {
         }
     }
 
-    public long deleteByDate(int numberOfDays) {
-        BulkByScrollResponse response = DeleteByQueryAction.INSTANCE.newRequestBuilder(transportClient)
-                .filter(QueryBuilders.rangeQuery(EventKeys.TIMESTAMP).lt(LocalDate.now().minus(Period.ofDays(numberOfDays)).toString()))
+    public long deleteEvents(int numberOfDays) {
+        BulkByScrollResponse response = DeleteByQueryAction.INSTANCE
+                .newRequestBuilder(transportClient)
+                .filter(QueryBuilders
+                        .rangeQuery(EventKeys.TIMESTAMP)
+                        .lt(LocalDate.now().minus(Period.ofDays(numberOfDays)).toString()))
                 .source(elasticsearchProperties.getIndexName())
                 .get();
 
@@ -200,5 +224,6 @@ public class ElasticSearchService {
 
         return queryBuilder;
     }
-
 }
+
+

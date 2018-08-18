@@ -10,6 +10,8 @@ public final class EventKeys {
     public static final String TIMESTAMP = "timestamp";
     public static final String TYPE = "type";
     public static final String SOURCE_ID = "source_id";
+    public static final String SEQUENTIAL_TIME_ID = "sequential_time_id";
+    public static final String TIME_MANIPULATION = "time_manipulation";
 
     private EventKeys() {
     }

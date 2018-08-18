@@ -2,10 +2,10 @@ package org.kizombadev.eventstudio.eventpipeline.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kizombadev.eventstudio.common.EventKeys;
+import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.filter.FilterService;
 import org.kizombadev.eventstudio.eventpipeline.output.Output;
-import org.kizombadev.eventstudio.eventpipeline.EventEntry;
-import org.kizombadev.eventstudio.common.EventKeys;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;

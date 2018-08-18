@@ -8,8 +8,9 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.kizombadev.eventstudio.eventpipeline.EventEntry;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchProperties;
+import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class ElasticsearchOutput implements Output {
 
         BulkResponse bulkResponse = bulkRequest.get();
         if (bulkResponse.hasFailures()) {
-            throw new IllegalStateException(bulkResponse.toString());
+            throw new IllegalStateException(bulkResponse.buildFailureMessage());
         }
     }
 
@@ -58,6 +59,7 @@ public class ElasticsearchOutput implements Output {
         final String IP_TYPE = "ip";
         final String INTEGER_TYPE = "integer";
         final String TEXT_TYPE = "text";
+        final String BOOLEAN_TYPE = "boolean";
 
         //TODO extract to config file
         Map<String, String> types = new HashMap<>();
@@ -71,6 +73,7 @@ public class ElasticsearchOutput implements Output {
         types.put("ttl", INTEGER_TYPE);
         types.put("ip", IP_TYPE);
         types.put("bytes", INTEGER_TYPE);
+        types.put(EventKeys.TIME_MANIPULATION, BOOLEAN_TYPE);
 
         types.put("length", INTEGER_TYPE);
         types.put("request_method", KEYWORD_TYPE);
@@ -81,6 +84,7 @@ public class ElasticsearchOutput implements Output {
         types.put("referrer", KEYWORD_TYPE);
         types.put("user_agent", KEYWORD_TYPE);
         types.put("remote_log_name", KEYWORD_TYPE);
+        types.put("sequential_time_id", INTEGER_TYPE);
 
         for (Map.Entry<String, Object> pair : data.getSource().entrySet()) {
 

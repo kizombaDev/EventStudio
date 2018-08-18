@@ -26,7 +26,7 @@ public class AccessLogCleanerFilter extends Filter {
 
     @Override
     public void init(Map<String, String> configuration) {
-        //nothing tod do
+        //nothing to do
     }
 
     @Override

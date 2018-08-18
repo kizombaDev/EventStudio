@@ -22,7 +22,7 @@ public class DeleteEvents implements Runnable {
 
     @Override
     public void run() {
-        long deletedEvents = elasticSearchService.deleteByDate(properties.getStorageTime());
+        long deletedEvents = elasticSearchService.deleteEvents(properties.getStorageTime());
         log.info("deletion of events successfully executed. Number of deleted events: " + deletedEvents);
     }
 }
