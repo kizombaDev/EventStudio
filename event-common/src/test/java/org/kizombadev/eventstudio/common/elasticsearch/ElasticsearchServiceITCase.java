@@ -78,4 +78,13 @@ public class ElasticsearchServiceITCase {
         Assert.assertEquals("fau_ping", data.get(EventKeys.SOURCE_ID) );
         Assert.assertEquals("ping", data.get(EventKeys.TYPE) );
     }
+
+    @Test
+    public void testGetFieldStructure() {
+        List<Map<String, String>> fieldStructure = elasticSearchService.getFieldStructure();
+        Assert.assertEquals(3, fieldStructure.size());
+        Map<String, String> test = fieldStructure.get(0);
+        Assert.assertEquals(EventKeys.SOURCE_ID, test.get("field"));
+        Assert.assertEquals(FieldTypes.KEYWORD_TYPE, test.get("type"));
+    }
 }
