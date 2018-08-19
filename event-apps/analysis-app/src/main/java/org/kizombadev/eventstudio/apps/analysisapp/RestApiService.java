@@ -37,7 +37,7 @@ public class RestApiService {
         filterCriteriaDto.setField(EventKeys.SOURCE_ID);
         filterCriteriaDto.setValue(sourceId);
         filterCriteriaDto.setOperator(FilterOperation.EQUALS);
-        filterCriteriaDto.setType(FilterType.PRIMARY.getValue());
+        filterCriteriaDto.setType(FilterType.PRIMARY);
 
         List<FilterCriteriaDto> filters = Collections.singletonList(filterCriteriaDto);
         List<Map<String, Object>> items = elasticSearchService.getElementsByFilter(filters, from, size);
@@ -62,7 +62,7 @@ public class RestApiService {
         filterCriteriaDto.setField(EventKeys.TYPE);
         filterCriteriaDto.setValue(type);
         filterCriteriaDto.setOperator(FilterOperation.EQUALS);
-        filterCriteriaDto.setType(FilterType.PRIMARY.getValue());
+        filterCriteriaDto.setType(FilterType.PRIMARY);
 
         List<FilterCriteriaDto> filters = Collections.singletonList(filterCriteriaDto);
         List<Map<String, Object>> data = elasticSearchService.getTermDiagram(filters, groupBy, 99999);
@@ -78,7 +78,7 @@ public class RestApiService {
     @RequestMapping(path = "/structure", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getTypeIdStructure() {
 
-        List<Map<String, Object>> data = elasticSearchService.getTermDiagram(new ArrayList<>(),EventKeys.TYPE, 99999);
+        List<Map<String, Object>> data = elasticSearchService.getTermDiagram(new ArrayList<>(), EventKeys.TYPE, 99999);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -90,8 +90,8 @@ public class RestApiService {
 
     @RequestMapping(path = "/term-diagram", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getTermDiagram(@RequestBody @NotNull List<FilterCriteriaDto> filters,
-                                                   @RequestParam("term-name") @NotNull String termName,
-                                                   @RequestParam("count") @NotNull Integer count) {
+                                                 @RequestParam("term-name") @NotNull String termName,
+                                                 @RequestParam("count") @NotNull Integer count) {
         List<Map<String, Object>> data = elasticSearchService.getTermDiagram(filters, termName, count);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }

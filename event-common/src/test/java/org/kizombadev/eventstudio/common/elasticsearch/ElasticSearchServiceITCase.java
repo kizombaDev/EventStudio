@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kizombadev.eventstudio.common.CommonTestApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CommonTestApp.class)
 @TestConfiguration
 public class ElasticSearchServiceITCase {
 
@@ -33,7 +34,6 @@ public class ElasticSearchServiceITCase {
     }
 
     @Test
-    @Ignore
     public void test() {
         List<Map<String, Object>> result = elasticSearchService.getElementsByFilter(new ArrayList<>(), 0, 1);
         Assertions.assertThat(result).hasSize(1);

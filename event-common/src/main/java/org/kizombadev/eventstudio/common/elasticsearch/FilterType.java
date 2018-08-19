@@ -1,20 +1,10 @@
 package org.kizombadev.eventstudio.common.elasticsearch;
 
-public enum FilterType {
-    PRIMARY("primary"), SECONDARY("secondary");
+public final class FilterType {
+    public static final String PRIMARY = "primary";
+    public static final String SECONDARY = "secondary";
 
-    private final String value;
-
-    FilterType(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return this.value;
-    }
-
-    @Override
-    public String toString() {
-        return value;
+    private FilterType() {
+        //nothing todo
     }
 }

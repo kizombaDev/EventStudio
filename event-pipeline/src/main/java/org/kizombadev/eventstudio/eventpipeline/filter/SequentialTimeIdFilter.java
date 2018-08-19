@@ -47,7 +47,7 @@ public class SequentialTimeIdFilter extends Filter {
         dto.setOperator(FilterOperation.EQUALS);
         dto.setField(EventKeys.SOURCE_ID);
         dto.setValue(sourceId);
-        dto.setType(FilterType.PRIMARY.getValue());
+        dto.setType(FilterType.PRIMARY);
         double maxValue = elasticSearchService.getMaxValue(Collections.singletonList(dto), EventKeys.SEQUENTIAL_TIME_ID);
 
         if (maxValue == Double.NEGATIVE_INFINITY) {

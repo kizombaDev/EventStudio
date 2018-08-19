@@ -5,7 +5,7 @@ import org.kizombadev.eventstudio.eventpipeline.EventPipeline;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public class ApplicationRunner implements Cloneable{
+public class ApplicationRunner implements Cloneable {
 
     private ConfigurableApplicationContext eventPipeline = null;
     private ConfigurableApplicationContext restApiApp = null;
@@ -24,12 +24,12 @@ public class ApplicationRunner implements Cloneable{
     }
 
     public void close() {
-        if(eventPipeline != null) {
+        if (eventPipeline != null) {
             eventPipeline.close();
             eventPipeline = null;
         }
 
-        if(restApiApp != null) {
+        if (restApiApp != null) {
             restApiApp.close();
             restApiApp = null;
         }

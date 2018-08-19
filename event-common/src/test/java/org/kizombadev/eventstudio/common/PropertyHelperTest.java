@@ -3,7 +3,6 @@ package org.kizombadev.eventstudio.common;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.kizombadev.eventstudio.common.PropertyHelper;
 
 public class PropertyHelperTest {
 

@@ -38,6 +38,27 @@ public class RestApiServiceTest {
     @Captor
     private ArgumentCaptor<List<FilterCriteriaDto>> filterArgumentCaptor;
 
+    private static List<Map<String, Object>> getSampleJsonResponse() {
+        List<Map<String, Object>> json = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("Foo", 5);
+        json.add(map);
+        return json;
+    }
+
+    private static void assertSampleJsonResponse(ResponseEntity<String> response) {
+        assertThat(response.getBody()).isEqualTo("[{\"Foo\":5}]");
+    }
+
+    private static List<FilterCriteriaDto> getSampleFilterDto() {
+        FilterCriteriaDto filterCriteriaDto = new FilterCriteriaDto();
+        filterCriteriaDto.setField("id");
+        filterCriteriaDto.setValue("ping_google");
+        filterCriteriaDto.setOperator("equals");
+        filterCriteriaDto.setType("primary");
+        return Collections.singletonList(filterCriteriaDto);
+    }
+
     @Test
     public void testGetElements() {
         //Arrange
@@ -147,27 +168,6 @@ public class RestApiServiceTest {
         assertThat(response.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON_UTF8);
         assertSampleJsonResponse(response);
         assertFilterDto();
-    }
-
-    private static List<Map<String, Object>> getSampleJsonResponse() {
-        List<Map<String, Object>> json = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
-        map.put("Foo", 5);
-        json.add(map);
-        return json;
-    }
-
-    private static void assertSampleJsonResponse(ResponseEntity<String> response) {
-        assertThat(response.getBody()).isEqualTo("[{\"Foo\":5}]");
-    }
-
-    private static List<FilterCriteriaDto> getSampleFilterDto() {
-        FilterCriteriaDto filterCriteriaDto = new FilterCriteriaDto();
-        filterCriteriaDto.setField("id");
-        filterCriteriaDto.setValue("ping_google");
-        filterCriteriaDto.setOperator("equals");
-        filterCriteriaDto.setType("primary");
-        return Collections.singletonList(filterCriteriaDto);
     }
 
     private void assertFilterDto() {

@@ -204,9 +204,9 @@ public class RestApiAppITCase {
                 .body("key[0]", is("01-01-2013"))
                 .body("primary_count[0]", is(1))
                 .body("secondary_count[0]", is(0))
-                .body("key[1]", is( "02-01-2013"))
+                .body("key[1]", is("02-01-2013"))
                 .body("primary_count[1]", is(2))
-                .body("secondary_count[1]", is( 2));
+                .body("secondary_count[1]", is(2));
     }
 
     @Test

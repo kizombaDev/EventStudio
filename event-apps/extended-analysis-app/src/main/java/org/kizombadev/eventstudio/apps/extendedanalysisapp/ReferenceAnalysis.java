@@ -1,7 +1,6 @@
 package org.kizombadev.eventstudio.apps.extendedanalysisapp;
 
 import com.google.common.base.Strings;
-import org.kizombadev.eventstudio.apps.extendedanalysisapp.Properties;
 import org.kizombadev.eventstudio.common.EventKeys;
 import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
@@ -33,8 +32,7 @@ public class ReferenceAnalysis implements Runnable {
 
         if (result.isEmpty()) {
             log.info("No entries for the analysis found");
-        }
-        else {
+        } else {
             log.info("Found {} event groups for the analysis", result.size());
         }
 
@@ -81,7 +79,7 @@ public class ReferenceAnalysis implements Runnable {
         referenceFilter.setField(properties.getReferenceField());
         referenceFilter.setValue("");
         referenceFilter.setOperator(FilterOperation.EXIST);
-        referenceFilter.setType(FilterType.PRIMARY.getValue());
+        referenceFilter.setType(FilterType.PRIMARY);
         return referenceFilter;
     }
 
@@ -90,7 +88,7 @@ public class ReferenceAnalysis implements Runnable {
         typeFilter.setField(EventKeys.TYPE);
         typeFilter.setValue(properties.getEventType());
         typeFilter.setOperator(FilterOperation.EQUALS);
-        typeFilter.setType(FilterType.PRIMARY.getValue());
+        typeFilter.setType(FilterType.PRIMARY);
         return typeFilter;
     }
 
@@ -99,7 +97,7 @@ public class ReferenceAnalysis implements Runnable {
         indicatorFilter.setField(properties.getIndicatorField());
         indicatorFilter.setValue(indicatorFieldValue);
         indicatorFilter.setOperator(FilterOperation.EQUALS);
-        indicatorFilter.setType(FilterType.PRIMARY.getValue());
+        indicatorFilter.setType(FilterType.PRIMARY);
         return indicatorFilter;
     }
 }

@@ -1,0 +1,6 @@
+elasticsearch:
+  clustername: elasticsearch
+  nodes:
+  - ip: localhost
+    port: 9300
+  indexname: test

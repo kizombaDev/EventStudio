@@ -4,7 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class FilterCriteria {
-    private FilterCriteria() {}
+    private FilterCriteria() {
+    }
 
     public static JsonObject of(String field, String value, String type, String operator) {
         JsonObject filterCriterion = new JsonObject();
@@ -17,7 +18,7 @@ public class FilterCriteria {
 
     public static JsonArray arrayOf(JsonObject... objects) {
         JsonArray result = new JsonArray();
-        for(JsonObject object : objects) {
+        for (JsonObject object : objects) {
             result.add(object);
         }
         return result;
