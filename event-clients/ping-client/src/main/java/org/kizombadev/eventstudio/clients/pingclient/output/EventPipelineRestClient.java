@@ -13,10 +13,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 @Service
-public class HttpOutput implements ClientOutput {
+public class EventPipelineRestClient implements ClientOutput {
     private final RestTemplate restTemplate;
 
-    public HttpOutput(RestTemplateBuilder restTemplateBuilder) {
+    public EventPipelineRestClient(RestTemplateBuilder restTemplateBuilder) {
         restTemplate = restTemplateBuilder.build();
     }
 
@@ -29,7 +29,7 @@ public class HttpOutput implements ClientOutput {
             HttpEntity<String> request = new HttpEntity<>(jsonResp, headers);
 
             //todo use host and port of the configuration file
-            restTemplate.exchange("http://localhost:8081/api/v1/event/single", HttpMethod.POST, request, Object.class);
+            restTemplate.exchange("http://localhost:8081/api/v1/events/single", HttpMethod.POST, request, Object.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

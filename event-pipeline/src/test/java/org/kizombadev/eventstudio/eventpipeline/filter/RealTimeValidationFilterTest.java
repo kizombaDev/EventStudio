@@ -14,7 +14,7 @@ public class RealTimeValidationFilterTest {
     private Filter filter = new RealTimeValidationFilter();
 
     @Test
-    public void testNegtiveTimeManipulation() {
+    public void testNegativeTimeManipulation() {
         Map<String, Object> json = new HashMap<String, Object>() {{
             put(EventKeys.TIMESTAMP, LocalDateTime.now().minusSeconds(10));
         }};

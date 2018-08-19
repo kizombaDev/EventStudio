@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Configuration
 @ConfigurationProperties("ping-client")
-public class ClientProperties {
+public class PingClientProperties {
     private static final String PROPERTY_ROOT = "ping-client.";
 
     private final List<ClientConfig> clients = new ArrayList<>();

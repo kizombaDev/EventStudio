@@ -1,0 +1,9 @@
+@echo off
+start "Event-Pipeline" java -jar event-pipeline\target\event-pipeline-0.1.0.jar
+set /p DUMMY=Press Enter as soon as the Event-Pipeline has started successfully...
+
+start "AnalysisApp" java -jar event-apps\analysis-app\target\analysis-app-0.1.0.jar
+set /p DUMMY=Press Enter as soon as the AnalysisApp has started successfully...
+
+start "Ping-Client" java -jar event-clients\ping-client\target\ping-client-0.1.0.jar
+set /p DUMMY=Press Enter as soon as the PingClient has started successfully...

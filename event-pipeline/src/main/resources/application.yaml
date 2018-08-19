@@ -11,7 +11,7 @@ pipeline:
     configuration:
     - key: regex
       value: 'Antwort von (?<ip>[.\d]*): Bytes=(?<bytes>\d*) Zeit[=<](?<time>\d*)ms TTL=(?<ttl>\d*)'
-  - name: ExtensionFilter
+  - name: PingStatusFilter
     type: ping
     configuration:
     - key: regex
@@ -20,7 +20,7 @@ pipeline:
       value: status
     - key: value
       value: failed
-  - name: ExtensionFilter
+  - name: PingStatusFilter
     type: ping
     configuration:
     - key: regex

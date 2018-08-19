@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kizombadev.eventstudio.common.EventKeys;
 import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
-import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -34,7 +33,7 @@ public class SequentialTimeIdFilterTest {
         Mockito.when(elasticSearchService.getMaxValue(Mockito.anyList(), Mockito.eq(EventKeys.SEQUENTIAL_TIME_ID))).thenReturn(5.0);
 
         Map<String, Object> json = new HashMap<String, Object>() {{
-            put(EventKeys.SOURCE_ID, "test");
+            put(EventKeys.SOURCE_ID, "bar");
         }};
         filter.handle(json);
         assertThat(json.get(EventKeys.SEQUENTIAL_TIME_ID).toString()).isEqualTo("5");
@@ -49,7 +48,7 @@ public class SequentialTimeIdFilterTest {
         Mockito.when(elasticSearchService.getMaxValue(Mockito.anyList(), Mockito.eq(EventKeys.SEQUENTIAL_TIME_ID))).thenReturn(Double.NEGATIVE_INFINITY);
 
         Map<String, Object> json = new HashMap<String, Object>() {{
-            put(EventKeys.SOURCE_ID, "test");
+            put(EventKeys.SOURCE_ID, "foo");
         }};
         filter.handle(json);
         assertThat(json.get(EventKeys.SEQUENTIAL_TIME_ID).toString()).isEqualTo("0");

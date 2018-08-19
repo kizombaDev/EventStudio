@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component("ExtensionFilter")
-public class ExtensionFilter extends Filter {
+@Component("PingStatusFilter")
+public class PingStatusFilter extends Filter {
     private static final String REGEX_CONFIGURATION = "regex";
     private static final String KEY_CONFIGURATION = "key";
     private static final String VALUE_CONFIGURATION = "value";
@@ -37,6 +37,6 @@ public class ExtensionFilter extends Filter {
 
     @Override
     public Filter instanceCopy() {
-        return new ExtensionFilter();
+        return new PingStatusFilter();
     }
 }

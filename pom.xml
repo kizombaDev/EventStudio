@@ -29,7 +29,8 @@
         <module>event-clients</module>
         <module>event-pipeline</module>
         <module>event-apps</module>
-        <module>event-test</module>
+        <!-- TODO enable event-test -->
+        <!--<module>event-test</module>-->
     </modules>
 
     <dependencyManagement>
@@ -86,7 +87,7 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>analyse-app</artifactId>
+                <artifactId>analysis-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

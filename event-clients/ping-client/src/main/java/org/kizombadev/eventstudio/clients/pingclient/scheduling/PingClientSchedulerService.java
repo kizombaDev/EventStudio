@@ -1,7 +1,7 @@
 package org.kizombadev.eventstudio.clients.pingclient.scheduling;
 
-import org.kizombadev.eventstudio.clients.pingclient.ClientProperties;
-import org.kizombadev.eventstudio.clients.pingclient.operation.ClientOperation;
+import org.kizombadev.eventstudio.clients.pingclient.PingClientProperties;
+import org.kizombadev.eventstudio.clients.pingclient.action.PingClientAction;
 import org.kizombadev.eventstudio.clients.pingclient.output.OutputService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,25 +13,25 @@ import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class ClientSchedulerService {
+public class PingClientSchedulerService {
     private ApplicationContext applicationContext;
     private ThreadPoolTaskScheduler taskScheduler;
-    private ClientProperties clientProperties;
+    private PingClientProperties pingClientProperties;
     private OutputService outputService;
 
     @Autowired
-    public ClientSchedulerService(ApplicationContext applicationContext, ThreadPoolTaskScheduler taskScheduler, ClientProperties clientProperties, OutputService outputService) {
+    public PingClientSchedulerService(ApplicationContext applicationContext, ThreadPoolTaskScheduler taskScheduler, PingClientProperties pingClientProperties, OutputService outputService) {
         this.applicationContext = applicationContext;
         this.taskScheduler = taskScheduler;
-        this.clientProperties = clientProperties;
+        this.pingClientProperties = pingClientProperties;
         this.outputService = outputService;
     }
 
     @PostConstruct
     public void enableScheduler() {
 
-        for (ClientProperties.ClientConfig config : clientProperties.getClients()) {
-            ClientOperation operation = (ClientOperation) applicationContext.getBean(config.getName());
+        for (PingClientProperties.ClientConfig config : pingClientProperties.getClients()) {
+            PingClientAction operation = (PingClientAction) applicationContext.getBean(config.getName());
             operation = operation.instanceCopy();
             operation.init(config.getId(), outputService, config.getConfigurationAsMap());
 

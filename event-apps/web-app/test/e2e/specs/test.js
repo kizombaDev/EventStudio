@@ -11,7 +11,7 @@ module.exports = {
     browser
       .url(devServer)
       .waitForElementVisible('#app', 5000)
-      .assert.containsText('h1', 'Home')
-      .end()
+      .assert.containsText('h1', 'Welcome to the Event-Studio')
+      .end()EventPipelineRestClientTest
   }
 }

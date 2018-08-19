@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/event")
+@RequestMapping("/api/v1/events")
 public class HTTPInputService {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -38,7 +38,7 @@ public class HTTPInputService {
         pipelineService.run(Collections.singletonList(new EventEntry(source)));
     }
 
-    @RequestMapping(path = "/multiple", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(path = "/array", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void insertMultipleLogs(@RequestBody String json) throws IOException {
         List<Map<String, Object>> source = OBJECT_MAPPER.readValue(json, new TypeReference<List<HashMap<String, Object>>>() {
         });

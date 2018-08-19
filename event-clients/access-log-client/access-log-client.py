@@ -7,7 +7,7 @@ parser.add_argument('--folder', required=True, help='The folder which includes t
 parser.add_argument('--source_id', required=True, help='The source id of the event entry which is inserted into the EventStudio')
 args = parser.parse_args()
 
-url = 'http://localhost:8081/api/v1/event/multiple'
+url = 'http://localhost:8081/api/v1/events/array'
 headers = {'content-type': 'application/json'}
 
 log_files = os.listdir(args.folder)

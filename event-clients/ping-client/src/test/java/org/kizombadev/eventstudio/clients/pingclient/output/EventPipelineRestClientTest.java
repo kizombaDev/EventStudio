@@ -16,11 +16,11 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RunWith(SpringRunner.class)
-@RestClientTest(HttpOutput.class)
-public class HttpOutputTest {
+@RestClientTest(EventPipelineRestClient.class)
+public class EventPipelineRestClientTest {
 
     @Autowired
-    private HttpOutput httpOutput;
+    private EventPipelineRestClient eventPipelineRestClient;
 
     @Autowired
     private MockRestServiceServer server;
@@ -28,11 +28,11 @@ public class HttpOutputTest {
     @Test
     public void test() {
         //Arrange
-        server.expect(once(), requestTo("http://localhost:8081/api/v1/event/single")).andRespond(withSuccess("", MediaType.APPLICATION_JSON));
+        server.expect(once(), requestTo("http://localhost:8081/api/v1/events/single")).andRespond(withSuccess("", MediaType.APPLICATION_JSON));
         Map<String, Object> map = ImmutableMap.of("source_id", "google", "type", "ping");
 
         //Act
-        httpOutput.send(map);
+        eventPipelineRestClient.send(map);
 
         //Assert
         server.verify();

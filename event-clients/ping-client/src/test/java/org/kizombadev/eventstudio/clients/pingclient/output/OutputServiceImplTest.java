@@ -5,10 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kizombadev.eventstudio.clients.pingclient.output.ClientOutput;
-import org.kizombadev.eventstudio.clients.pingclient.output.ConsoleOutput;
-import org.kizombadev.eventstudio.clients.pingclient.output.HttpOutput;
-import org.kizombadev.eventstudio.clients.pingclient.output.OutputServiceImpl;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,7 +20,7 @@ public class OutputServiceImplTest {
     private ConsoleOutput consoleOutput;
 
     @MockBean
-    private HttpOutput httpOutput;
+    private EventPipelineRestClient eventPipelineRestClient;
 
     private OutputServiceImpl outputServiceImpl = null;
 
@@ -32,7 +28,7 @@ public class OutputServiceImplTest {
     public void init() {
         List<ClientOutput> outputs = new ArrayList<>();
         outputs.add(consoleOutput);
-        outputs.add(httpOutput);
+        outputs.add(eventPipelineRestClient);
         outputServiceImpl = new OutputServiceImpl(outputs);
     }
 
@@ -45,7 +41,7 @@ public class OutputServiceImplTest {
         outputServiceImpl.handleSend(map);
 
         //Assert
-        Mockito.verify(httpOutput, Mockito.times(1)).send(map);
+        Mockito.verify(eventPipelineRestClient, Mockito.times(1)).send(map);
         Mockito.verify(consoleOutput, Mockito.times(1)).send(map);
     }
 }

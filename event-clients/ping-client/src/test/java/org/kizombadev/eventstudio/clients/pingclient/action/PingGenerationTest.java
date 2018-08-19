@@ -1,4 +1,4 @@
-package org.kizombadev.eventstudio.clients.pingclient.operation;
+package org.kizombadev.eventstudio.clients.pingclient.action;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang.SystemUtils;
@@ -15,9 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
-public class WindowsPingOperationTest {
+public class PingGenerationTest {
 
-    private WindowsPingOperation windowsPingOperation = new WindowsPingOperation();
+    private PingGeneration pingGeneration = new PingGeneration();
 
     @MockBean
     private OutputService outputService;
@@ -29,8 +29,8 @@ public class WindowsPingOperationTest {
         Map<String, String> configuration = ImmutableMap.of("host", "127.0.0.1");
 
         //Act
-        windowsPingOperation.init("localhost", outputService, configuration);
-        windowsPingOperation.run();
+        pingGeneration.init("localhost", outputService, configuration);
+        pingGeneration.run();
 
         //Assert
         ArgumentCaptor<Map<String, Object>> mapArgumentCaptor = ArgumentCaptor.forClass(Map.class);
@@ -46,9 +46,9 @@ public class WindowsPingOperationTest {
     @Test
     public void testInstanceCopy() {
         //Act
-        ClientOperation clientOperation = windowsPingOperation.instanceCopy();
+        PingClientAction pingClientAction = pingGeneration.instanceCopy();
 
         //Assert
-        Assert.assertTrue(clientOperation instanceof WindowsPingOperation);
+        Assert.assertTrue(pingClientAction instanceof PingGeneration);
     }
 }

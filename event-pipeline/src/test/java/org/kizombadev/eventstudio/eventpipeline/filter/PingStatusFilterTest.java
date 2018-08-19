@@ -8,13 +8,13 @@ import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ExtensionFilterTest {
+public class PingStatusFilterTest {
 
-    private ExtensionFilter filter;
+    private PingStatusFilter filter;
 
     @Before
     public void setup() {
-        filter = new ExtensionFilter();
+        filter = new PingStatusFilter();
         Map<String, String> configuration = new HashMap<String, String>() {{
             put("key", "status");
             put("value", "ok");
@@ -43,6 +43,6 @@ public class ExtensionFilterTest {
 
     @Test
     public void testInstanceCopy() {
-        assertThat(filter.instanceCopy()).isExactlyInstanceOf(ExtensionFilter.class);
+        assertThat(filter.instanceCopy()).isExactlyInstanceOf(PingStatusFilter.class);
     }
 }

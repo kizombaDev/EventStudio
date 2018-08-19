@@ -3,22 +3,22 @@ ping-client:
     port: 8081
   clients:
     - id: facebook
-      name: WindowsPingOperation
+      name: PingGeneration
       configuration:
         - key: host
           value: www.facebook.de
     - id: google
-      name: WindowsPingOperation
+      name: PingGeneration
       configuration:
         - key: host
           value: www.google.de
     - id: fau
-      name: WindowsPingOperation
+      name: PingGeneration
       configuration:
         - key: host
           value: www.fau.de
     - id: localhost
-      name: WindowsPingOperation
+      name: PingGeneration
       configuration:
         - key: host
           value: 172.0.0.1

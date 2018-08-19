@@ -1,4 +1,4 @@
-package org.kizombadev.eventstudio.clients.pingclient.operation;
+package org.kizombadev.eventstudio.clients.pingclient.action;
 
 import org.kizombadev.eventstudio.clients.pingclient.output.OutputService;
 import org.slf4j.Logger;
@@ -13,8 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("WindowsPingOperation")
-public class WindowsPingOperation implements ClientOperation {
+@Component("PingGeneration")
+public class PingGeneration implements PingClientAction {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private String id;
@@ -60,7 +60,7 @@ public class WindowsPingOperation implements ClientOperation {
     }
 
     @Override
-    public ClientOperation instanceCopy() {
-        return new WindowsPingOperation();
+    public PingClientAction instanceCopy() {
+        return new PingGeneration();
     }
 }
