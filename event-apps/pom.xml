@@ -15,9 +15,9 @@
     </parent>
 
     <modules>
-        <module>web-app</module>
-        <module>analysis-app</module>
         <module>extended-analysis-app</module>
         <module>house-keeping-app</module>
+        <module>web-app</module>
+        <module>analysis-app</module>
     </modules>
 </project>
