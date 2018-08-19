@@ -26,7 +26,3 @@ jobs:
     script: ./mvnw verify -B
   - script: ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -B
     name: "SonarQube"
-  #- stage: verify
-  #  script: ./mvnw verify -B
-  #- stage: sonarqube
-  #  script: ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -B

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component("RegexFilter")
-public class RegexFilter extends Filter {
+public class RegexFilter implements Filter {
     private Pattern pattern = null;
 
     @Override

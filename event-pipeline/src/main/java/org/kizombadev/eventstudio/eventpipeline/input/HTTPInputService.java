@@ -6,10 +6,7 @@ import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.controller.PipelineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -30,7 +27,7 @@ public class HTTPInputService {
         this.pipelineService = pipelineService;
     }
 
-    @RequestMapping(path = "/single", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/single", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void insertSingleLog(@RequestBody String json) throws IOException {
         Map<String, Object> source = OBJECT_MAPPER.readValue(json, new TypeReference<HashMap<String, Object>>() {
         });
@@ -38,7 +35,7 @@ public class HTTPInputService {
         pipelineService.run(Collections.singletonList(new EventEntry(source)));
     }
 
-    @RequestMapping(path = "/array", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/array", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void insertMultipleLogs(@RequestBody String json) throws IOException {
         List<Map<String, Object>> source = OBJECT_MAPPER.readValue(json, new TypeReference<List<HashMap<String, Object>>>() {
         });

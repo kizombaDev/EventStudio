@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component("AccessLogCleanerFilter")
-public class AccessLogCleanerFilter extends Filter {
+public class AccessLogCleanerFilter implements Filter {
     @Override
     public void handle(Map<String, Object> json) {
         for (Map.Entry<String, Object> entry : json.entrySet()) {

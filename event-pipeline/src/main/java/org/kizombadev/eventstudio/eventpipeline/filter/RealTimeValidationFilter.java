@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Component("RealTimeValidationFilter")
-public class RealTimeValidationFilter extends Filter {
+public class RealTimeValidationFilter implements Filter {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
 

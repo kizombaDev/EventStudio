@@ -28,7 +28,7 @@ public class RestApiService {
         this.elasticSearchService = elasticSearchService;
     }
 
-    @RequestMapping(path = "/{sourceId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/{sourceId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getElements(@PathVariable("sourceId") String sourceId,
                                               @RequestParam("from") @NotNull Integer from,
                                               @RequestParam("size") @NotNull Integer size) {
@@ -44,7 +44,7 @@ public class RestApiService {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getElementsByFilter(@RequestBody @NotNull List<FilterCriteriaDto> filters,
                                                       @RequestParam("from") @NotNull Integer from,
                                                       @RequestParam("size") @NotNull Integer size) {
@@ -54,7 +54,7 @@ public class RestApiService {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getFieldValuesByType(@RequestParam("type") String type,
                                                        @RequestParam("group-by") String groupBy) {
 
@@ -69,26 +69,26 @@ public class RestApiService {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/structure/fields", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/structure/fields", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getFields() {
         List<Map<String, String>> result = elasticSearchService.getFieldStructure();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/structure", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/structure", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getTypeIdStructure() {
 
         List<Map<String, Object>> data = elasticSearchService.getTermDiagram(new ArrayList<>(), EventKeys.TYPE, 99999);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/date-histogram", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/date-histogram", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getDateHistogram(@RequestBody @NotNull List<FilterCriteriaDto> filters) {
         List<Map<String, Object>> data = elasticSearchService.getDateHistogram(filters);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/term-diagram", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/term-diagram", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getTermDiagram(@RequestBody @NotNull List<FilterCriteriaDto> filters,
                                                  @RequestParam("term-name") @NotNull String termName,
                                                  @RequestParam("count") @NotNull Integer count) {

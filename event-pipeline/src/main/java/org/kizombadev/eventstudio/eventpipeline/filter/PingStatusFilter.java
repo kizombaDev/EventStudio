@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component("PingStatusFilter")
-public class PingStatusFilter extends Filter {
+public class PingStatusFilter implements Filter {
     private static final String REGEX_CONFIGURATION = "regex";
     private static final String KEY_CONFIGURATION = "key";
     private static final String VALUE_CONFIGURATION = "value";

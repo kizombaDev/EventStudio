@@ -77,10 +77,10 @@ public class ElasticsearchService {
 
         List<Map<String, String>> result = new ArrayList<>();
 
-        for (String fieldName : properties.keySet()) {
+        for (Map.Entry<String, Map<String, Object>> entry : properties.entrySet()) {
             Map<String, String> map = new HashMap<>();
-            map.put("field", fieldName);
-            map.put("type", properties.get(fieldName).get("type").toString());
+            map.put("field", entry.getKey());
+            map.put("type", entry.getValue().get("type").toString());
             result.add(map);
         }
 

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component("SequentialTimeIdFilter")
-public class SequentialTimeIdFilter extends Filter {
+public class SequentialTimeIdFilter implements Filter {
 
     private static final Map<String, AtomicLong> ATOMIC_MAP = new HashMap<>();
     private final ElasticsearchService elasticSearchService;

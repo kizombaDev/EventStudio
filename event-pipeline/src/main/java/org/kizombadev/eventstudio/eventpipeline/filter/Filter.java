@@ -2,16 +2,16 @@ package org.kizombadev.eventstudio.eventpipeline.filter;
 
 import java.util.Map;
 
-public abstract class Filter {
-    abstract void handle(Map<String, Object> source);
+public interface Filter {
+    void handle(Map<String, Object> source);
 
-    abstract Filter instanceCopy();
+    Filter instanceCopy();
 
-    public void init(Map<String, String> configuration) {
+    default void init(Map<String, String> configuration) {
 
     }
 
-    String getConfigurationOrThrow(String property, Map<String, String> configuration) {
+    default String getConfigurationOrThrow(String property, Map<String, String> configuration) {
         if (!configuration.containsKey(property)) {
             throw new IllegalStateException(String.format("The configuration property '%s' is missing", property));
         }
@@ -19,7 +19,7 @@ public abstract class Filter {
         return configuration.get(property);
     }
 
-    Object getPropertyOrThrow(String property, Map<String, Object> entry) {
+    default Object getPropertyOrThrow(String property, Map<String, Object> entry) {
         if (!entry.containsKey(property)) {
             throw new IllegalStateException(String.format("The property '%s' is missing in the entry", property));
         }

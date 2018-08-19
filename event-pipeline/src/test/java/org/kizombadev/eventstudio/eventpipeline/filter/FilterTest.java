@@ -32,7 +32,7 @@ public class FilterTest {
         filter.init(new HashMap<>());
     }
 
-    private static class TestFilter extends Filter {
+    private static class TestFilter implements Filter {
 
         @Override
         public void handle(Map<String, Object> source) {

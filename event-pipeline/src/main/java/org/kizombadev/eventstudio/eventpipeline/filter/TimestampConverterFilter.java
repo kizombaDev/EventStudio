@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @Component("TimestampConverterFilter")
-public class TimestampConverterFilter extends Filter {
+public class TimestampConverterFilter implements Filter {
 
     private static final String PATTERN_CONFIGURATION = "pattern";
     private static final String LANGUAGE_CONFIGURATION = "lang";
