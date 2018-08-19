@@ -3,7 +3,7 @@ elasticsearch:
   nodes:
   - ip: localhost
     port: 9300
-  indexname: eventstudio
+  indexname: test
 extended-analysis:
   eventType: access_log
   indicatorField: ip

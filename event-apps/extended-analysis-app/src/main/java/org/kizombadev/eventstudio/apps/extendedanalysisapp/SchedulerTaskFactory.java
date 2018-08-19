@@ -9,12 +9,12 @@ import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class ExtendedAnalysisAppSchedulerService {
+public class SchedulerTaskFactory {
     private ThreadPoolTaskScheduler taskScheduler;
     private ReferenceAnalysis operation;
 
     @Autowired
-    public ExtendedAnalysisAppSchedulerService(ThreadPoolTaskScheduler taskScheduler, ReferenceAnalysis operation) {
+    public SchedulerTaskFactory(ThreadPoolTaskScheduler taskScheduler, ReferenceAnalysis operation) {
         this.taskScheduler = taskScheduler;
         this.operation = operation;
     }

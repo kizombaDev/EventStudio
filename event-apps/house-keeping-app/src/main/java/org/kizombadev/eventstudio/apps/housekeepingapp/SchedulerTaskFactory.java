@@ -9,12 +9,12 @@ import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class HouseKeepingAppSchedulerService {
+public class SchedulerTaskFactory {
     private ThreadPoolTaskScheduler taskScheduler;
     private DeleteEvents operation;
 
     @Autowired
-    public HouseKeepingAppSchedulerService(ThreadPoolTaskScheduler taskScheduler, DeleteEvents operation) {
+    public SchedulerTaskFactory(ThreadPoolTaskScheduler taskScheduler, DeleteEvents operation) {
         this.taskScheduler = taskScheduler;
         this.operation = operation;
     }
