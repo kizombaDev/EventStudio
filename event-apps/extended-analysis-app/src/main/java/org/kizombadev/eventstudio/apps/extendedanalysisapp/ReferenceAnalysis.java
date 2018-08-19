@@ -2,7 +2,7 @@ package org.kizombadev.eventstudio.apps.extendedanalysisapp;
 
 import com.google.common.base.Strings;
 import org.kizombadev.eventstudio.common.EventKeys;
-import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
+import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterOperation;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterType;
@@ -17,11 +17,11 @@ import java.util.*;
 public class ReferenceAnalysis implements Runnable {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private ElasticSearchService elasticSearchService;
+    private ElasticsearchService elasticSearchService;
     private Properties properties;
 
     @Autowired
-    public ReferenceAnalysis(ElasticSearchService elasticSearchService, Properties properties) {
+    public ReferenceAnalysis(ElasticsearchService elasticSearchService, Properties properties) {
         this.elasticSearchService = elasticSearchService;
         this.properties = properties;
     }

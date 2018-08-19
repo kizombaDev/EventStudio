@@ -1,7 +1,7 @@
 package org.kizombadev.eventstudio.eventpipeline.output;
 
 import org.kizombadev.eventstudio.common.EventKeys;
-import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
+import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
 import org.kizombadev.eventstudio.common.elasticsearch.FieldTypes;
 import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 public class ElasticsearchOutput implements Output {
 
     private static final List<String> EXISTING_FIELDS = Collections.synchronizedList(new ArrayList());
-    private ElasticSearchService elasticSearchService;
+    private ElasticsearchService elasticSearchService;
 
     @Autowired
-    public ElasticsearchOutput(ElasticSearchService elasticSearchService) {
+    public ElasticsearchOutput(ElasticsearchService elasticSearchService) {
         this.elasticSearchService = elasticSearchService;
     }
 

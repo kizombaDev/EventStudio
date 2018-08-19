@@ -3,7 +3,7 @@ package org.kizombadev.eventstudio.apps.analysisapp;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
+import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -30,7 +30,7 @@ public class RestApiServiceTest {
     private static final String BASE_URL = "/api/v1/events";
 
     @MockBean
-    private ElasticSearchService elasticSearchService;
+    private ElasticsearchService elasticSearchService;
 
     @Autowired
     private TestRestTemplate testRestTemplate;

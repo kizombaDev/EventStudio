@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kizombadev.eventstudio.common.EventKeys;
-import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
+import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -20,7 +20,7 @@ public class SequentialTimeIdFilterTest {
     private Filter filter;
 
     @Mock
-    private ElasticSearchService elasticSearchService;
+    private ElasticsearchService elasticSearchService;
 
     @Before
     public void init() {

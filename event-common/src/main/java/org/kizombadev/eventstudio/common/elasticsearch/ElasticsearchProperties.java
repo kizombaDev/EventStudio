@@ -14,7 +14,7 @@ public class ElasticsearchProperties {
     private static final String PROPERTY_ROOT = "elasticsearch.";
 
     private String clusterName;
-    private List<Nodes> nodes = new ArrayList<>();
+    private List<Node> nodes = new ArrayList<>();
     private String indexName;
 
     public String getClusterName() {
@@ -27,11 +27,11 @@ public class ElasticsearchProperties {
         this.clusterName = clusterName;
     }
 
-    public List<Nodes> getNodes() {
+    public List<Node> getNodes() {
         return nodes;
     }
 
-    public void setNodes(List<Nodes> nodes) {
+    public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
     }
 
@@ -45,7 +45,7 @@ public class ElasticsearchProperties {
         this.indexName = indexName;
     }
 
-    public static class Nodes {
+    public static class Node {
         private static final String PROPERTY_ROOT_NODES = PROPERTY_ROOT + "nodes.";
         private String ip;
         private Integer port;

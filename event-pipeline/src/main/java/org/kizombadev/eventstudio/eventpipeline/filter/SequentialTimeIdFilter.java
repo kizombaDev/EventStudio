@@ -1,7 +1,7 @@
 package org.kizombadev.eventstudio.eventpipeline.filter;
 
 import org.kizombadev.eventstudio.common.EventKeys;
-import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
+import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterOperation;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterType;
@@ -17,10 +17,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class SequentialTimeIdFilter extends Filter {
 
     private static final Map<String, AtomicLong> ATOMIC_MAP = new HashMap<>();
-    private final ElasticSearchService elasticSearchService;
+    private final ElasticsearchService elasticSearchService;
 
     @Autowired
-    public SequentialTimeIdFilter(ElasticSearchService elasticSearchService) {
+    public SequentialTimeIdFilter(ElasticsearchService elasticSearchService) {
         this.elasticSearchService = elasticSearchService;
     }
 

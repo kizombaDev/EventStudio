@@ -53,7 +53,7 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
 
     private void buildClient() throws UnknownHostException {
         transportClient = new PreBuiltTransportClient(getSettings());
-        for (ElasticsearchProperties.Nodes node : elasticsearchProperties.getNodes()) {
+        for (ElasticsearchProperties.Node node : elasticsearchProperties.getNodes()) {
             transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(node.getIp()), node.getPort()));
         }
     }

@@ -18,10 +18,10 @@ import java.util.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CommonTestApp.class)
 @TestConfiguration
-public class ElasticSearchServiceITCase {
+public class ElasticsearchServiceITCase {
 
     @Autowired
-    private ElasticSearchService elasticSearchService;
+    private ElasticsearchService elasticSearchService;
 
     @Before
     public void init() {
@@ -42,6 +42,8 @@ public class ElasticSearchServiceITCase {
 
         elasticSearchService.bulkInsert(Arrays.asList(pingOne, pingTwo));
     }
+
+    //TODO write more tests
 
     @Test
     public void testGetElementsByFilter() {

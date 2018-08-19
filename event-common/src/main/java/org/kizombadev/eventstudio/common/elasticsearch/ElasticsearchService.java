@@ -40,14 +40,13 @@ import java.time.Period;
 import java.util.*;
 
 @Service
-public class ElasticSearchService {
-    public static final String DEFAULT_DOC_TYPE = "_doc";
-
+public class ElasticsearchService {
+    private static final String DEFAULT_DOC_TYPE = "_doc";
     private final TransportClient transportClient;
     private final ElasticsearchProperties elasticsearchProperties;
 
     @Autowired
-    public ElasticSearchService(TransportClient transportClient, ElasticsearchProperties elasticsearchProperties) {
+    public ElasticsearchService(TransportClient transportClient, ElasticsearchProperties elasticsearchProperties) {
         this.transportClient = transportClient;
         this.elasticsearchProperties = elasticsearchProperties;
     }
@@ -236,7 +235,7 @@ public class ElasticSearchService {
         BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
         for (Map<String, Object> document : documents) {
-            bulkRequest.add(transportClient.prepareIndex(indexName, ElasticSearchService.DEFAULT_DOC_TYPE).setSource(document));
+            bulkRequest.add(transportClient.prepareIndex(indexName, ElasticsearchService.DEFAULT_DOC_TYPE).setSource(document));
         }
 
         BulkResponse bulkResponse = bulkRequest.get();

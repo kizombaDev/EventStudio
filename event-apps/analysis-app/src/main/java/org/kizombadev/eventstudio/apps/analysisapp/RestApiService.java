@@ -1,7 +1,7 @@
 package org.kizombadev.eventstudio.apps.analysisapp;
 
 import org.kizombadev.eventstudio.common.EventKeys;
-import org.kizombadev.eventstudio.common.elasticsearch.ElasticSearchService;
+import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterOperation;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterType;
@@ -21,10 +21,10 @@ import java.util.Map;
 @RequestMapping("/api/v1/events")
 public class RestApiService {
 
-    private ElasticSearchService elasticSearchService;
+    private ElasticsearchService elasticSearchService;
 
     @Autowired
-    public RestApiService(ElasticSearchService elasticSearchService) {
+    public RestApiService(ElasticsearchService elasticSearchService) {
         this.elasticSearchService = elasticSearchService;
     }
 
