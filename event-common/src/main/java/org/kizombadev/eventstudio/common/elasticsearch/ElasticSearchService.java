@@ -1,10 +1,17 @@
 package org.kizombadev.eventstudio.common.elasticsearch;
 
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -34,6 +41,8 @@ import java.util.*;
 
 @Service
 public class ElasticSearchService {
+    public static final String DEFAULT_DOC_TYPE = "_doc";
+
     private final TransportClient transportClient;
     private final ElasticsearchProperties elasticsearchProperties;
 
@@ -195,6 +204,52 @@ public class ElasticSearchService {
         return response.getDeleted();
     }
 
+    public void prepareIndex() {
+        GetIndexResponse response = transportClient.admin().indices().prepareGetIndex().get();
+
+        boolean indexExist = Arrays.stream(response.getIndices()).anyMatch(x -> x.equals(elasticsearchProperties.getIndexName()));
+        if (!indexExist) {
+            createIndex();
+        }
+    }
+
+    public void prepareMappingField(String field, String type) {
+
+                PutMappingResponse response = transportClient
+                .admin()
+                .indices()
+                .preparePutMapping(elasticsearchProperties.getIndexName())
+                .setType(DEFAULT_DOC_TYPE)
+                .setSource("{\n" +
+                        "  \"properties\": {\n" +
+                        "    \"" + field + "\": {\n" +
+                        "\t\t\"type\": \"" + type + "\"\n" +
+                        "\t }\n" +
+                        "  }\n" +
+                        "}", XContentType.JSON).get();
+        checkResponse(response, "prepare mapping failed");
+    }
+
+    public void bulkInsert(List<Map<String, Object>> documents) {
+        String indexName = elasticsearchProperties.getIndexName();
+
+        BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
+
+        for (Map<String, Object> document : documents) {
+            bulkRequest.add(transportClient.prepareIndex(indexName, ElasticSearchService.DEFAULT_DOC_TYPE).setSource(document));
+        }
+
+        BulkResponse bulkResponse = bulkRequest.get();
+        if (bulkResponse.hasFailures()) {
+            throw new IllegalStateException(bulkResponse.buildFailureMessage());
+        }
+    }
+
+    private void createIndex() {
+        CreateIndexResponse response = transportClient.admin().indices().prepareCreate(elasticsearchProperties.getIndexName()).get();
+        checkResponse(response, "the index creation failed");
+    }
+
     private QueryBuilder createBoolFilter(List<FilterCriteriaDto> filters, String expectedType) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
@@ -223,6 +278,12 @@ public class ElasticSearchService {
         }
 
         return queryBuilder;
+    }
+
+    private void checkResponse(AcknowledgedResponse response, String message) {
+        if (!response.isAcknowledged()) {
+            throw new IllegalStateException(message);
+        }
     }
 }
 
