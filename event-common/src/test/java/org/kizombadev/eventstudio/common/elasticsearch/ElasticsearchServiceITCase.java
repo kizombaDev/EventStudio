@@ -31,6 +31,7 @@ public class ElasticsearchServiceITCase {
         elasticSearchService.prepareMappingField(EventKeys.TYPE, FieldTypes.KEYWORD_TYPE);
         elasticSearchService.deleteEvents(0);
 
+        sleep(5);
         final Map<String, Object> pingOne = new HashMap<>();
         pingOne.put(EventKeys.TIMESTAMP, LocalDateTime.of(2014,8,14,12,12,12).toString());
         pingOne.put(EventKeys.SOURCE_ID, "fau_ping");
@@ -41,6 +42,15 @@ public class ElasticsearchServiceITCase {
         pingTwo.put(EventKeys.TYPE, "ping");
 
         elasticSearchService.bulkInsert(Arrays.asList(pingOne, pingTwo));
+        sleep(5);
+    }
+
+    private void sleep(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     //TODO write more tests
