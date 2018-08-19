@@ -14,13 +14,13 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestConfiguration
-public class PingClientPropertiesITCase {
+public class PingClientPropertiesTest {
 
     @Autowired
     private PingClientProperties pingClientProperties;
 
     @Test
-    public void test() {
+    public void testClientConfigs() {
         List<PingClientProperties.ClientConfig> clientConfigs =  pingClientProperties.getClients();
         Assert.assertEquals(4, clientConfigs.size());
         PingClientProperties.ClientConfig actualConfig = clientConfigs.get(2);
@@ -29,5 +29,10 @@ public class PingClientPropertiesITCase {
         Assert.assertEquals(1, actualConfig.getConfiguration().size());
         Assert.assertEquals("host", actualConfig.getConfiguration().get(0).getKey());
         Assert.assertEquals("www.fau.de", actualConfig.getConfiguration().get(0).getValue());
+    }
+
+    @Test
+    public void testPipelineUrl() {
+        Assert.assertEquals("http://localhost:8081/api/v1/events/single", pingClientProperties.getPipelineUrl());
     }
 }

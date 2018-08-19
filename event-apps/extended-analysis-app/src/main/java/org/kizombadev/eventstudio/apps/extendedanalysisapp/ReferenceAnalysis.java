@@ -20,6 +20,8 @@ public class ReferenceAnalysis implements Runnable {
     private ElasticsearchService elasticSearchService;
     private Properties properties;
 
+    //todo refactor this method and test the functionality (create mapping at startup)
+
     @Autowired
     public ReferenceAnalysis(ElasticsearchService elasticSearchService, Properties properties) {
         this.elasticSearchService = elasticSearchService;

@@ -16,9 +16,20 @@ public class PingClientProperties {
     private static final String PROPERTY_ROOT = "ping-client.";
 
     private final List<ClientConfig> clients = new ArrayList<>();
+    private String pipelineUrl;
 
     public List<ClientConfig> getClients() {
         return clients;
+    }
+
+    public String getPipelineUrl() {
+        PropertyHelper.validateNotEmpty(PROPERTY_ROOT + "pipeline-url", pipelineUrl);
+        return pipelineUrl;
+    }
+
+    public void setPipelineUrl(String pipelineUrl) {
+        PropertyHelper.logPropertyValue(PROPERTY_ROOT + "pipeline-url", pipelineUrl);
+        this.pipelineUrl = pipelineUrl;
     }
 
     public static class ClientConfig {

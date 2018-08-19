@@ -10,6 +10,6 @@ public final class FilterOperation {
     public static final String NOT_EXIST = "not_exist";
 
     private FilterOperation() {
-        //nothing todo
+        //nothing to do
     }
 }

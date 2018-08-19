@@ -2,6 +2,8 @@ package org.kizombadev.eventstudio.clients.pingclient.output;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.kizombadev.eventstudio.clients.pingclient.PingClientProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,9 +17,12 @@ import java.util.Map;
 @Service
 public class EventPipelineRestClient implements ClientOutput {
     private final RestTemplate restTemplate;
+    private final PingClientProperties pingClientProperties;
 
-    public EventPipelineRestClient(RestTemplateBuilder restTemplateBuilder) {
+    @Autowired
+    public EventPipelineRestClient(RestTemplateBuilder restTemplateBuilder, PingClientProperties pingClientProperties) {
         restTemplate = restTemplateBuilder.build();
+        this.pingClientProperties = pingClientProperties;
     }
 
     public void send(Map<String, Object> data) {
@@ -28,8 +33,7 @@ public class EventPipelineRestClient implements ClientOutput {
             headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
             HttpEntity<String> request = new HttpEntity<>(jsonResp, headers);
 
-            //todo use host and port of the configuration file
-            restTemplate.exchange("http://localhost:8081/api/v1/events/single", HttpMethod.POST, request, Object.class);
+            restTemplate.exchange(pingClientProperties.getPipelineUrl(), HttpMethod.POST, request, Object.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
