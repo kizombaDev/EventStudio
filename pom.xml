@@ -32,7 +32,7 @@
         <module>event-clients</module>
         <module>event-pipeline</module>
         <module>event-apps</module>
-        <!-- TODO enable event-test -->
+        <!--TODO add event-tests -->
         <!--<module>event-test</module>-->
     </modules>
 
@@ -95,98 +95,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <!--<plugin>-->
-                <!--<groupId>org.jacoco</groupId>-->
-                <!--<artifactId>jacoco-maven-plugin</artifactId>-->
-                <!--<version>0.8.1</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>pre-unit-test</id>-->
-                        <!--<goals>-->
-                            <!--<goal>prepare-agent</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                    <!--<execution>-->
-                        <!--<id>post-unit-test</id>-->
-                        <!--<phase>test</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>report</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-            <!--<plugin>-->
-                <!--<groupId>org.jacoco</groupId>-->
-                <!--<artifactId>jacoco-maven-plugin</artifactId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>prepare-agent</id>-->
-                        <!--<goals>-->
-                            <!--<goal>prepare-agent</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<propertyName>surefireArgLine</propertyName>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                    <!--&lt;!&ndash;<execution>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<id>pre-unit-test</id>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<goals>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<goal>prepare-agent</goal>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</goals>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<configuration>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<propertyName>surefireArgLine</propertyName>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</configuration>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</execution>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<execution>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<id>post-unit-test</id>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<phase>test</phase>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<goals>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<goal>report</goal>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</goals>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</execution>&ndash;&gt;-->
-                    <!--<execution>-->
-                        <!--<id>prepare-agent-integration</id>-->
-                        <!--<goals>-->
-                            <!--<goal>prepare-agent-integration</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<propertyName>failsafeArgLine</propertyName>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-surefire-plugin</artifactId>-->
-                <!--<version>2.19.1</version>-->
-                <!--<configuration>-->
-                    <!--&lt;!&ndash; Sets the VM argument line used when unit tests are run. &ndash;&gt;-->
-                    <!--<argLine>${surefireArgLine}</argLine>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-failsafe-plugin</artifactId>-->
-                <!--<version>2.19.1</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>integration-test</id>-->
-                        <!--<goals>-->
-                            <!--<goal>integration-test</goal>-->
-                            <!--<goal>verify</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--&lt;!&ndash; Sets the VM argument line used when integration tests are run. &ndash;&gt;-->
-                            <!--<argLine>${failsafeArgLine}</argLine>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-        </plugins>
-    </build>
 
     <profiles>
         <profile>
