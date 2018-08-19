@@ -1,0 +1,51 @@
+elasticsearch:
+  clustername: elasticsearch
+  nodes:
+  - ip: localhost
+    port: 9300
+  indexname: test
+pipeline:
+  filter:
+  - name: RegexFilter
+    type: ping
+    configuration:
+    - key: regex
+      value: 'Antwort von (?<ip>[.\d]*): Bytes=(?<bytes>\d*) Zeit[=<](?<time>\d*)ms TTL=(?<ttl>\d*)'
+  - name: PingStatusFilter
+    type: ping
+    configuration:
+    - key: regex
+      value: 'PING: Fehler bei der Übertragung. Allgemeiner Fehler.|berschreitung der Anforderung.'
+    - key: key
+      value: status
+    - key: value
+      value: failed
+  - name: PingStatusFilter
+    type: ping
+    configuration:
+    - key: regex
+      value: 'Antwort von ([.\d]*): Bytes=(\d*) Zeit[=<](\d*)ms TTL=(\d*)'
+    - key: key
+      value: status
+    - key: value
+      value: ok
+  - name: RegexFilter
+    type: access_log
+    configuration:
+    - key: regex
+      value: '(?<ip>.*?) (?<remote_log_name>.*?) \[(?<timestamp>.*?)\] \"(?<request_method>.*?) (?<path>.*?) (?<request_version>HTTP\/.*)?\" (?<response_status>.*?) (?<length>.*?) (?<host>.*?) \"(?<referrer>.*?)\" \"(?<user_agent>.*?)\"'
+  - name: TimestampConverterFilter
+    type: access_log
+    configuration:
+    - key: pattern
+      value: 'dd/MMM/yyyy:kk:mm:ss Z'
+    - key: lang
+      value: en
+  - name: AccessLogCleanerFilter
+    type: access_log
+  - name: SequentialTimeIdFilter
+    type: access_log
+  - name: RealTimeValidationFilter
+    type: ping
+server:
+  port: 8081

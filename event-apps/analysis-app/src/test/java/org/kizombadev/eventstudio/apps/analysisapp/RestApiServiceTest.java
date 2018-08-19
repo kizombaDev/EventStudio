@@ -1,10 +1,9 @@
 package org.kizombadev.eventstudio.apps.analysisapp;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
-import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
+import org.kizombadev.eventstudio.common.EventKeys;
+import org.kizombadev.eventstudio.common.elasticsearch.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
@@ -21,8 +20,6 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//todo fix tests
-@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RestApiServiceTest {
@@ -52,10 +49,10 @@ public class RestApiServiceTest {
 
     private static List<FilterCriteriaDto> getSampleFilterDto() {
         FilterCriteriaDto filterCriteriaDto = new FilterCriteriaDto();
-        filterCriteriaDto.setField("id");
+        filterCriteriaDto.setField(EventKeys.SOURCE_ID);
         filterCriteriaDto.setValue("ping_google");
-        filterCriteriaDto.setOperator("equals");
-        filterCriteriaDto.setType("primary");
+        filterCriteriaDto.setOperator(FilterOperation.EQUALS);
+        filterCriteriaDto.setType(FilterType.PRIMARY);
         return Collections.singletonList(filterCriteriaDto);
     }
 
@@ -78,8 +75,8 @@ public class RestApiServiceTest {
         //Arrange
         List<Map<String, String>> json = new ArrayList<>();
         Map<String, String> map = new HashMap<>();
-        map.put("field", "bytes");
-        map.put("type", "integer");
+        map.put("field", EventKeys.BYTES);
+        map.put("type", FieldTypes.INTEGER_TYPE);
         json.add(map);
         Mockito.when(elasticSearchService.getFieldStructure()).thenReturn(json);
 
@@ -110,25 +107,25 @@ public class RestApiServiceTest {
     @Test
     public void testGetFieldValuesByType() {
         //Arrange
-        Mockito.when(elasticSearchService.getTermDiagram(filterArgumentCaptor.capture(), Mockito.eq("id"), Mockito.eq(99999))).thenReturn(getSampleJsonResponse());
+        Mockito.when(elasticSearchService.getTermDiagram(filterArgumentCaptor.capture(), Mockito.eq(EventKeys.SOURCE_ID), Mockito.eq(99999))).thenReturn(getSampleJsonResponse());
 
         //Act
-        ResponseEntity<String> response = testRestTemplate.getForEntity(BASE_URL + "?type=ping&group-by=id", String.class);
+        ResponseEntity<String> response = testRestTemplate.getForEntity(BASE_URL + "?type=ping&group-by=" + EventKeys.SOURCE_ID , String.class);
 
         //Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON_UTF8);
         assertSampleJsonResponse(response);
-        assertThat(filterArgumentCaptor.getValue().get(0).getField()).isEqualTo("type");
+        assertThat(filterArgumentCaptor.getValue().get(0).getField()).isEqualTo(EventKeys.TYPE);
         assertThat(filterArgumentCaptor.getValue().get(0).getValue()).isEqualTo("ping");
-        assertThat(filterArgumentCaptor.getValue().get(0).getOperator()).isEqualTo("equals");
-        assertThat(filterArgumentCaptor.getValue().get(0).getType()).isEqualTo("primary");
+        assertThat(filterArgumentCaptor.getValue().get(0).getOperator()).isEqualTo(FilterOperation.EQUALS);
+        assertThat(filterArgumentCaptor.getValue().get(0).getType()).isEqualTo(FilterType.PRIMARY);
     }
 
     @Test
     public void testGetTypeIdStructure() {
         //Arrange
-        Mockito.when(elasticSearchService.getTermDiagram(filterArgumentCaptor.capture(), Mockito.eq("type"), Mockito.eq(99999))).thenReturn(getSampleJsonResponse());
+        Mockito.when(elasticSearchService.getTermDiagram(filterArgumentCaptor.capture(), Mockito.eq(EventKeys.TYPE), Mockito.eq(99999))).thenReturn(getSampleJsonResponse());
 
         //Act
         ResponseEntity<String> response = testRestTemplate.getForEntity(BASE_URL + "/structure", String.class);
@@ -171,9 +168,9 @@ public class RestApiServiceTest {
     }
 
     private void assertFilterDto() {
-        assertThat(filterArgumentCaptor.getValue().get(0).getField()).isEqualTo("id");
+        assertThat(filterArgumentCaptor.getValue().get(0).getField()).isEqualTo(EventKeys.SOURCE_ID);
         assertThat(filterArgumentCaptor.getValue().get(0).getValue()).isEqualTo("ping_google");
-        assertThat(filterArgumentCaptor.getValue().get(0).getOperator()).isEqualTo("equals");
-        assertThat(filterArgumentCaptor.getValue().get(0).getType()).isEqualTo("primary");
+        assertThat(filterArgumentCaptor.getValue().get(0).getOperator()).isEqualTo(FilterOperation.EQUALS);
+        assertThat(filterArgumentCaptor.getValue().get(0).getType()).isEqualTo(FilterType.PRIMARY);
     }
 }

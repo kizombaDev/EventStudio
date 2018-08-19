@@ -1,0 +1,26 @@
+ping-client:
+  pipeline:
+    port: 8081
+  clients:
+    - id: facebook
+      name: PingGeneration
+      configuration:
+        - key: host
+          value: www.facebook.de
+    - id: google
+      name: PingGeneration
+      configuration:
+        - key: host
+          value: www.google.de
+    - id: fau
+      name: PingGeneration
+      configuration:
+        - key: host
+          value: www.fau.de
+    - id: localhost
+      name: PingGeneration
+      configuration:
+        - key: host
+          value: 172.0.0.1
+server:
+  port: 8083
