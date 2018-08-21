@@ -1,9 +1,8 @@
 package org.kizombadev.eventstudio.eventpipeline.output;
 
-import org.kizombadev.eventstudio.common.EventKeys;
 import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
-import org.kizombadev.eventstudio.common.elasticsearch.FieldTypes;
 import org.kizombadev.eventstudio.eventpipeline.EventEntry;
+import org.kizombadev.eventstudio.eventpipeline.FieldMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,39 +34,13 @@ public class ElasticsearchOutput implements Output {
 
     private void prepareMapping(EventEntry data) {
 
-
-        //TODO extract to config file
-        Map<String, String> types = new HashMap<>();
-        types.put("source_id", FieldTypes.KEYWORD_TYPE);
-        types.put("type", FieldTypes.KEYWORD_TYPE);
-        types.put("timestamp", FieldTypes.DATE_TYPE);
-        types.put("data", FieldTypes.TEXT_TYPE);
-
-        types.put("status", FieldTypes.KEYWORD_TYPE);
-        types.put("time", FieldTypes.INTEGER_TYPE);
-        types.put("ttl", FieldTypes.INTEGER_TYPE);
-        types.put("ip", FieldTypes.IP_TYPE);
-        types.put("bytes", FieldTypes.INTEGER_TYPE);
-        types.put(EventKeys.TIME_MANIPULATION, FieldTypes.BOOLEAN_TYPE);
-
-        types.put("length", FieldTypes.INTEGER_TYPE);
-        types.put("request_method", FieldTypes.KEYWORD_TYPE);
-        types.put("path", FieldTypes.KEYWORD_TYPE);
-        types.put("request_version", FieldTypes.KEYWORD_TYPE);
-        types.put("response_status", FieldTypes.INTEGER_TYPE);
-        types.put("host", FieldTypes.KEYWORD_TYPE);
-        types.put("referrer", FieldTypes.KEYWORD_TYPE);
-        types.put("user_agent", FieldTypes.KEYWORD_TYPE);
-        types.put("remote_log_name", FieldTypes.KEYWORD_TYPE);
-        types.put("sequential_time_id", FieldTypes.INTEGER_TYPE);
-
         for (Map.Entry<String, Object> pair : data.getSource().entrySet()) {
 
-            if (!types.containsKey(pair.getKey())) {
+            if (!FieldMapping.contains(pair.getKey())) {
                 throw new IllegalStateException(String.format("for the field '%s' does not exist a mapping field definition", pair.getKey()));
             }
 
-            prepareMappingField(pair.getKey(), types.get(pair.getKey()));
+            prepareMappingField(pair.getKey(), FieldMapping.getTypeOfField(pair.getKey()));
         }
     }
 

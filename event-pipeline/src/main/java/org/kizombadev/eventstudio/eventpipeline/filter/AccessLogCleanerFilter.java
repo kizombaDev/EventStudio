@@ -1,5 +1,8 @@
 package org.kizombadev.eventstudio.eventpipeline.filter;
 
+import org.kizombadev.eventstudio.common.EventKeys;
+import org.kizombadev.eventstudio.common.elasticsearch.FieldTypes;
+import org.kizombadev.eventstudio.eventpipeline.FieldMapping;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -9,16 +12,15 @@ public class AccessLogCleanerFilter implements Filter {
     @Override
     public void handle(Map<String, Object> json) {
         for (Map.Entry<String, Object> entry : json.entrySet()) {
-            String value = entry.getValue().toString();
-            //TODO only remove the character on integer fields
-            value = value.replace("-", "");
-            value = value.replace(" ", "");
 
-            if (value.isEmpty()) {
-                json.put(entry.getKey(), "");
+            if (FieldMapping.isFieldOfType(entry.getKey(), FieldTypes.INTEGER_TYPE)) {
+                String value = entry.getValue().toString();
+                value = value.replace("-", "");
+                value = value.replace(" ", "");
+                json.put(entry.getKey(), value);
             }
 
-            if ("ip".equals(entry.getKey())) {
+            if (EventKeys.IP.equals(entry.getKey())) {
                 json.put(entry.getKey(), entry.getValue().toString().replace("x", "0"));
             }
         }

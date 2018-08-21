@@ -1,6 +1,7 @@
 package org.kizombadev.eventstudio.eventpipeline.filter;
 
 import org.junit.Test;
+import org.kizombadev.eventstudio.common.EventKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,19 +15,19 @@ public class AccessLogCleanerFilterTest {
     @Test
     public void testFixIPNormalization() {
         Map<String, Object> json = new HashMap<String, Object>() {{
-            put("ip", "78.78.4.x");
+            put(EventKeys.IP, "78.78.4.x");
         }};
         filter.handle(json);
-        assertThat(json.get("ip").toString()).isEqualTo("78.78.4.0");
+        assertThat(json.get(EventKeys.IP).toString()).isEqualTo("78.78.4.0");
     }
 
     @Test
     public void testCleanEmptyValues() {
         Map<String, Object> json = new HashMap<String, Object>() {{
-            put("status", " - ");
+            put(EventKeys.BYTES, " - ");
         }};
         filter.handle(json);
-        assertThat(json.get("status").toString()).isEqualTo("");
+        assertThat(json.get(EventKeys.BYTES).toString()).isEqualTo("");
     }
 
     @Test
