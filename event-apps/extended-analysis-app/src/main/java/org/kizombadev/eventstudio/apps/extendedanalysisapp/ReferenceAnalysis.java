@@ -28,6 +28,7 @@ public class ReferenceAnalysis implements Runnable {
 
     @PostConstruct
     public void prepareReferenceFieldMapping() {
+        elasticSearchService.prepareIndex();
         elasticSearchService.prepareMappingField(properties.getReferenceField(), FieldTypes.KEYWORD_TYPE);
     }
 

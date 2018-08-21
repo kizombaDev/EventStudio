@@ -131,21 +131,41 @@ public class ElasticsearchServiceITCase {
     @Test
     public void testGetDateHistogram() {
         //arrange
-        FilterCriteriaDto dto = new FilterCriteriaDto(EventKeys.TYPE, "ping", FilterType.PRIMARY, FilterOperation.EQUALS);
+        FilterCriteriaDto primaryDto = new FilterCriteriaDto(EventKeys.TYPE, "ping", FilterType.PRIMARY, FilterOperation.EQUALS);
+        FilterCriteriaDto secondaryDto = new FilterCriteriaDto(EventKeys.SEQUENTIAL_TIME_ID, "2", FilterType.SECONDARY, FilterOperation.GREATER_THEN_OR_EQUAL);
         final String primaryCount = "primary_count";
         final String secondaryCount = "secondary_count";
         final String key = "key";
 
         //act
-        List<Map<String, Object>> dateHistogram = elasticSearchService.getDateHistogram(Collections.singletonList(dto));
+        List<Map<String, Object>> dateHistogram = elasticSearchService.getDateHistogram(Arrays.asList(primaryDto, secondaryDto));
 
         //assert
         Assert.assertEquals(2, dateHistogram.size());
         Assert.assertEquals("14-08-2014", dateHistogram.get(0).get(key));
         Assert.assertEquals(1L, dateHistogram.get(0).get(primaryCount));
-        Assert.assertEquals(1L, dateHistogram.get(0).get(secondaryCount));
+        Assert.assertEquals(0L, dateHistogram.get(0).get(secondaryCount));
         Assert.assertEquals("15-08-2014", dateHistogram.get(1).get(key));
         Assert.assertEquals(1L, dateHistogram.get(1).get(primaryCount));
         Assert.assertEquals(1L, dateHistogram.get(1).get(secondaryCount));
     }
+
+    @Test
+    public void testGetTermDiagram() {
+        //arrange
+        FilterCriteriaDto dto = new FilterCriteriaDto(EventKeys.TYPE, "ping", FilterType.PRIMARY, FilterOperation.EQUALS);
+        final String count = "count";
+        final String key = "key";
+
+        //act
+        List<Map<String, Object>> termDiagram = elasticSearchService.getTermDiagram(Collections.singletonList(dto), EventKeys.SEQUENTIAL_TIME_ID, 10);
+
+        //assert
+        Assert.assertEquals(2, termDiagram.size());
+        Assert.assertEquals("1", termDiagram.get(0).get(key));
+        Assert.assertEquals(1L, termDiagram.get(0).get(count));
+        Assert.assertEquals("2", termDiagram.get(1).get(key));
+        Assert.assertEquals(1L, termDiagram.get(1).get(count));
+    }
+
 }
