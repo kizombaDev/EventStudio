@@ -74,8 +74,8 @@ public class ElasticsearchServiceITCase {
         //assert
         Assert.assertEquals(1, result.size());
         Map<String, Object> data = result.get(0);
-        Assert.assertEquals("fcs", data.get(EventKeys.SOURCE_ID));
-        Assert.assertEquals("access_log", data.get(EventKeys.TYPE));
+        Assert.assertEquals("fcs", data.get(EventKeys.SOURCE_ID.getValue()));
+        Assert.assertEquals("access_log", data.get(EventKeys.TYPE.getValue()));
     }
 
     @Test
@@ -89,8 +89,8 @@ public class ElasticsearchServiceITCase {
         //assert
         Assert.assertEquals(1, result.size());
         Map<String, Object> data = result.get(0);
-        Assert.assertEquals("fau_ping", data.get(EventKeys.SOURCE_ID));
-        Assert.assertEquals("ping", data.get(EventKeys.TYPE));
+        Assert.assertEquals("fau_ping", data.get(EventKeys.SOURCE_ID.getValue()));
+        Assert.assertEquals("ping", data.get(EventKeys.TYPE.getValue()));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class ElasticsearchServiceITCase {
         //assert
         Assert.assertEquals(4, fieldStructure.size());
         Map<String, String> test = fieldStructure.get(0);
-        Assert.assertEquals(EventKeys.SEQUENTIAL_TIME_ID, test.get("field"));
+        Assert.assertEquals(EventKeys.SEQUENTIAL_TIME_ID.getValue(), test.get("field"));
         Assert.assertEquals(MappingType.INTEGER_TYPE.getValue(), test.get("type"));
     }
 
