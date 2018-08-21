@@ -29,6 +29,7 @@ public class ElasticsearchServiceITCase {
         elasticSearchService.prepareMappingField(EventKeys.TIMESTAMP, FieldTypes.DATE_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.SOURCE_ID, FieldTypes.KEYWORD_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.TYPE, FieldTypes.KEYWORD_TYPE);
+        elasticSearchService.prepareMappingField(EventKeys.SEQUENTIAL_TIME_ID, FieldTypes.INTEGER_TYPE);
         elasticSearchService.deleteEvents(0);
 
         sleep(5);
@@ -36,10 +37,12 @@ public class ElasticsearchServiceITCase {
         pingOne.put(EventKeys.TIMESTAMP, LocalDateTime.of(2014,8,14,12,12,12).toString());
         pingOne.put(EventKeys.SOURCE_ID, "fau_ping");
         pingOne.put(EventKeys.TYPE, "ping");
+        pingOne.put(EventKeys.SEQUENTIAL_TIME_ID, 1);
         final Map<String, Object> pingTwo = new HashMap<>();
         pingTwo.put(EventKeys.TIMESTAMP, LocalDateTime.of(2014,8,15,12,12,12).toString());
         pingTwo.put(EventKeys.SOURCE_ID, "facebook_ping");
         pingTwo.put(EventKeys.TYPE, "ping");
+        pingTwo.put(EventKeys.SEQUENTIAL_TIME_ID, 2);
 
         elasticSearchService.bulkInsert(Arrays.asList(pingOne, pingTwo));
         sleep(5);
@@ -66,11 +69,7 @@ public class ElasticsearchServiceITCase {
 
     @Test
     public void testGetElementsByFilterWithCriteriaFilter() {
-        FilterCriteriaDto dto = new FilterCriteriaDto();
-        dto.setField(EventKeys.SOURCE_ID);
-        dto.setOperator(FilterOperation.EQUALS);
-        dto.setValue("fau_ping");
-        dto.setType(FilterType.PRIMARY);
+        FilterCriteriaDto dto = new FilterCriteriaDto(EventKeys.SOURCE_ID, "fau_ping", FilterType.PRIMARY, FilterOperation.EQUALS);
 
         List<Map<String, Object>> result = elasticSearchService.getElementsByFilter(Collections.singletonList(dto), 0, 1);
         Assert.assertEquals(1, result.size());
@@ -86,5 +85,17 @@ public class ElasticsearchServiceITCase {
         Map<String, String> test = fieldStructure.get(0);
         Assert.assertEquals(EventKeys.SOURCE_ID, test.get("field"));
         Assert.assertEquals(FieldTypes.KEYWORD_TYPE, test.get("type"));
+    }
+
+    @Test
+    public void testGetMaxValue() {
+        //arrange
+        FilterCriteriaDto dto = new FilterCriteriaDto(EventKeys.SOURCE_ID, "fau_ping", FilterType.PRIMARY, FilterOperation.EQUALS);
+
+        //act
+        double maxValue = elasticSearchService.getMaxValue(Collections.singletonList(dto), EventKeys.SEQUENTIAL_TIME_ID);
+
+        //assert
+        Assert.assertEquals(1.0, maxValue, 0.00001);
     }
 }

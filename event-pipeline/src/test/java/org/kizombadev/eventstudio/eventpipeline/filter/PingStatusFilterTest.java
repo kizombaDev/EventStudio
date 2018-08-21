@@ -2,6 +2,7 @@ package org.kizombadev.eventstudio.eventpipeline.filter;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kizombadev.eventstudio.common.EventKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class PingStatusFilterTest {
     @Test
     public void testHandle() {
         Map<String, Object> json = new HashMap<String, Object>() {{
-            put("origin", "Antwort von 172.217.20.227: Bytes=32 Zeit=22ms TTL=57");
+            put(EventKeys.DATA, "Antwort von 172.217.20.227: Bytes=32 Zeit=22ms TTL=57");
         }};
         filter.handle(json);
         assertThat(json.get("status").toString()).isEqualTo("ok");
@@ -35,7 +36,7 @@ public class PingStatusFilterTest {
     @Test
     public void testHandleWithoutMatch() {
         Map<String, Object> json = new HashMap<String, Object>() {{
-            put("origin", "PING: Fehler bei der Übertragung. Allgemeiner Fehler.");
+            put(EventKeys.DATA, "PING: Fehler bei der Übertragung. Allgemeiner Fehler.");
         }};
         filter.handle(json);
         assertThat(json.containsKey("status")).isFalse();
