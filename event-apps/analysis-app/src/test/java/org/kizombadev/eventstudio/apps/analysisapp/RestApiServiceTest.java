@@ -110,7 +110,7 @@ public class RestApiServiceTest {
         Mockito.when(elasticSearchService.getTermDiagram(filterArgumentCaptor.capture(), Mockito.eq(EventKeys.SOURCE_ID), Mockito.eq(99999))).thenReturn(getSampleJsonResponse());
 
         //Act
-        ResponseEntity<String> response = testRestTemplate.getForEntity(BASE_URL + "?type=ping&group-by=" + EventKeys.SOURCE_ID , String.class);
+        ResponseEntity<String> response = testRestTemplate.getForEntity(BASE_URL + "?type=ping&group-by=" + EventKeys.SOURCE_ID, String.class);
 
         //Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

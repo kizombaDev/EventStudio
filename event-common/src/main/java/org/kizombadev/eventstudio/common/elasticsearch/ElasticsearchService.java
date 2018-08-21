@@ -214,7 +214,7 @@ public class ElasticsearchService {
 
     public void prepareMappingField(String field, MappingType type) {
 
-                PutMappingResponse response = transportClient
+        PutMappingResponse response = transportClient
                 .admin()
                 .indices()
                 .preparePutMapping(elasticsearchProperties.getIndexName())

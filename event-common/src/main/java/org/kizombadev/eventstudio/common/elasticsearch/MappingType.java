@@ -37,7 +37,7 @@ public enum MappingType {
 
     @JsonValue
     public String getValue() {
-        return  this.type;
+        return this.type;
     }
 }
 

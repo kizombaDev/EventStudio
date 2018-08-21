@@ -4,11 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.kizombadev.eventstudio.common.EventKeys;
 
-import static org.junit.Assert.*;
-
 public class FilterCriteriaDtoTest {
 
-    private final    FilterCriteriaDto dto = new FilterCriteriaDto(EventKeys.TYPE, "ping", FilterType.PRIMARY, FilterOperation.EQUALS);
+    private final FilterCriteriaDto dto = new FilterCriteriaDto(EventKeys.TYPE, "ping", FilterType.PRIMARY, FilterOperation.EQUALS);
 
 
     @Test

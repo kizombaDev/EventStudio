@@ -9,14 +9,16 @@ import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterOperation;
 import org.kizombadev.eventstudio.common.elasticsearch.FilterType;
 import org.kizombadev.eventstudio.eventpipeline.EventEntry;
-import org.kizombadev.eventstudio.eventpipeline.properties.FilterProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RunWith(SpringRunner.class)
@@ -36,7 +38,7 @@ public class ElasticsearchOutputITCase {
         Map<String, Object> source = new HashMap<String, Object>() {{
             put(EventKeys.SOURCE_ID, "foo");
             put(EventKeys.TYPE, "ping");
-            put(EventKeys.TIMESTAMP, LocalDateTime.of(2014,1,1,1,1).toString());
+            put(EventKeys.TIMESTAMP, LocalDateTime.of(2014, 1, 1, 1, 1).toString());
             put(EventKeys.BYTES, "32");
         }};
         EventEntry eventEntry = new EventEntry(source);
@@ -56,7 +58,7 @@ public class ElasticsearchOutputITCase {
         List<Map<String, Object>> result = elasticsearchService.getElementsByFilter(Collections.singletonList(dto), 0, 1);
         Assert.assertEquals(1, result.size());
         Map<String, Object> data = result.get(0);
-        Assert.assertEquals("foo", data.get(EventKeys.SOURCE_ID) );
-        Assert.assertEquals("ping", data.get(EventKeys.TYPE) );
+        Assert.assertEquals("foo", data.get(EventKeys.SOURCE_ID));
+        Assert.assertEquals("ping", data.get(EventKeys.TYPE));
     }
 }

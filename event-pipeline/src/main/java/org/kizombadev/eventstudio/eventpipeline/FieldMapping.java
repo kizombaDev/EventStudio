@@ -43,21 +43,21 @@ public final class FieldMapping {
     /**
      * Returns the FieldType or null
      */
-    public static MappingType getTypeOfField(String fieldName){
+    public static MappingType getTypeOfField(String fieldName) {
         return MAPPING.get(fieldName);
     }
 
     public static boolean isFieldOfType(String fieldName, MappingType type) {
         MappingType actualType = MAPPING.get(fieldName);
 
-        if(actualType == null) {
+        if (actualType == null) {
             return false;
         }
 
         return Objects.equals(actualType, type);
     }
 
-    public static boolean contains(String fieldName){
+    public static boolean contains(String fieldName) {
         return MAPPING.containsKey(fieldName);
     }
 }

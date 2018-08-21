@@ -35,7 +35,7 @@ public class ReferenceAnalysis implements Runnable {
     @Override
     public void run() {
 
-        while(true) {
+        while (true) {
             List<Map<String, Object>> result = elasticSearchService.getTermDiagram(Arrays.asList(getTypeFilter(), getNotExistReferenceFilter()), properties.getIndicatorField(), 100);
 
             if (result.isEmpty()) {

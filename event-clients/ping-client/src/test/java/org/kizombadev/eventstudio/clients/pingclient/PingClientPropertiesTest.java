@@ -21,7 +21,7 @@ public class PingClientPropertiesTest {
 
     @Test
     public void testClientConfigs() {
-        List<PingClientProperties.ClientConfig> clientConfigs =  pingClientProperties.getClients();
+        List<PingClientProperties.ClientConfig> clientConfigs = pingClientProperties.getClients();
         Assert.assertEquals(4, clientConfigs.size());
         PingClientProperties.ClientConfig actualConfig = clientConfigs.get(2);
         Assert.assertEquals("PingGeneration", actualConfig.getName());

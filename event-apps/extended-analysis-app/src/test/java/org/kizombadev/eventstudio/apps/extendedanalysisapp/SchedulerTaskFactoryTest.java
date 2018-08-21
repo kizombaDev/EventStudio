@@ -37,6 +37,6 @@ public class SchedulerTaskFactoryTest {
         Mockito.verify(taskScheduler, Mockito.times(1)).schedule(Mockito.eq(operation), periodicTriggerCaptor.capture());
 
         Assert.assertEquals(10000, periodicTriggerCaptor.getValue().getPeriod());
-        Assert.assertEquals( TimeUnit.SECONDS, periodicTriggerCaptor.getValue().getTimeUnit());
+        Assert.assertEquals(TimeUnit.SECONDS, periodicTriggerCaptor.getValue().getTimeUnit());
     }
 }

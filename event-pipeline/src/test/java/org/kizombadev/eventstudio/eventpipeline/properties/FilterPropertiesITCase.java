@@ -21,7 +21,7 @@ public class FilterPropertiesITCase {
 
     @Test
     public void test() {
-        List<FilterProperties.FilterConfig> filterConfigs =  filterProperties.getFilter();
+        List<FilterProperties.FilterConfig> filterConfigs = filterProperties.getFilter();
         Assert.assertEquals(8, filterConfigs.size());
         FilterProperties.FilterConfig actualFilter = filterConfigs.get(4);
         Assert.assertEquals("TimestampConverterFilter", actualFilter.getName());

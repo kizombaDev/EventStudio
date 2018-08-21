@@ -33,6 +33,6 @@ public enum FilterType {
 
     @JsonValue
     public String getValue() {
-        return  this.type;
+        return this.type;
     }
 }
