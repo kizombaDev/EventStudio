@@ -7,6 +7,7 @@ import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kizombadev.eventstudio.clients.pingclient.output.OutputService;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,10 +38,10 @@ public class PingGenerationTest {
         Mockito.verify(outputService, Mockito.times(1)).handleSend(mapArgumentCaptor.capture());
 
         Map<String, Object> actualMap = mapArgumentCaptor.getValue();
-        Assert.assertEquals("ping_localhost", actualMap.get("source_id"));
-        Assert.assertEquals("ping", actualMap.get("type"));
-        Assert.assertTrue(actualMap.containsKey("origin"));
-        Assert.assertTrue(actualMap.containsKey("timestamp"));
+        Assert.assertEquals("ping_localhost", actualMap.get(EventKeys.SOURCE_ID));
+        Assert.assertEquals("ping", actualMap.get(EventKeys.TYPE));
+        Assert.assertTrue(actualMap.containsKey(EventKeys.DATA));
+        Assert.assertTrue(actualMap.containsKey(EventKeys.TIMESTAMP));
     }
 
     @Test

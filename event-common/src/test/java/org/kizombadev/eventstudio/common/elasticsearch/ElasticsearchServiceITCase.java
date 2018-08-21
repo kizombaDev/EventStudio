@@ -28,10 +28,10 @@ public class ElasticsearchServiceITCase {
     @Before
     public void init() {
         elasticSearchService.prepareIndex();
-        elasticSearchService.prepareMappingField(EventKeys.TIMESTAMP, FieldTypes.DATE_TYPE);
-        elasticSearchService.prepareMappingField(EventKeys.SOURCE_ID, FieldTypes.KEYWORD_TYPE);
-        elasticSearchService.prepareMappingField(EventKeys.TYPE, FieldTypes.KEYWORD_TYPE);
-        elasticSearchService.prepareMappingField(EventKeys.SEQUENTIAL_TIME_ID, FieldTypes.INTEGER_TYPE);
+        elasticSearchService.prepareMappingField(EventKeys.TIMESTAMP, MappingType.DATE_TYPE);
+        elasticSearchService.prepareMappingField(EventKeys.SOURCE_ID, MappingType.KEYWORD_TYPE);
+        elasticSearchService.prepareMappingField(EventKeys.TYPE, MappingType.KEYWORD_TYPE);
+        elasticSearchService.prepareMappingField(EventKeys.SEQUENTIAL_TIME_ID, MappingType.INTEGER_TYPE);
         elasticSearchService.deleteEvents(0);
         sleep(TIMEOUT);
 
@@ -100,7 +100,7 @@ public class ElasticsearchServiceITCase {
         Assert.assertEquals(4, fieldStructure.size());
         Map<String, String> test = fieldStructure.get(0);
         Assert.assertEquals(EventKeys.SEQUENTIAL_TIME_ID, test.get("field"));
-        Assert.assertEquals(FieldTypes.INTEGER_TYPE, test.get("type"));
+        Assert.assertEquals(MappingType.INTEGER_TYPE, test.get("type"));
     }
 
     @Test

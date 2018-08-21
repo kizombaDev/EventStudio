@@ -55,7 +55,7 @@ public class ElasticsearchService {
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
                 .setSize(size)
                 .setFrom(from)
-                .setQuery(createBoolFilter(filters, FilterType.PRIMARY))
+                .setQuery(createBoolFilter(filters, FilterType.PRIMARY.toString()))
                 .addSort(EventKeys.TIMESTAMP, SortOrder.DESC)
                 .get();
 
@@ -95,14 +95,14 @@ public class ElasticsearchService {
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primary_filter,
-                        createBoolFilter(filters, FilterType.PRIMARY))
+                        createBoolFilter(filters, FilterType.PRIMARY.getValue()))
                 .subAggregation(AggregationBuilders
                         .dateHistogram(date_grouping)
                         .dateHistogramInterval(DateHistogramInterval.DAY)
                         .field(EventKeys.TIMESTAMP)
                         .format("dd-MM-yyyy").subAggregation(
                                 AggregationBuilders.filters(secondary_filter,
-                                        createBoolFilter(filters, FilterType.SECONDARY))));
+                                        createBoolFilter(filters, FilterType.SECONDARY.getValue()))));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
                 .addAggregation(filterAggregationBuilder)
@@ -134,7 +134,7 @@ public class ElasticsearchService {
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primary_filter,
-                        createBoolFilter(filters, FilterType.PRIMARY))
+                        createBoolFilter(filters, FilterType.PRIMARY.getValue()))
                 .subAggregation(AggregationBuilders.terms(terms_grouping).field(termName).size(count));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
@@ -164,7 +164,7 @@ public class ElasticsearchService {
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primaryFilter,
-                        createBoolFilter(filters, FilterType.PRIMARY))
+                        createBoolFilter(filters, FilterType.PRIMARY.getValue()))
                 .subAggregation(AggregationBuilders.max(maxAggregation).field(field));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
@@ -181,7 +181,7 @@ public class ElasticsearchService {
     public void updateField(@NotNull List<FilterCriteriaDto> filters, @NotNull String field, @NotNull String value) {
         UpdateByQueryRequestBuilder updateByQuery = UpdateByQueryAction.INSTANCE.newRequestBuilder(transportClient);
         updateByQuery.source(elasticsearchProperties.getIndexName())
-                .filter(createBoolFilter(filters, FilterType.PRIMARY))
+                .filter(createBoolFilter(filters, FilterType.PRIMARY.getValue()))
                 .script(new Script(ScriptType.INLINE, "painless", "ctx._source." + field + " = params.value", Collections.singletonMap("value", value)));
 
 
@@ -212,7 +212,7 @@ public class ElasticsearchService {
         }
     }
 
-    public void prepareMappingField(String field, String type) {
+    public void prepareMappingField(String field, MappingType type) {
 
                 PutMappingResponse response = transportClient
                 .admin()
@@ -271,6 +271,8 @@ public class ElasticsearchService {
                 queryBuilder.mustNot(QueryBuilders.existsQuery(dto.getField()));
             } else if (FilterOperation.EXIST.equals(dto.getOperator())) {
                 queryBuilder.must(QueryBuilders.existsQuery(dto.getField()));
+            } else if (FilterOperation.CONTAINS.equals(dto.getOperator())) {
+                queryBuilder.must(QueryBuilders.matchQuery(dto.getField(), dto.getValue()));
             } else {
                 throw new IllegalStateException(String.format("The filter operation '%s' is unknown.", dto.getOperator()));
             }

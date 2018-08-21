@@ -6,14 +6,14 @@ import com.google.common.base.Objects;
 public class FilterCriteriaDto {
     private String field;
     private String value;
-    private String type;
-    private String operator;
+    private FilterType type;
+    private FilterOperation operator;
 
     public FilterCriteriaDto() {
         //nothing to do
     }
 
-    public FilterCriteriaDto(String field, String value, String type, String operator) {
+    public FilterCriteriaDto(String field, String value, FilterType type, FilterOperation operator) {
         this.field = field;
         this.value = value;
         this.type = type;
@@ -36,19 +36,19 @@ public class FilterCriteriaDto {
         this.field = field;
     }
 
-    public String getType() {
+    public FilterType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(FilterType type) {
         this.type = type;
     }
 
-    public String getOperator() {
+    public FilterOperation getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public void setOperator(FilterOperation operator) {
         this.operator = operator;
     }
 

@@ -47,7 +47,7 @@ public class ReferenceAnalysisTest {
         underTest.prepareReferenceFieldMapping();
 
         //assert
-        Mockito.verify(elasticSearchService, Mockito.times(1)).prepareMappingField(REFERENCE_FIELD, FieldTypes.KEYWORD_TYPE);
+        Mockito.verify(elasticSearchService, Mockito.times(1)).prepareMappingField(REFERENCE_FIELD, MappingType.KEYWORD_TYPE);
     }
 
     @Test

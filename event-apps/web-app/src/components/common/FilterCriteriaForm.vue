@@ -63,7 +63,8 @@ export default {
         {value: 'gte', text: 'greater than or equal to'},
         {value: 'gt', text: 'greater than'},
         {value: 'lte', text: 'less than or equal to'},
-        {value: 'lt', text: 'less than'}
+        {value: 'lt', text: 'less than'},
+        {value: 'contains', text: 'contains'}
       ]
     }
   },

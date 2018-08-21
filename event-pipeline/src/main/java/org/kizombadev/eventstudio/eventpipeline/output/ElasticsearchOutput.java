@@ -1,6 +1,7 @@
 package org.kizombadev.eventstudio.eventpipeline.output;
 
 import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
+import org.kizombadev.eventstudio.common.elasticsearch.MappingType;
 import org.kizombadev.eventstudio.eventpipeline.EventEntry;
 import org.kizombadev.eventstudio.eventpipeline.FieldMapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class ElasticsearchOutput implements Output {
         }
     }
 
-    private void prepareMappingField(String field, String type) {
+    private void prepareMappingField(String field, MappingType type) {
 
         if (EXISTING_FIELDS.contains(field)) {
             return;

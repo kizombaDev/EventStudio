@@ -76,7 +76,7 @@ public class RestApiServiceTest {
         List<Map<String, String>> json = new ArrayList<>();
         Map<String, String> map = new HashMap<>();
         map.put("field", EventKeys.BYTES);
-        map.put("type", FieldTypes.INTEGER_TYPE);
+        map.put("type", MappingType.INTEGER_TYPE.getValue());
         json.add(map);
         Mockito.when(elasticSearchService.getFieldStructure()).thenReturn(json);
 

@@ -52,6 +52,11 @@
             <artifactId>commons-lang</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -80,7 +85,7 @@
                         to the same value in the parent pom and in each module pom. Then JaCoCo will
                         add up information in the same report, so that, it will give the cross-module
                         code coverage. -->
-                    <destFile>${project.basedir}/../../target/jacoco-it.exec</destFile>
+                    <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
                 </configuration>
             </plugin>
         </plugins>

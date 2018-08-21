@@ -1,7 +1,7 @@
 package org.kizombadev.eventstudio.eventpipeline.filter;
 
 import org.kizombadev.eventstudio.common.EventKeys;
-import org.kizombadev.eventstudio.common.elasticsearch.FieldTypes;
+import org.kizombadev.eventstudio.common.elasticsearch.MappingType;
 import org.kizombadev.eventstudio.eventpipeline.FieldMapping;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ public class AccessLogCleanerFilter implements Filter {
     public void handle(Map<String, Object> json) {
         for (Map.Entry<String, Object> entry : json.entrySet()) {
 
-            if (FieldMapping.isFieldOfType(entry.getKey(), FieldTypes.INTEGER_TYPE)) {
+            if (FieldMapping.isFieldOfType(entry.getKey(), MappingType.INTEGER_TYPE)) {
                 String value = entry.getValue().toString();
                 value = value.replace("-", "");
                 value = value.replace(" ", "");
