@@ -38,6 +38,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ElasticsearchService {
@@ -235,7 +236,14 @@ public class ElasticsearchService {
         BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
         for (Map<EventKeys, Object> document : documents) {
-            bulkRequest.add(transportClient.prepareIndex(indexName, ElasticsearchService.DEFAULT_DOC_TYPE).setSource(document));
+
+            //todo make it better
+            Map<String, Object> item = new HashMap<>(document.size());
+            for(Map.Entry<EventKeys, Object> entry : document.entrySet())  {
+                item.put(entry.getKey().getValue(), entry.getValue());
+            }
+
+            bulkRequest.add(transportClient.prepareIndex(indexName, ElasticsearchService.DEFAULT_DOC_TYPE).setSource(item));
         }
 
         BulkResponse bulkResponse = bulkRequest.get();
