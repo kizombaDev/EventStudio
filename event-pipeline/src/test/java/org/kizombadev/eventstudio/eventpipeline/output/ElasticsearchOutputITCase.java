@@ -47,7 +47,6 @@ public class ElasticsearchOutputITCase {
         elasticsearchOutput.write(Collections.singletonList(eventEntry));
 
         //assert
-
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -58,7 +57,7 @@ public class ElasticsearchOutputITCase {
         List<Map<String, Object>> result = elasticsearchService.getElementsByFilter(Collections.singletonList(dto), 0, 1);
         Assert.assertEquals(1, result.size());
         Map<String, Object> data = result.get(0);
-        Assert.assertEquals("foo", data.get(EventKeys.SOURCE_ID));
-        Assert.assertEquals("ping", data.get(EventKeys.TYPE));
+        Assert.assertEquals("foo", data.get(EventKeys.SOURCE_ID.getValue()));
+        Assert.assertEquals("ping", data.get(EventKeys.TYPE.getValue()));
     }
 }
