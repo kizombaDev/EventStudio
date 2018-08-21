@@ -14,7 +14,7 @@ public class RegexFilter implements Filter {
 
     @Override
     public void handle(Map<String, Object> json) {
-        String origin = String.valueOf(getPropertyOrThrow(EventKeys.ORIGIN, json));
+        String origin = String.valueOf(getPropertyOrThrow(EventKeys.DATA, json));
         Matcher matcher = pattern.matcher(origin);
         if (!matcher.find()) {
             return;

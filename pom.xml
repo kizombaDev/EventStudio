@@ -74,6 +74,11 @@
                 <version>2.8.0</version>
             </dependency>
             <dependency>
+                <groupId>org.awaitility</groupId>
+                <artifactId>awaitility</artifactId>
+                <version>3.1.2</version>
+            </dependency>
+            <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>event-common</artifactId>
                 <version>${project.version}</version>

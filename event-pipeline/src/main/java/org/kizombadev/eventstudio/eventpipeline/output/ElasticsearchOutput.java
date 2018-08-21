@@ -41,7 +41,7 @@ public class ElasticsearchOutput implements Output {
         types.put("source_id", FieldTypes.KEYWORD_TYPE);
         types.put("type", FieldTypes.KEYWORD_TYPE);
         types.put("timestamp", FieldTypes.DATE_TYPE);
-        types.put("origin", FieldTypes.TEXT_TYPE);
+        types.put("data", FieldTypes.TEXT_TYPE);
 
         types.put("status", FieldTypes.KEYWORD_TYPE);
         types.put("time", FieldTypes.INTEGER_TYPE);

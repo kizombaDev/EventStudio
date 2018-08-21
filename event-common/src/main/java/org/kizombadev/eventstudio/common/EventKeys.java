@@ -2,7 +2,7 @@ package org.kizombadev.eventstudio.common;
 
 public final class EventKeys {
 
-    public static final String ORIGIN = "origin";
+    public static final String DATA = "data";
     public static final String IP = "ip";
     public static final String TTL = "ttl";
     public static final String TIME = "time";

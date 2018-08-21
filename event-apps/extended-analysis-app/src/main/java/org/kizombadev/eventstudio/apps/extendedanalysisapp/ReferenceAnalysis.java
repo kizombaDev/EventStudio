@@ -2,15 +2,13 @@ package org.kizombadev.eventstudio.apps.extendedanalysisapp;
 
 import com.google.common.base.Strings;
 import org.kizombadev.eventstudio.common.EventKeys;
-import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
-import org.kizombadev.eventstudio.common.elasticsearch.FilterCriteriaDto;
-import org.kizombadev.eventstudio.common.elasticsearch.FilterOperation;
-import org.kizombadev.eventstudio.common.elasticsearch.FilterType;
+import org.kizombadev.eventstudio.common.elasticsearch.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
@@ -20,7 +18,7 @@ public class ReferenceAnalysis implements Runnable {
     private ElasticsearchService elasticSearchService;
     private Properties properties;
 
-    //todo refactor this method and test the functionality (create mapping at startup)
+    //todo refactor this method and test the functionality
 
     @Autowired
     public ReferenceAnalysis(ElasticsearchService elasticSearchService, Properties properties) {
@@ -28,32 +26,41 @@ public class ReferenceAnalysis implements Runnable {
         this.properties = properties;
     }
 
-    @Override
-    public void run() {
-        List<Map<String, Object>> result = elasticSearchService.getTermDiagram(Arrays.asList(getTypeFilter(), getNotExistReferenceFilter()), properties.getIndicatorField(), 100);
-
-        if (result.isEmpty()) {
-            log.info("No entries for the analysis found");
-        } else {
-            log.info("Found {} event groups for the analysis", result.size());
-        }
-
-        result.parallelStream().map(item -> {
-            String indicatorValue = item.get("key").toString();
-            String referenceValue = getExistingReferenceValue(indicatorValue);
-
-            if (referenceValue == null) {
-                referenceValue = UUID.randomUUID().toString();
-            }
-
-            return new AbstractMap.SimpleEntry<>(indicatorValue, referenceValue);
-        }).forEach(entry -> handleUpdate(entry.getKey(), entry.getValue()));
-
-        log.info("Extended analysis was successfully executed");
+    @PostConstruct
+    public void prepareReferenceFieldMapping() {
+        elasticSearchService.prepareMappingField(properties.getReferenceField(), FieldTypes.KEYWORD_TYPE);
     }
 
-    private void handleUpdate(String ip, String value) {
-        elasticSearchService.updateField(Arrays.asList(getTypeFilter(), getNotExistReferenceFilter(), getIndicatorFilter(ip)), properties.getReferenceField(), value);
+    @Override
+    public void run() {
+
+        while(true) {
+            List<Map<String, Object>> result = elasticSearchService.getTermDiagram(Arrays.asList(getTypeFilter(), getNotExistReferenceFilter()), properties.getIndicatorField(), 100);
+
+            if (result.isEmpty()) {
+                log.info("No entries for the analysis found");
+                return;
+            } else {
+                log.info("Found {} event groups for the analysis", result.size());
+            }
+
+            result.parallelStream().map(item -> {
+                String indicatorValue = item.get("key").toString();
+                String referenceValue = getExistingReferenceValue(indicatorValue);
+
+                if (referenceValue == null) {
+                    referenceValue = UUID.randomUUID().toString();
+                }
+
+                return new AbstractMap.SimpleEntry<>(indicatorValue, referenceValue);
+            }).forEach(entry -> handleUpdate(entry.getKey(), entry.getValue()));
+
+            log.info("Extended analysis was successfully executed");
+        }
+    }
+
+    private void handleUpdate(String field, String value) {
+        elasticSearchService.updateField(Arrays.asList(getTypeFilter(), getNotExistReferenceFilter(), getIndicatorFilter(field)), properties.getReferenceField(), value);
     }
 
     private String getExistingReferenceValue(String ip) {

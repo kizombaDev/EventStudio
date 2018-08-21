@@ -1,6 +1,7 @@
 package org.kizombadev.eventstudio.clients.pingclient.action;
 
 import org.kizombadev.eventstudio.clients.pingclient.output.OutputService;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -39,10 +40,10 @@ public class PingGeneration implements PingClientAction {
                     continue;
                 }
                 Map<String, Object> data = new HashMap<>();
-                data.put("origin", line);
-                data.put("type", "ping");
-                data.put("source_id", "ping_" + id);
-                data.put("timestamp", DATE_TIME_FORMATTER.format(LocalDateTime.now()));
+                data.put(EventKeys.DATA, line);
+                data.put(EventKeys.TYPE, "ping");
+                data.put(EventKeys.SOURCE_ID, "ping_" + id);
+                data.put(EventKeys.TIMESTAMP, DATE_TIME_FORMATTER.format(LocalDateTime.now()));
                 outputService.handleSend(data);
                 break;
             }

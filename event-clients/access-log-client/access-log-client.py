@@ -23,7 +23,7 @@ for log_file in log_files:
 
     counter = 1
     for line in lines:
-        request_body.append('{"source_id": "' + args.source_id + '", "type": "access_log", "origin": "' +
+        request_body.append('{"source_id": "' + args.source_id + '", "type": "access_log", "data": "' +
                             line.replace('\\', '\\\\"').replace('\"', '\\\"') + '"}')
         request_body.append(', ')
 
