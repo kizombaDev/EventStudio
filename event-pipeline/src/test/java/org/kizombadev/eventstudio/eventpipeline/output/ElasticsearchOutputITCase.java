@@ -47,16 +47,12 @@ public class ElasticsearchOutputITCase {
         //assert
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        FilterCriteriaDto dto = new FilterCriteriaDto();
-        dto.setField(EventKeys.SOURCE_ID);
-        dto.setOperator(FilterOperation.EQUALS);
-        dto.setValue("foo");
-        dto.setType(FilterType.PRIMARY);
+        FilterCriteriaDto dto = new FilterCriteriaDto(EventKeys.SOURCE_ID, "foo", FilterType.PRIMARY, FilterOperation.EQUALS);
         List<Map<String, Object>> result = elasticsearchService.getElementsByFilter(Collections.singletonList(dto), 0, 1);
         Assert.assertEquals(1, result.size());
         Map<String, Object> data = result.get(0);
