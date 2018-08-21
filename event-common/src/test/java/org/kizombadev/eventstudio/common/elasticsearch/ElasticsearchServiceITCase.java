@@ -20,6 +20,8 @@ import java.util.*;
 @TestConfiguration
 public class ElasticsearchServiceITCase {
 
+    //todo make this test faster
+
     private static final int TIMEOUT = 5;
 
     @Autowired
@@ -100,7 +102,7 @@ public class ElasticsearchServiceITCase {
         Assert.assertEquals(4, fieldStructure.size());
         Map<String, String> test = fieldStructure.get(0);
         Assert.assertEquals(EventKeys.SEQUENTIAL_TIME_ID, test.get("field"));
-        Assert.assertEquals(MappingType.INTEGER_TYPE, test.get("type"));
+        Assert.assertEquals(MappingType.INTEGER_TYPE.getValue(), test.get("type"));
     }
 
     @Test

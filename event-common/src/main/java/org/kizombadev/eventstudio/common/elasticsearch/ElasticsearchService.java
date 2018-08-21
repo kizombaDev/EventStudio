@@ -55,7 +55,7 @@ public class ElasticsearchService {
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
                 .setSize(size)
                 .setFrom(from)
-                .setQuery(createBoolFilter(filters, FilterType.PRIMARY.toString()))
+                .setQuery(createBoolFilter(filters, FilterType.PRIMARY))
                 .addSort(EventKeys.TIMESTAMP, SortOrder.DESC)
                 .get();
 
@@ -95,14 +95,14 @@ public class ElasticsearchService {
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primary_filter,
-                        createBoolFilter(filters, FilterType.PRIMARY.getValue()))
+                        createBoolFilter(filters, FilterType.PRIMARY))
                 .subAggregation(AggregationBuilders
                         .dateHistogram(date_grouping)
                         .dateHistogramInterval(DateHistogramInterval.DAY)
                         .field(EventKeys.TIMESTAMP)
                         .format("dd-MM-yyyy").subAggregation(
                                 AggregationBuilders.filters(secondary_filter,
-                                        createBoolFilter(filters, FilterType.SECONDARY.getValue()))));
+                                        createBoolFilter(filters, FilterType.SECONDARY))));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
                 .addAggregation(filterAggregationBuilder)
@@ -134,7 +134,7 @@ public class ElasticsearchService {
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primary_filter,
-                        createBoolFilter(filters, FilterType.PRIMARY.getValue()))
+                        createBoolFilter(filters, FilterType.PRIMARY))
                 .subAggregation(AggregationBuilders.terms(terms_grouping).field(termName).size(count));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
@@ -164,7 +164,7 @@ public class ElasticsearchService {
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primaryFilter,
-                        createBoolFilter(filters, FilterType.PRIMARY.getValue()))
+                        createBoolFilter(filters, FilterType.PRIMARY))
                 .subAggregation(AggregationBuilders.max(maxAggregation).field(field));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
@@ -181,7 +181,7 @@ public class ElasticsearchService {
     public void updateField(@NotNull List<FilterCriteriaDto> filters, @NotNull String field, @NotNull String value) {
         UpdateByQueryRequestBuilder updateByQuery = UpdateByQueryAction.INSTANCE.newRequestBuilder(transportClient);
         updateByQuery.source(elasticsearchProperties.getIndexName())
-                .filter(createBoolFilter(filters, FilterType.PRIMARY.getValue()))
+                .filter(createBoolFilter(filters, FilterType.PRIMARY))
                 .script(new Script(ScriptType.INLINE, "painless", "ctx._source." + field + " = params.value", Collections.singletonMap("value", value)));
 
 
@@ -249,7 +249,7 @@ public class ElasticsearchService {
         checkResponse(response, "the index creation failed");
     }
 
-    private QueryBuilder createBoolFilter(List<FilterCriteriaDto> filters, String expectedType) {
+    private QueryBuilder createBoolFilter(List<FilterCriteriaDto> filters, FilterType expectedType) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
         for (FilterCriteriaDto dto : filters) {
