@@ -14,7 +14,7 @@ public class AccessLogCleanerFilterTest {
 
     @Test
     public void testFixIPNormalization() {
-        Map<String, Object> json = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
             put(EventKeys.IP, "78.78.4.x");
         }};
         filter.handle(json);
@@ -23,7 +23,7 @@ public class AccessLogCleanerFilterTest {
 
     @Test
     public void testCleanEmptyValues() {
-        Map<String, Object> json = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
             put(EventKeys.BYTES, " - ");
         }};
         filter.handle(json);

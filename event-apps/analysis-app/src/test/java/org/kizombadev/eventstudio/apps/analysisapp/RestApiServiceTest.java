@@ -75,7 +75,7 @@ public class RestApiServiceTest {
         //Arrange
         List<Map<String, String>> json = new ArrayList<>();
         Map<String, String> map = new HashMap<>();
-        map.put("field", EventKeys.BYTES);
+        map.put("field", EventKeys.BYTES.getValue());
         map.put("type", MappingType.INTEGER_TYPE.getValue());
         json.add(map);
         Mockito.when(elasticSearchService.getFieldStructure()).thenReturn(json);
@@ -155,7 +155,7 @@ public class RestApiServiceTest {
     @Test
     public void testGetTermDiagram() {
         //Arrange
-        Mockito.when(elasticSearchService.getTermDiagram(filterArgumentCaptor.capture(), Mockito.eq("path"), Mockito.eq(15))).thenReturn(getSampleJsonResponse());
+        Mockito.when(elasticSearchService.getTermDiagram(filterArgumentCaptor.capture(), Mockito.eq(EventKeys.forValue("path")), Mockito.eq(15))).thenReturn(getSampleJsonResponse());
 
         //Act
         ResponseEntity<String> response = testRestTemplate.postForEntity(BASE_URL + "/term-diagram?term-name=path&count=15", getSampleFilterDto(), String.class);

@@ -32,7 +32,7 @@ public class SequentialTimeIdFilterTest {
 
         Mockito.when(elasticSearchService.getMaxValue(Mockito.anyList(), Mockito.eq(EventKeys.SEQUENTIAL_TIME_ID))).thenReturn(5.0);
 
-        Map<String, Object> json = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
             put(EventKeys.SOURCE_ID, "bar");
         }};
         filter.handle(json);
@@ -47,7 +47,7 @@ public class SequentialTimeIdFilterTest {
 
         Mockito.when(elasticSearchService.getMaxValue(Mockito.anyList(), Mockito.eq(EventKeys.SEQUENTIAL_TIME_ID))).thenReturn(Double.NEGATIVE_INFINITY);
 
-        Map<String, Object> json = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
             put(EventKeys.SOURCE_ID, "foo");
         }};
         filter.handle(json);

@@ -2,9 +2,10 @@ package org.kizombadev.eventstudio.common.elasticsearch;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import org.kizombadev.eventstudio.common.EventKeys;
 
 public class FilterCriteriaDto {
-    private String field;
+    private EventKeys field;
     private String value;
     private FilterType type;
     private FilterOperation operator;
@@ -13,7 +14,7 @@ public class FilterCriteriaDto {
         //nothing to do
     }
 
-    public FilterCriteriaDto(String field, String value, FilterType type, FilterOperation operator) {
+    public FilterCriteriaDto(EventKeys field, String value, FilterType type, FilterOperation operator) {
         this.field = field;
         this.value = value;
         this.type = type;
@@ -28,11 +29,11 @@ public class FilterCriteriaDto {
         this.value = value;
     }
 
-    public String getField() {
+    public EventKeys getField() {
         return field;
     }
 
-    public void setField(String field) {
+    public void setField(EventKeys field) {
         this.field = field;
     }
 

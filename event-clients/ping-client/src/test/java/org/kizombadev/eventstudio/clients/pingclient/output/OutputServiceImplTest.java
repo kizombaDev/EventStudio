@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -35,7 +36,7 @@ public class OutputServiceImplTest {
     @Test
     public void test() {
         //Arrange
-        Map<String, Object> map = ImmutableMap.of("source_id", "google", "type", "ping");
+        Map<EventKeys, Object> map = ImmutableMap.of(EventKeys.SOURCE_ID, "google", EventKeys.TYPE, "ping");
 
         //Act
         outputServiceImpl.handleSend(map);

@@ -17,7 +17,7 @@ public class EventEntryTest {
     public ExpectedException thrown = ExpectedException.none();
 
     private EventEntry createDefaultTestLogEntry() {
-        Map<String, Object> source = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
             put(EventKeys.SOURCE_ID, "ping_google");
             put(EventKeys.TYPE, "ping");
             put(EventKeys.BYTES, "32");
@@ -47,7 +47,7 @@ public class EventEntryTest {
 
     @Test
     public void testMissingId() {
-        Map<String, Object> source = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
             put(EventKeys.TYPE, "ping");
         }};
 
@@ -59,7 +59,7 @@ public class EventEntryTest {
 
     @Test
     public void testMissingType() {
-        Map<String, Object> source = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
             put(EventKeys.SOURCE_ID, "ping_google");
         }};
 
@@ -71,7 +71,7 @@ public class EventEntryTest {
 
     @Test
     public void testWithIdAsInteger() {
-        Map<String, Object> source = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
             put(EventKeys.TYPE, "ping");
             put(EventKeys.SOURCE_ID, 5);
         }};

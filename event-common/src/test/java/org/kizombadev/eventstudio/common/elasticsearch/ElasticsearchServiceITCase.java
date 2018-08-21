@@ -37,19 +37,19 @@ public class ElasticsearchServiceITCase {
         elasticSearchService.deleteEvents(0);
         sleep(TIMEOUT);
 
-        final Map<String, Object> pingOne = new HashMap<>();
+        final Map<EventKeys, Object> pingOne = new HashMap<>();
         pingOne.put(EventKeys.TIMESTAMP, LocalDateTime.of(2014, 8, 14, 12, 12, 12).toString());
         pingOne.put(EventKeys.SOURCE_ID, "fau_ping");
         pingOne.put(EventKeys.TYPE, "ping");
         pingOne.put(EventKeys.SEQUENTIAL_TIME_ID, 1);
 
-        final Map<String, Object> pingTwo = new HashMap<>();
+        final Map<EventKeys, Object> pingTwo = new HashMap<>();
         pingTwo.put(EventKeys.TIMESTAMP, LocalDateTime.of(2014, 8, 15, 12, 12, 12).toString());
         pingTwo.put(EventKeys.SOURCE_ID, "facebook_ping");
         pingTwo.put(EventKeys.TYPE, "ping");
         pingTwo.put(EventKeys.SEQUENTIAL_TIME_ID, 2);
 
-        final Map<String, Object> accessLog = new HashMap<>();
+        final Map<EventKeys, Object> accessLog = new HashMap<>();
         accessLog.put(EventKeys.TIMESTAMP, LocalDateTime.of(2014, 9, 15, 12, 12, 12).toString());
         accessLog.put(EventKeys.SOURCE_ID, "fcs");
         accessLog.put(EventKeys.TYPE, "access_log");

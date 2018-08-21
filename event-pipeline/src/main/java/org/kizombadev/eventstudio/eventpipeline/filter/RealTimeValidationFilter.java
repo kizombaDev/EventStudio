@@ -13,7 +13,7 @@ public class RealTimeValidationFilter implements Filter {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
 
     @Override
-    public void handle(Map<String, Object> json) {
+    public void handle(Map<EventKeys, Object> json) {
         String timestampAsString = json.get(EventKeys.TIMESTAMP).toString();
         LocalDateTime timestamp = LocalDateTime.parse(timestampAsString, DATE_TIME_FORMATTER);
 

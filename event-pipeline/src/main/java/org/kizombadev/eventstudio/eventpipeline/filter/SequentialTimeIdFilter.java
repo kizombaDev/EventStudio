@@ -25,7 +25,7 @@ public class SequentialTimeIdFilter implements Filter {
     }
 
     @Override
-    public void handle(Map<String, Object> json) {
+    public void handle(Map<EventKeys, Object> json) {
         String sourceId = json.get(EventKeys.SOURCE_ID).toString();
         AtomicLong atomicId = ATOMIC_MAP.get(sourceId);
 

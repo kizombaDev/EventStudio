@@ -26,20 +26,20 @@ public class PingStatusFilterTest {
 
     @Test
     public void testHandle() {
-        Map<String, Object> json = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
             put(EventKeys.DATA, "Antwort von 172.217.20.227: Bytes=32 Zeit=22ms TTL=57");
         }};
         filter.handle(json);
-        assertThat(json.get("status").toString()).isEqualTo("ok");
+        assertThat(json.get(EventKeys.STATUS).toString()).isEqualTo("ok");
     }
 
     @Test
     public void testHandleWithoutMatch() {
-        Map<String, Object> json = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
             put(EventKeys.DATA, "PING: Fehler bei der Übertragung. Allgemeiner Fehler.");
         }};
         filter.handle(json);
-        assertThat(json.containsKey("status")).isFalse();
+        assertThat(json.containsKey(EventKeys.STATUS)).isFalse();
     }
 
     @Test

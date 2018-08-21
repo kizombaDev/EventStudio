@@ -65,7 +65,7 @@ public class RestApiService {
         filterCriteriaDto.setType(FilterType.PRIMARY);
 
         List<FilterCriteriaDto> filters = Collections.singletonList(filterCriteriaDto);
-        List<Map<String, Object>> data = elasticSearchService.getTermDiagram(filters, groupBy, 99999);
+        List<Map<String, Object>> data = elasticSearchService.getTermDiagram(filters, EventKeys.forValue(groupBy), 99999);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -92,7 +92,7 @@ public class RestApiService {
     public ResponseEntity<Object> getTermDiagram(@RequestBody @NotNull List<FilterCriteriaDto> filters,
                                                  @RequestParam("term-name") @NotNull String termName,
                                                  @RequestParam("count") @NotNull Integer count) {
-        List<Map<String, Object>> data = elasticSearchService.getTermDiagram(filters, termName, count);
+        List<Map<String, Object>> data = elasticSearchService.getTermDiagram(filters, EventKeys.forValue(termName), count);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

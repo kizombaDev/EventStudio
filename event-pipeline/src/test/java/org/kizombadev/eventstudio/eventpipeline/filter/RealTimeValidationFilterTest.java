@@ -15,7 +15,7 @@ public class RealTimeValidationFilterTest {
 
     @Test
     public void testNegativeTimeManipulation() {
-        Map<String, Object> json = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
             put(EventKeys.TIMESTAMP, LocalDateTime.now().minusSeconds(10));
         }};
         filter.handle(json);
@@ -24,7 +24,7 @@ public class RealTimeValidationFilterTest {
 
     @Test
     public void testNoTimeManipulation() {
-        Map<String, Object> json = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
             put(EventKeys.TIMESTAMP, LocalDateTime.now().minusSeconds(1));
         }};
         filter.handle(json);
@@ -33,7 +33,7 @@ public class RealTimeValidationFilterTest {
 
     @Test
     public void testPositiveTimeManipulation() {
-        Map<String, Object> json = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
             put(EventKeys.TIMESTAMP, LocalDateTime.now().plusSeconds(10));
         }};
         filter.handle(json);

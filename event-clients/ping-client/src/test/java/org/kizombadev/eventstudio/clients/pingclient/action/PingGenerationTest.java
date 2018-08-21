@@ -34,10 +34,10 @@ public class PingGenerationTest {
         pingGeneration.run();
 
         //Assert
-        ArgumentCaptor<Map<String, Object>> mapArgumentCaptor = ArgumentCaptor.forClass(Map.class);
+        ArgumentCaptor<Map<EventKeys, Object>> mapArgumentCaptor = ArgumentCaptor.forClass(Map.class);
         Mockito.verify(outputService, Mockito.times(1)).handleSend(mapArgumentCaptor.capture());
 
-        Map<String, Object> actualMap = mapArgumentCaptor.getValue();
+        Map<EventKeys, Object> actualMap = mapArgumentCaptor.getValue();
         Assert.assertEquals("ping_localhost", actualMap.get(EventKeys.SOURCE_ID));
         Assert.assertEquals("ping", actualMap.get(EventKeys.TYPE));
         Assert.assertTrue(actualMap.containsKey(EventKeys.DATA));

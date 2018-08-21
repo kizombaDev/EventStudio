@@ -10,8 +10,8 @@ import java.util.Map;
 @Component("AccessLogCleanerFilter")
 public class AccessLogCleanerFilter implements Filter {
     @Override
-    public void handle(Map<String, Object> json) {
-        for (Map.Entry<String, Object> entry : json.entrySet()) {
+    public void handle(Map<EventKeys, Object> json) {
+        for (Map.Entry<EventKeys, Object> entry : json.entrySet()) {
 
             if (FieldMapping.isFieldOfType(entry.getKey(), MappingType.INTEGER_TYPE)) {
                 String value = entry.getValue().toString();

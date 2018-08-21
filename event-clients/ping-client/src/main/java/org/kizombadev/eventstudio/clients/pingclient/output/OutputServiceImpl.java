@@ -1,5 +1,6 @@
 package org.kizombadev.eventstudio.clients.pingclient.output;
 
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class OutputServiceImpl implements OutputService {
     }
 
     @Override
-    public void handleSend(Map<String, Object> data) {
+    public void handleSend(Map<EventKeys, Object> data) {
         for (ClientOutput output : clientOutputList) {
             output.send(data);
         }

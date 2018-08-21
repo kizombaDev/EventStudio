@@ -3,6 +3,7 @@ package org.kizombadev.eventstudio.eventpipeline.filter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.kizombadev.eventstudio.common.EventKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,11 +46,11 @@ public class TimestampConverterFilterTest {
 
 
     private void assertTimestampConversion(String expected, String from) {
-        Map<String, Object> json = new HashMap<String, Object>() {{
-            put("timestamp", from);
+        Map<EventKeys, Object> json = new HashMap<EventKeys, Object>() {{
+            put(EventKeys.TIMESTAMP, from);
         }};
         filter.handle(json);
-        Assert.assertEquals(expected, json.get("timestamp"));
+        Assert.assertEquals(expected, json.get(EventKeys.TIMESTAMP));
     }
 
 }

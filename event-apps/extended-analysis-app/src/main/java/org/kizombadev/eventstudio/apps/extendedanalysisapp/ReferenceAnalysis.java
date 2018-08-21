@@ -29,14 +29,14 @@ public class ReferenceAnalysis implements Runnable {
     @PostConstruct
     public void prepareReferenceFieldMapping() {
         elasticSearchService.prepareIndex();
-        elasticSearchService.prepareMappingField(properties.getReferenceField(), MappingType.KEYWORD_TYPE);
+        elasticSearchService.prepareMappingField(EventKeys.forValue(properties.getReferenceField()), MappingType.KEYWORD_TYPE);
     }
 
     @Override
     public void run() {
 
         while (true) {
-            List<Map<String, Object>> result = elasticSearchService.getTermDiagram(Arrays.asList(getTypeFilter(), getNotExistReferenceFilter()), properties.getIndicatorField(), 100);
+            List<Map<String, Object>> result = elasticSearchService.getTermDiagram(Arrays.asList(getTypeFilter(), getNotExistReferenceFilter()), EventKeys.forValue(properties.getIndicatorField()), 100);
 
             if (result.isEmpty()) {
                 log.info("No entries for the analysis found");
@@ -61,7 +61,7 @@ public class ReferenceAnalysis implements Runnable {
     }
 
     private void handleUpdate(String field, String value) {
-        elasticSearchService.updateField(Arrays.asList(getTypeFilter(), getNotExistReferenceFilter(), getIndicatorFilter(field)), properties.getReferenceField(), value);
+        elasticSearchService.updateField(Arrays.asList(getTypeFilter(), getNotExistReferenceFilter(), getIndicatorFilter(field)), EventKeys.forValue(properties.getReferenceField()), value);
     }
 
     private String getExistingReferenceValue(String ip) {
@@ -86,7 +86,7 @@ public class ReferenceAnalysis implements Runnable {
 
     private FilterCriteriaDto getExistReferenceFilter() {
         FilterCriteriaDto referenceFilter = new FilterCriteriaDto();
-        referenceFilter.setField(properties.getReferenceField());
+        referenceFilter.setField(EventKeys.forValue(properties.getReferenceField()));
         referenceFilter.setValue("");
         referenceFilter.setOperator(FilterOperation.EXIST);
         referenceFilter.setType(FilterType.PRIMARY);
@@ -104,7 +104,7 @@ public class ReferenceAnalysis implements Runnable {
 
     private FilterCriteriaDto getIndicatorFilter(String indicatorFieldValue) {
         FilterCriteriaDto indicatorFilter = new FilterCriteriaDto();
-        indicatorFilter.setField(properties.getIndicatorField());
+        indicatorFilter.setField(EventKeys.forValue(properties.getIndicatorField()));
         indicatorFilter.setValue(indicatorFieldValue);
         indicatorFilter.setOperator(FilterOperation.EQUALS);
         indicatorFilter.setType(FilterType.PRIMARY);

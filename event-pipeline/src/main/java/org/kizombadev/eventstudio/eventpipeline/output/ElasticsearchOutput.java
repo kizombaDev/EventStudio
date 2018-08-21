@@ -1,5 +1,6 @@
 package org.kizombadev.eventstudio.eventpipeline.output;
 
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.kizombadev.eventstudio.common.elasticsearch.ElasticsearchService;
 import org.kizombadev.eventstudio.common.elasticsearch.MappingType;
 import org.kizombadev.eventstudio.eventpipeline.EventEntry;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class ElasticsearchOutput implements Output {
 
-    private static final List<String> EXISTING_FIELDS = Collections.synchronizedList(new ArrayList());
+    private static final List<EventKeys> EXISTING_FIELDS = Collections.synchronizedList(new ArrayList());
     private ElasticsearchService elasticSearchService;
 
     @Autowired
@@ -38,7 +39,7 @@ public class ElasticsearchOutput implements Output {
 
     private void prepareMapping(EventEntry data) {
 
-        for (Map.Entry<String, Object> pair : data.getSource().entrySet()) {
+        for (Map.Entry<EventKeys, Object> pair : data.getSource().entrySet()) {
 
             if (!FieldMapping.contains(pair.getKey())) {
                 throw new IllegalStateException(String.format("for the field '%s' does not exist a mapping field definition", pair.getKey()));
@@ -48,7 +49,7 @@ public class ElasticsearchOutput implements Output {
         }
     }
 
-    private void prepareMappingField(String field, MappingType type) {
+    private void prepareMappingField(EventKeys field, MappingType type) {
 
         if (EXISTING_FIELDS.contains(field)) {
             return;

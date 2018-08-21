@@ -17,7 +17,7 @@ import java.util.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ReferenceAnalysisTest {
 
-    private static final String REFERENCE_FIELD = "link";
+    private static final EventKeys REFERENCE_FIELD = EventKeys.forValue("link");
 
     @Mock
     private ElasticsearchService elasticSearchService;
@@ -34,8 +34,8 @@ public class ReferenceAnalysisTest {
     public void init() {
         underTest = new ReferenceAnalysis(elasticSearchService, properties);
 
-        Mockito.when(properties.getIndicatorField()).thenReturn(EventKeys.IP);
-        Mockito.when(properties.getReferenceField()).thenReturn(REFERENCE_FIELD);
+        Mockito.when(properties.getIndicatorField()).thenReturn(EventKeys.IP.getValue());
+        Mockito.when(properties.getReferenceField()).thenReturn(REFERENCE_FIELD.getValue());
         Mockito.when(properties.getEventType()).thenReturn("access_log");
     }
 

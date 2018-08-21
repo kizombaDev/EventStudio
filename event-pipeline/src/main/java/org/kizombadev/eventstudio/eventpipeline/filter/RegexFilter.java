@@ -13,7 +13,7 @@ public class RegexFilter implements Filter {
     private Pattern pattern = null;
 
     @Override
-    public void handle(Map<String, Object> json) {
+    public void handle(Map<EventKeys, Object> json) {
         String origin = String.valueOf(getPropertyOrThrow(EventKeys.DATA, json));
         Matcher matcher = pattern.matcher(origin);
         if (!matcher.find()) {
@@ -29,7 +29,7 @@ public class RegexFilter implements Filter {
         Map<String, String> properties = maps.get(0);
 
         for (Map.Entry<String, String> pair : properties.entrySet()) {
-            json.put(pair.getKey(), pair.getValue());
+            json.put(EventKeys.forValue(pair.getKey()), pair.getValue());
         }
     }
 

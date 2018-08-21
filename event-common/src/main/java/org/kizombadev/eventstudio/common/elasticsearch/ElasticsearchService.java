@@ -56,7 +56,7 @@ public class ElasticsearchService {
                 .setSize(size)
                 .setFrom(from)
                 .setQuery(createBoolFilter(filters, FilterType.PRIMARY))
-                .addSort(EventKeys.TIMESTAMP, SortOrder.DESC)
+                .addSort(EventKeys.TIMESTAMP.getValue(), SortOrder.DESC)
                 .get();
 
         List<Map<String, Object>> result = new ArrayList<>();
@@ -99,7 +99,7 @@ public class ElasticsearchService {
                 .subAggregation(AggregationBuilders
                         .dateHistogram(date_grouping)
                         .dateHistogramInterval(DateHistogramInterval.DAY)
-                        .field(EventKeys.TIMESTAMP)
+                        .field(EventKeys.TIMESTAMP.getValue())
                         .format("dd-MM-yyyy").subAggregation(
                                 AggregationBuilders.filters(secondary_filter,
                                         createBoolFilter(filters, FilterType.SECONDARY))));
@@ -128,14 +128,14 @@ public class ElasticsearchService {
         return result;
     }
 
-    public List<Map<String, Object>> getTermDiagram(@NotNull List<FilterCriteriaDto> filters, @NotNull String termName, @NotNull Integer count) {
+    public List<Map<String, Object>> getTermDiagram(@NotNull List<FilterCriteriaDto> filters, @NotNull EventKeys termName, @NotNull Integer count) {
         final String primary_filter = "primary_filter";
         final String terms_grouping = "terms";
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primary_filter,
                         createBoolFilter(filters, FilterType.PRIMARY))
-                .subAggregation(AggregationBuilders.terms(terms_grouping).field(termName).size(count));
+                .subAggregation(AggregationBuilders.terms(terms_grouping).field(termName.getValue()).size(count));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
                 .addAggregation(filterAggregationBuilder)
@@ -158,14 +158,14 @@ public class ElasticsearchService {
         return result;
     }
 
-    public double getMaxValue(@NotNull List<FilterCriteriaDto> filters, @NotNull String field) {
+    public double getMaxValue(@NotNull List<FilterCriteriaDto> filters, @NotNull EventKeys field) {
         final String primaryFilter = "primary_filter";
         final String maxAggregation = "max_aggregation";
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primaryFilter,
                         createBoolFilter(filters, FilterType.PRIMARY))
-                .subAggregation(AggregationBuilders.max(maxAggregation).field(field));
+                .subAggregation(AggregationBuilders.max(maxAggregation).field(field.getValue()));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
                 .addAggregation(filterAggregationBuilder)
@@ -178,7 +178,7 @@ public class ElasticsearchService {
         return max.getValue();
     }
 
-    public void updateField(@NotNull List<FilterCriteriaDto> filters, @NotNull String field, @NotNull String value) {
+    public void updateField(@NotNull List<FilterCriteriaDto> filters, @NotNull EventKeys field, @NotNull String value) {
         UpdateByQueryRequestBuilder updateByQuery = UpdateByQueryAction.INSTANCE.newRequestBuilder(transportClient);
         updateByQuery.source(elasticsearchProperties.getIndexName())
                 .filter(createBoolFilter(filters, FilterType.PRIMARY))
@@ -195,7 +195,7 @@ public class ElasticsearchService {
         BulkByScrollResponse response = DeleteByQueryAction.INSTANCE
                 .newRequestBuilder(transportClient)
                 .filter(QueryBuilders
-                        .rangeQuery(EventKeys.TIMESTAMP)
+                        .rangeQuery(EventKeys.TIMESTAMP.getValue())
                         .lt(LocalDate.now().minus(Period.ofDays(numberOfDays)).toString()))
                 .source(elasticsearchProperties.getIndexName())
                 .get();
@@ -212,7 +212,7 @@ public class ElasticsearchService {
         }
     }
 
-    public void prepareMappingField(String field, MappingType type) {
+    public void prepareMappingField(EventKeys field, MappingType type) {
 
         PutMappingResponse response = transportClient
                 .admin()
@@ -229,12 +229,12 @@ public class ElasticsearchService {
         checkResponse(response, "prepare mapping failed");
     }
 
-    public void bulkInsert(List<Map<String, Object>> documents) {
+    public void bulkInsert(List<Map<EventKeys, Object>> documents) {
         String indexName = elasticsearchProperties.getIndexName();
 
         BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
-        for (Map<String, Object> document : documents) {
+        for (Map<EventKeys, Object> document : documents) {
             bulkRequest.add(transportClient.prepareIndex(indexName, ElasticsearchService.DEFAULT_DOC_TYPE).setSource(document));
         }
 
@@ -258,21 +258,21 @@ public class ElasticsearchService {
             }
 
             if (FilterOperation.EQUALS.equals(dto.getOperator())) {
-                queryBuilder.must(QueryBuilders.termQuery(dto.getField(), dto.getValue()));
+                queryBuilder.must(QueryBuilders.termQuery(dto.getField().getValue(), dto.getValue()));
             } else if (FilterOperation.GREATER_THEN.equals(dto.getOperator())) {
-                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).gt(dto.getValue()));
+                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField().getValue()).gt(dto.getValue()));
             } else if (FilterOperation.GREATER_THEN_OR_EQUAL.equals(dto.getOperator())) {
-                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).gte(dto.getValue()));
+                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField().getValue()).gte(dto.getValue()));
             } else if (FilterOperation.LESS_THEN.equals(dto.getOperator())) {
-                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).lt(dto.getValue()));
+                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField().getValue()).lt(dto.getValue()));
             } else if (FilterOperation.LESS_THEN_OR_EQUAL.equals(dto.getOperator())) {
-                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField()).lte(dto.getValue()));
+                queryBuilder.must(QueryBuilders.rangeQuery(dto.getField().getValue()).lte(dto.getValue()));
             } else if (FilterOperation.NOT_EXIST.equals(dto.getOperator())) {
-                queryBuilder.mustNot(QueryBuilders.existsQuery(dto.getField()));
+                queryBuilder.mustNot(QueryBuilders.existsQuery(dto.getField().getValue()));
             } else if (FilterOperation.EXIST.equals(dto.getOperator())) {
-                queryBuilder.must(QueryBuilders.existsQuery(dto.getField()));
+                queryBuilder.must(QueryBuilders.existsQuery(dto.getField().getValue()));
             } else if (FilterOperation.CONTAINS.equals(dto.getOperator())) {
-                queryBuilder.must(QueryBuilders.matchQuery(dto.getField(), dto.getValue()));
+                queryBuilder.must(QueryBuilders.matchQuery(dto.getField().getValue(), dto.getValue()));
             } else {
                 throw new IllegalStateException(String.format("The filter operation '%s' is unknown.", dto.getOperator()));
             }

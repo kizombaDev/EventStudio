@@ -39,7 +39,7 @@ public class PingGeneration implements PingClientAction {
                     lineIndex++;
                     continue;
                 }
-                Map<String, Object> data = new HashMap<>();
+                Map<EventKeys, Object> data = new HashMap<>();
                 data.put(EventKeys.DATA, line);
                 data.put(EventKeys.TYPE, "ping");
                 data.put(EventKeys.SOURCE_ID, "ping_" + id);

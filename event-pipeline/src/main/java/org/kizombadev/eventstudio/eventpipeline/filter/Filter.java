@@ -1,9 +1,11 @@
 package org.kizombadev.eventstudio.eventpipeline.filter;
 
+import org.kizombadev.eventstudio.common.EventKeys;
+
 import java.util.Map;
 
 public interface Filter {
-    void handle(Map<String, Object> source);
+    void handle(Map<EventKeys, Object> source);
 
     Filter instanceCopy();
 
@@ -19,7 +21,7 @@ public interface Filter {
         return configuration.get(property);
     }
 
-    default Object getPropertyOrThrow(String property, Map<String, Object> entry) {
+    default Object getPropertyOrThrow(EventKeys property, Map<EventKeys, Object> entry) {
         if (!entry.containsKey(property)) {
             throw new IllegalStateException(String.format("The property '%s' is missing in the entry", property));
         }

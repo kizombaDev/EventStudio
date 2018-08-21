@@ -19,7 +19,7 @@ public class TimestampConverterFilter implements Filter {
 
 
     @Override
-    public void handle(Map<String, Object> json) {
+    public void handle(Map<EventKeys, Object> json) {
         String timestampAsString = getPropertyOrThrow(EventKeys.TIMESTAMP, json).toString();
         LocalDateTime timestamp = LocalDateTime.parse(timestampAsString, inputDateTimeFormatter);
         json.put(EventKeys.TIMESTAMP, timestamp.format(outputDateTimeFormatter));

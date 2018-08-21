@@ -35,7 +35,7 @@ public class EventPipelineRestClientTest {
     public void test() {
         //Arrange
         server.expect(once(), requestTo("http://localhost:8081/api/v1/events/single")).andRespond(withSuccess("", MediaType.APPLICATION_JSON));
-        Map<String, Object> map = ImmutableMap.of(EventKeys.SOURCE_ID, "google", EventKeys.TYPE, "ping");
+        Map<EventKeys, Object> map = ImmutableMap.of(EventKeys.SOURCE_ID, "google", EventKeys.TYPE, "ping");
 
         //Act
         eventPipelineRestClient.send(map);

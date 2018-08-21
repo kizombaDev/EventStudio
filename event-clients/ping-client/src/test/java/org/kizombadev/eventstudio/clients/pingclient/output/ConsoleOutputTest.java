@@ -3,6 +3,7 @@ package org.kizombadev.eventstudio.clients.pingclient.output;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Map;
@@ -15,7 +16,7 @@ public class ConsoleOutputTest {
     @Test
     public void test() {
         //Arrange
-        Map<String, Object> map = ImmutableMap.of("source_id", "google", "type", "ping");
+        Map<EventKeys, Object> map = ImmutableMap.of(EventKeys.SOURCE_ID, "google", EventKeys.TYPE, "ping");
 
         //Act
         consoleOutput.send(map);

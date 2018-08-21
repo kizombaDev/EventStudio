@@ -3,6 +3,7 @@ package org.kizombadev.eventstudio.eventpipeline.filter;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.kizombadev.eventstudio.common.EventKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,8 +36,8 @@ public class FilterTest {
     private static class TestFilter implements Filter {
 
         @Override
-        public void handle(Map<String, Object> source) {
-            getPropertyOrThrow("foo", source);
+        public void handle(Map<EventKeys, Object> source) {
+            getPropertyOrThrow(EventKeys.forValue("foo"), source);
         }
 
         @Override

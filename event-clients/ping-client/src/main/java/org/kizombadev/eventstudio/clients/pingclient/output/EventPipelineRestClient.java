@@ -3,6 +3,7 @@ package org.kizombadev.eventstudio.clients.pingclient.output;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.kizombadev.eventstudio.clients.pingclient.PingClientProperties;
+import org.kizombadev.eventstudio.common.EventKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -25,7 +26,7 @@ public class EventPipelineRestClient implements ClientOutput {
         this.pingClientProperties = pingClientProperties;
     }
 
-    public void send(Map<String, Object> data) {
+    public void send(Map<EventKeys, Object> data) {
         try {
             ObjectMapper mapperObj = new ObjectMapper();
             String jsonResp = mapperObj.writeValueAsString(data);

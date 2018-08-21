@@ -19,7 +19,7 @@ public class ConsoleOutputTest {
     public void init() {
         underTest = new ConsoleOutput();
 
-        Map<String, Object> source = new HashMap<String, Object>() {{
+        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
             put(EventKeys.SOURCE_ID, "abc");
             put(EventKeys.TYPE, "access_log");
             put(EventKeys.TIMESTAMP, LocalDateTime.of(2014, 1, 1, 1, 1).toString());
