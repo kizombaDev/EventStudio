@@ -13,20 +13,22 @@ Building
 
 To build sources locally follow these instructions.
 
-### Build and Run Unit Tests
+    # Clone the repository to a local folder
+    git clone https://github.com/kizombaDev/EventStudio.git
 
-Execute from project base directory
-    
+    # Execute the build an the unit tests
     ./mvnw clean test
     
-Execute the integration tests
-
+    # Execute the integration tests
     ./mvnw verify
     
-Start the server by executing:
-    
+    # Start the server by executing:
     TODO ElasticSearch
     ./start.cmd
+    
+    # run web app with hot reload at localhost:8080
+    cd event-apps\web-app
+    npm run dev
 
 License
 -------
