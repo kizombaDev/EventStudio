@@ -10,7 +10,7 @@ public class FilterOperationTest {
         Assert.assertEquals(FilterOperation.EQUALS, FilterOperation.forValue("equals"));
     }
 
-    @Test(expected =  IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void testForValueWithInvalidType() {
         FilterOperation.forValue("foo");
     }

@@ -10,7 +10,7 @@ public class MappingTypeTest {
         Assert.assertEquals(MappingType.KEYWORD_TYPE, MappingType.forValue("keyword"));
     }
 
-    @Test(expected =  IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void testForValueWithInvalidType() {
         MappingType.forValue("foo");
     }

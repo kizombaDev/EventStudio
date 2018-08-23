@@ -3,10 +3,6 @@ package org.kizombadev.eventstudio.common.elasticsearch;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.rmi.server.ExportException;
-
-import static org.junit.Assert.*;
-
 public class FilterTypeTest {
 
     @Test
@@ -14,9 +10,9 @@ public class FilterTypeTest {
         Assert.assertEquals(FilterType.PRIMARY, FilterType.forValue("primary"));
     }
 
-    @Test(expected =  IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void testForValueWithInvalidType() {
-       FilterType.forValue("foo");
+        FilterType.forValue("foo");
     }
 
     @Test
