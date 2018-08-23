@@ -18,8 +18,6 @@ public class ReferenceAnalysis implements Runnable {
     private ElasticsearchService elasticSearchService;
     private Properties properties;
 
-    //todo refactor this method and test the functionality
-
     @Autowired
     public ReferenceAnalysis(ElasticsearchService elasticSearchService, Properties properties) {
         this.elasticSearchService = elasticSearchService;

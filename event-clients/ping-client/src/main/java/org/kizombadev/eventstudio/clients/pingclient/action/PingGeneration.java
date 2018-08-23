@@ -35,17 +35,15 @@ public class PingGeneration implements PingClientAction {
             String line;
             int lineIndex = 0;
             while ((line = reader.readLine()) != null) {
-                if (lineIndex != 2) {
-                    lineIndex++;
-                    continue;
+                if (lineIndex == 2) {
+                    Map<EventKeys, Object> data = new HashMap<>();
+                    data.put(EventKeys.DATA, line);
+                    data.put(EventKeys.TYPE, "ping");
+                    data.put(EventKeys.SOURCE_ID, "ping_" + id);
+                    data.put(EventKeys.TIMESTAMP, DATE_TIME_FORMATTER.format(LocalDateTime.now()));
+                    outputService.handleSend(data);
                 }
-                Map<EventKeys, Object> data = new HashMap<>();
-                data.put(EventKeys.DATA, line);
-                data.put(EventKeys.TYPE, "ping");
-                data.put(EventKeys.SOURCE_ID, "ping_" + id);
-                data.put(EventKeys.TIMESTAMP, DATE_TIME_FORMATTER.format(LocalDateTime.now()));
-                outputService.handleSend(data);
-                break;
+                lineIndex++;
             }
             reader.close();
         } catch (IOException e) {

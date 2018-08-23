@@ -235,13 +235,10 @@ public class ElasticsearchService {
         BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
         for (Map<EventKeys, Object> document : documents) {
-
-            //todo make it better
             Map<String, Object> item = new HashMap<>(document.size());
             for (Map.Entry<EventKeys, Object> entry : document.entrySet()) {
                 item.put(entry.getKey().getValue(), entry.getValue());
             }
-
             bulkRequest.add(transportClient.prepareIndex(indexName, ElasticsearchService.DEFAULT_DOC_TYPE).setSource(item));
         }
 

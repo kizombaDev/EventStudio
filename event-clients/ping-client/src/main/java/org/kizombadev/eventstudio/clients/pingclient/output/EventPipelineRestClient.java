@@ -36,7 +36,7 @@ public class EventPipelineRestClient implements ClientOutput {
 
             restTemplate.exchange(pingClientProperties.getPipelineUrl(), HttpMethod.POST, request, Object.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }
