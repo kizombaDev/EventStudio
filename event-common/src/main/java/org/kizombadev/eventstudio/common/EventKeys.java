@@ -1,25 +1,7 @@
 package org.kizombadev.eventstudio.common;
 
-//public final class EventKeys {
-//
-//    public static final String DATA = "data";
-//    public static final String IP = "ip";
-//    public static final String TTL = "ttl";
-//    public static final String TIME = "time";
-//    public static final String BYTES = "bytes";
-//    public static final String TIMESTAMP = "timestamp";
-//    public static final String TYPE = "type";
-//    public static final String SOURCE_ID = "source_id";
-//    public static final String SEQUENTIAL_TIME_ID = "sequential_time_id";
-//    public static final String TIME_MANIPULATION = "time_manipulation";
-//
-//    private EventKeys() {
-//    }
-//}
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,8 +38,7 @@ public final class EventKeys {
             EventKeys temp = new EventKeys(value);
             result = MAP.putIfAbsent(value, new EventKeys(value));
 
-            if(result == null)
-            {
+            if (result == null) {
                 result = temp;
             }
         }

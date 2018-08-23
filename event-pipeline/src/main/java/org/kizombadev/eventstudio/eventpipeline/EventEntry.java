@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import org.kizombadev.eventstudio.common.EventKeys;
 
 import java.util.Map;
+import java.util.Objects;
 
 public final class EventEntry {
     private final String type;

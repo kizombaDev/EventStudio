@@ -238,7 +238,7 @@ public class ElasticsearchService {
 
             //todo make it better
             Map<String, Object> item = new HashMap<>(document.size());
-            for(Map.Entry<EventKeys, Object> entry : document.entrySet())  {
+            for (Map.Entry<EventKeys, Object> entry : document.entrySet()) {
                 item.put(entry.getKey().getValue(), entry.getValue());
             }
 
