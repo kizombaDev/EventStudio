@@ -7,7 +7,17 @@
     <artifactId>application-pom</artifactId>
     <version>0.1.0</version>
     <packaging>pom</packaging>
+    <name>EventStudio</name>
+    <description>The aim of this IT monitoring application is that a administrator can monitor and analyse different IT systems</description>
+    <url>https://github.com/kizombaDev/EventStudio</url>
 
+    <developers>
+        <developer>
+            <id>kizombaDev</id>
+            <name>Marcel Swoboda</name>
+            <email>marcel.swoboda@fau.de</email>
+        </developer>
+    </developers>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

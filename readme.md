@@ -3,6 +3,8 @@
 EventStudio
 =========
 
+The aim of this IT monitoring application is that a administrator can monitor and analyse different IT systems
+
 Abstract
 -------
 
