@@ -34,7 +34,7 @@ public class ElasticsearchPropertiesITCase {
     public void testNodes() {
         List<ElasticsearchProperties.Node> nodes = elasticsearchProperties.getNodes();
         Assert.assertEquals(1, nodes.size());
-        Assert.assertEquals(Integer.valueOf(9300), nodes.get(0).getPort());
+        Assert.assertEquals(Integer.valueOf(9200), nodes.get(0).getPort());
         Assert.assertEquals("localhost", nodes.get(0).getIp());
     }
 }
