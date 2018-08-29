@@ -88,20 +88,20 @@ public class ElasticsearchService {
     }
 
     public List<Map<String, Object>> getDateHistogram(@NotNull List<FilterCriteriaDto> filters) {
-        final String primary_filter = "primary_filter";
-        final String secondary_filter = "secondary_filter";
-        final String date_grouping = "date_grouping";
+        final String primaryFilter = "primaryFilter";
+        final String secondaryFilter = "secondaryFilter";
+        final String dateGrouping = "dateGrouping";
 
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
-                .filters(primary_filter,
+                .filters(primaryFilter,
                         createBoolFilter(filters, FilterType.PRIMARY))
                 .subAggregation(AggregationBuilders
-                        .dateHistogram(date_grouping)
+                        .dateHistogram(dateGrouping)
                         .dateHistogramInterval(DateHistogramInterval.DAY)
                         .field(EventKeys.TIMESTAMP.getValue())
                         .format("dd-MM-yyyy").subAggregation(
-                                AggregationBuilders.filters(secondary_filter,
+                                AggregationBuilders.filters(secondaryFilter,
                                         createBoolFilter(filters, FilterType.SECONDARY))));
 
         SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
@@ -111,15 +111,15 @@ public class ElasticsearchService {
 
         List<Map<String, Object>> result = new ArrayList<>();
 
-        Filters responseFilter = searchResponse.getAggregations().get(primary_filter);
+        Filters responseFilter = searchResponse.getAggregations().get(primaryFilter);
         Filters.Bucket bucket = responseFilter.getBuckets().get(0);
-        Histogram aggregation = bucket.getAggregations().get(date_grouping);
+        Histogram aggregation = bucket.getAggregations().get(dateGrouping);
         for (Histogram.Bucket item : aggregation.getBuckets()) {
 
             Map<String, Object> map = new HashMap<>();
             map.put("key", item.getKeyAsString());
             map.put("primary_count", item.getDocCount());
-            Filters f = item.getAggregations().get(secondary_filter);
+            Filters f = item.getAggregations().get(secondaryFilter);
             Filters.Bucket bucket1 = f.getBuckets().get(0);
             map.put("secondary_count", bucket1.getDocCount());
             result.add(map);
