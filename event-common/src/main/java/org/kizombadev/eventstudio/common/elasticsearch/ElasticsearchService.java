@@ -71,7 +71,7 @@ public class ElasticsearchService {
         GetMappingsResponse getMappingsResponse = transportClient.admin().indices().prepareGetMappings(elasticsearchProperties.getIndexName()).get();
         ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> mappings = getMappingsResponse.getMappings();
         ImmutableOpenMap<String, MappingMetaData> defaultMapping = mappings.get(elasticsearchProperties.getIndexName());
-        MappingMetaData ping1 = defaultMapping.get("_doc");
+        MappingMetaData ping1 = defaultMapping.get(DEFAULT_DOC_TYPE);
         Map<String, Object> sourceAsMap = ping1.getSourceAsMap();
         Map<String, Map<String, Object>> properties = (Map<String, Map<String, Object>>) sourceAsMap.get("properties");
 
