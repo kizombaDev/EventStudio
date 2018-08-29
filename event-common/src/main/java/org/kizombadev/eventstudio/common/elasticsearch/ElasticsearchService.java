@@ -1,13 +1,20 @@
 package org.kizombadev.eventstudio.common.elasticsearch;
 
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
+import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
@@ -15,10 +22,8 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.reindex.BulkByScrollResponse;
-import org.elasticsearch.index.reindex.DeleteByQueryAction;
-import org.elasticsearch.index.reindex.UpdateByQueryAction;
-import org.elasticsearch.index.reindex.UpdateByQueryRequestBuilder;
+import org.elasticsearch.index.reindex.*;
+import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
@@ -29,12 +34,15 @@ import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInter
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.max.Max;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.kizombadev.eventstudio.common.EventKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -42,22 +50,28 @@ import java.util.*;
 @Service
 public class ElasticsearchService {
     private static final String DEFAULT_DOC_TYPE = "_doc";
-    private final TransportClient transportClient;
+    private final RestHighLevelClient client;
     private final ElasticsearchProperties elasticsearchProperties;
+    private TransportClient transportClient;
 
     @Autowired
-    public ElasticsearchService(TransportClient transportClient, ElasticsearchProperties elasticsearchProperties) {
-        this.transportClient = transportClient;
+    public ElasticsearchService(RestHighLevelClient client, ElasticsearchProperties elasticsearchProperties, TransportClient transportClient) {
+        this.client = client;
         this.elasticsearchProperties = elasticsearchProperties;
+        this.transportClient = transportClient;
     }
 
     public List<Map<String, Object>> getElementsByFilter(List<FilterCriteriaDto> filters, Integer from, Integer size) {
-        SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
-                .setSize(size)
-                .setFrom(from)
-                .setQuery(createBoolFilter(filters, FilterType.PRIMARY))
-                .addSort(EventKeys.TIMESTAMP.getValue(), SortOrder.DESC)
-                .get();
+
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(createBoolFilter(filters, FilterType.PRIMARY));
+        searchSourceBuilder.size(size);
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.sort(new FieldSortBuilder(EventKeys.TIMESTAMP.getValue()).order(SortOrder.DESC));
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -68,8 +82,18 @@ public class ElasticsearchService {
     }
 
     public List<Map<String, String>> getFieldStructure() {
-        GetMappingsResponse getMappingsResponse = transportClient.admin().indices().prepareGetMappings(elasticsearchProperties.getIndexName()).get();
-        ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> mappings = getMappingsResponse.getMappings();
+        GetMappingsRequest request = new GetMappingsRequest();
+        request.indices(elasticsearchProperties.getIndexName());
+        request.types(DEFAULT_DOC_TYPE);
+
+        GetMappingsResponse getMappingResponse;
+        try {
+            getMappingResponse = client.indices().getMapping(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new ElasticsearchException(e);
+        }
+
+        ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> mappings = getMappingResponse.getMappings();
         ImmutableOpenMap<String, MappingMetaData> defaultMapping = mappings.get(elasticsearchProperties.getIndexName());
         MappingMetaData ping1 = defaultMapping.get(DEFAULT_DOC_TYPE);
         Map<String, Object> sourceAsMap = ping1.getSourceAsMap();
@@ -92,7 +116,6 @@ public class ElasticsearchService {
         final String secondaryFilter = "secondaryFilter";
         final String dateGrouping = "dateGrouping";
 
-
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
                 .filters(primaryFilter,
                         createBoolFilter(filters, FilterType.PRIMARY))
@@ -104,10 +127,13 @@ public class ElasticsearchService {
                                 AggregationBuilders.filters(secondaryFilter,
                                         createBoolFilter(filters, FilterType.SECONDARY))));
 
-        SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
-                .addAggregation(filterAggregationBuilder)
-                .setSize(0)
-                .get();
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.aggregation(filterAggregationBuilder);
+        searchSourceBuilder.size(0);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -133,14 +159,16 @@ public class ElasticsearchService {
         final String terms_grouping = "terms";
 
         FiltersAggregationBuilder filterAggregationBuilder = AggregationBuilders
-                .filters(primary_filter,
-                        createBoolFilter(filters, FilterType.PRIMARY))
+                .filters(primary_filter, createBoolFilter(filters, FilterType.PRIMARY))
                 .subAggregation(AggregationBuilders.terms(terms_grouping).field(termName.getValue()).size(count));
 
-        SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
-                .addAggregation(filterAggregationBuilder)
-                .setSize(0)
-                .get();
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.aggregation(filterAggregationBuilder);
+        searchSourceBuilder.size(0);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
 
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -167,10 +195,13 @@ public class ElasticsearchService {
                         createBoolFilter(filters, FilterType.PRIMARY))
                 .subAggregation(AggregationBuilders.max(maxAggregation).field(field.getValue()));
 
-        SearchResponse searchResponse = transportClient.prepareSearch(elasticsearchProperties.getIndexName())
-                .addAggregation(filterAggregationBuilder)
-                .setSize(0)
-                .get();
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.aggregation(filterAggregationBuilder);
+        searchSourceBuilder.size(0);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
 
         Filters responseFilter = searchResponse.getAggregations().get(primaryFilter);
         Filters.Bucket bucket = responseFilter.getBuckets().get(0);
@@ -178,6 +209,7 @@ public class ElasticsearchService {
         return max.getValue();
     }
 
+    //TODO migrate to the restHighLevelClient
     public void updateField(@NotNull List<FilterCriteriaDto> filters, @NotNull EventKeys field, @NotNull String value) {
         UpdateByQueryRequestBuilder updateByQuery = UpdateByQueryAction.INSTANCE.newRequestBuilder(transportClient);
         updateByQuery.source(elasticsearchProperties.getIndexName())
@@ -187,10 +219,11 @@ public class ElasticsearchService {
 
         BulkByScrollResponse response = updateByQuery.get();
         if (!response.getBulkFailures().isEmpty()) {
-            throw new IllegalStateException("The update failed");
+            throw new ElasticsearchException("The update failed");
         }
     }
 
+    //TODO migrate to the restHighLevelClient
     public long deleteEvents(int numberOfDays) {
         BulkByScrollResponse response = DeleteByQueryAction.INSTANCE
                 .newRequestBuilder(transportClient)
@@ -204,53 +237,78 @@ public class ElasticsearchService {
     }
 
     public void prepareIndex() {
-        GetIndexResponse response = transportClient.admin().indices().prepareGetIndex().get();
+        try {
+            GetIndexRequest request = new GetIndexRequest();
+            request.indices(elasticsearchProperties.getIndexName());
+            boolean indexExists = client.indices().exists(request, RequestOptions.DEFAULT);
 
-        boolean indexExist = Arrays.stream(response.getIndices()).anyMatch(x -> x.equals(elasticsearchProperties.getIndexName()));
-        if (!indexExist) {
-            createIndex();
+            if (!indexExists) {
+                createIndex();
+            }
+        } catch (IOException e) {
+            throw new ElasticsearchException(e);
         }
     }
 
     public void prepareMappingField(EventKeys field, MappingType type) {
 
-        PutMappingResponse response = transportClient
-                .admin()
-                .indices()
-                .preparePutMapping(elasticsearchProperties.getIndexName())
-                .setType(DEFAULT_DOC_TYPE)
-                .setSource("{\n" +
-                        "  \"properties\": {\n" +
-                        "    \"" + field + "\": {\n" +
-                        "\t\t\"type\": \"" + type + "\"\n" +
-                        "\t }\n" +
-                        "  }\n" +
-                        "}", XContentType.JSON).get();
-        checkResponse(response, "prepare mapping failed");
+        PutMappingRequest request = new PutMappingRequest(elasticsearchProperties.getIndexName());
+        request.type(DEFAULT_DOC_TYPE);
+        request.source("{\n" +
+                "  \"properties\": {\n" +
+                "    \"" + field + "\": {\n" +
+                "\t\t\"type\": \"" + type + "\"\n" +
+                "\t }\n" +
+                "  }\n" +
+                "}", XContentType.JSON);
+
+        PutMappingResponse putMappingResponse;
+        try {
+            putMappingResponse = client.indices().putMapping(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new ElasticsearchException(e);
+        }
+
+        if(!putMappingResponse.isAcknowledged()) {
+            throw new ElasticsearchException("prepare mapping failed");
+        }
     }
 
     public void bulkInsert(List<Map<EventKeys, Object>> documents) {
         String indexName = elasticsearchProperties.getIndexName();
 
-        BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
+        BulkRequest request = new BulkRequest();
 
         for (Map<EventKeys, Object> document : documents) {
             Map<String, Object> item = new HashMap<>(document.size());
             for (Map.Entry<EventKeys, Object> entry : document.entrySet()) {
                 item.put(entry.getKey().getValue(), entry.getValue());
             }
-            bulkRequest.add(transportClient.prepareIndex(indexName, ElasticsearchService.DEFAULT_DOC_TYPE).setSource(item));
+            request.add(new IndexRequest(indexName, ElasticsearchService.DEFAULT_DOC_TYPE).source(item));
         }
 
-        BulkResponse bulkResponse = bulkRequest.get();
+        BulkResponse bulkResponse;
+        try {
+            bulkResponse = client.bulk(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new ElasticsearchException(e);
+        }
+
         if (bulkResponse.hasFailures()) {
-            throw new IllegalStateException(bulkResponse.buildFailureMessage());
+            throw new ElasticsearchException(bulkResponse.buildFailureMessage());
         }
     }
 
     private void createIndex() {
-        CreateIndexResponse response = transportClient.admin().indices().prepareCreate(elasticsearchProperties.getIndexName()).get();
-        checkResponse(response, "the index creation failed");
+        try {
+            CreateIndexRequest request = new CreateIndexRequest(elasticsearchProperties.getIndexName());
+            CreateIndexResponse createIndexResponse = client.indices().create(request, RequestOptions.DEFAULT);
+            if (!createIndexResponse.isAcknowledged()) {
+                throw new ElasticsearchException("the index creation failed");
+            }
+        } catch (IOException e) {
+            throw new ElasticsearchException(e);
+        }
     }
 
     private QueryBuilder createBoolFilter(List<FilterCriteriaDto> filters, FilterType expectedType) {
@@ -278,7 +336,7 @@ public class ElasticsearchService {
             } else if (FilterOperation.CONTAINS.equals(dto.getOperator())) {
                 queryBuilder.must(QueryBuilders.matchQuery(dto.getField().getValue(), dto.getValue()));
             } else {
-                throw new IllegalStateException(String.format("The filter operation '%s' is unknown.", dto.getOperator()));
+                throw new ElasticsearchException(String.format("The filter operation '%s' is unknown.", dto.getOperator()));
             }
         }
 
@@ -287,8 +345,23 @@ public class ElasticsearchService {
 
     private void checkResponse(AcknowledgedResponse response, String message) {
         if (!response.isAcknowledged()) {
-            throw new IllegalStateException(message);
+            throw new ElasticsearchException(message);
         }
+    }
+
+    private SearchResponse executeAndValidateRequest(SearchRequest searchRequest) {
+        SearchResponse searchResponse;
+        try {
+            searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new ElasticsearchException(e);
+        }
+
+        if (searchResponse.status() != RestStatus.OK) {
+            throw new ElasticsearchException(String.format("The rest status %s is invalid", searchResponse.status()));
+        }
+
+        return searchResponse;
     }
 }
 
