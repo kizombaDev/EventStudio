@@ -8,13 +8,13 @@ addons:
     organization: "kizombadev-github"
     token:
       secure: $SONAR_TOKEN
-cache:
-  directories:
-  - $HOME/.m2
-  - $HOME/.sonar
-  - $HOME/jvm
-  - $HOME/maven
-  - $HOME/.mvn
+#cache:
+#  directories:
+#  - $HOME/.m2
+#  - $HOME/.sonar
+#  - $HOME/jvm
+#  - $HOME/maven
+#  - $HOME/.mvn
 notifications:
   email: false
 before_install:
