@@ -10,7 +10,7 @@ addons:
       secure: $SONAR_TOKEN
 cache:
   directories:
-  - $HOME/.m2/repository
+  - $HOME/.m2
   - $HOME/.sonar
   - $HOME/jvm
   - $HOME/maven
