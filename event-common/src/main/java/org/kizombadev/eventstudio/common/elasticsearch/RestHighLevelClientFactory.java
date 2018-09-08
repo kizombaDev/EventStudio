@@ -3,7 +3,6 @@ package org.kizombadev.eventstudio.common.elasticsearch;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.transport.TransportClient;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -50,7 +49,7 @@ public class RestHighLevelClientFactory implements FactoryBean<RestHighLevelClie
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         buildClient();
     }
 

@@ -22,7 +22,10 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.reindex.*;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.DeleteByQueryAction;
+import org.elasticsearch.index.reindex.UpdateByQueryAction;
+import org.elasticsearch.index.reindex.UpdateByQueryRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
@@ -269,7 +272,7 @@ public class ElasticsearchService {
             throw new ElasticsearchException(e);
         }
 
-        if(!putMappingResponse.isAcknowledged()) {
+        if (!putMappingResponse.isAcknowledged()) {
             throw new ElasticsearchException("prepare mapping failed");
         }
     }
