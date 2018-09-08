@@ -2,5 +2,5 @@ elasticsearch:
   clustername: elasticsearch
   nodes:
   - ip: localhost
-    port: 9300
+    port: 9200
   indexname: test

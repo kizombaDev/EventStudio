@@ -2,7 +2,7 @@ elasticsearch:
   clustername: elasticsearch
   nodes:
   - ip: localhost
-    port: 9300
-  indexname: eventstudio
+    port: 9200
+  indexname: eventstudio # TODO remove this prop in all yaml files
 server:
   port: 8082

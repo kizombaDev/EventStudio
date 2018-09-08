@@ -14,6 +14,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Configuration
+@Deprecated
 public class ElasticsearchConfiguration implements FactoryBean<TransportClient>, InitializingBean, DisposableBean {
 
     private ElasticsearchProperties elasticsearchProperties;
@@ -54,7 +55,8 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
     private void buildClient() throws UnknownHostException {
         transportClient = new PreBuiltTransportClient(getSettings());
         for (ElasticsearchProperties.Node node : elasticsearchProperties.getNodes()) {
-            transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(node.getIp()), node.getPort()));
+            //TODO remove the + 100 hack if the TransportClient is unused
+            transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(node.getIp()), node.getPort() + 100));
         }
     }
 

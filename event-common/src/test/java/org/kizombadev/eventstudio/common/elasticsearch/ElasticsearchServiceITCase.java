@@ -97,15 +97,15 @@ public class ElasticsearchServiceITCase {
     public void testGetElementsByFilterWithAllCriteriaFilter() {
         //arrange
         FilterCriteriaDto equalsFilter = new FilterCriteriaDto(EventKeys.SOURCE_ID, "fau_ping", FilterType.PRIMARY, FilterOperation.EQUALS);
-        FilterCriteriaDto greatherFilter = new FilterCriteriaDto(EventKeys.SEQUENTIAL_TIME_ID, "1", FilterType.PRIMARY, FilterOperation.GREATER_THEN);
-        FilterCriteriaDto greatherOrEqualFilter = new FilterCriteriaDto(EventKeys.SEQUENTIAL_TIME_ID, "2", FilterType.PRIMARY, FilterOperation.GREATER_THEN_OR_EQUAL);
+        FilterCriteriaDto greaterFilter = new FilterCriteriaDto(EventKeys.SEQUENTIAL_TIME_ID, "1", FilterType.PRIMARY, FilterOperation.GREATER_THEN);
+        FilterCriteriaDto greaterOrEqualFilter = new FilterCriteriaDto(EventKeys.SEQUENTIAL_TIME_ID, "2", FilterType.PRIMARY, FilterOperation.GREATER_THEN_OR_EQUAL);
         FilterCriteriaDto lessFilter = new FilterCriteriaDto(EventKeys.SEQUENTIAL_TIME_ID, "3", FilterType.PRIMARY, FilterOperation.LESS_THEN);
         FilterCriteriaDto lessOrEqualFilter = new FilterCriteriaDto(EventKeys.SEQUENTIAL_TIME_ID, "4", FilterType.PRIMARY, FilterOperation.LESS_THEN_OR_EQUAL);
         FilterCriteriaDto notExistFilter = new FilterCriteriaDto(EventKeys.BYTES, "fau_ping", FilterType.PRIMARY, FilterOperation.NOT_EXIST);
         FilterCriteriaDto existFilter = new FilterCriteriaDto(EventKeys.TIMESTAMP, "fau_ping", FilterType.PRIMARY, FilterOperation.EXIST);
         FilterCriteriaDto containsFilter = new FilterCriteriaDto(EventKeys.DATA, "foo", FilterType.PRIMARY, FilterOperation.CONTAINS);
 
-        List<FilterCriteriaDto> dtos = Arrays.asList(equalsFilter, greatherFilter, greatherOrEqualFilter, lessFilter, lessOrEqualFilter, notExistFilter, existFilter, containsFilter);
+        List<FilterCriteriaDto> dtos = Arrays.asList(equalsFilter, greaterFilter, greaterOrEqualFilter, lessFilter, lessOrEqualFilter, notExistFilter, existFilter, containsFilter);
 
         //act
         List<Map<String, Object>> result = elasticSearchService.getElementsByFilter(dtos, 0, 1);
@@ -122,8 +122,8 @@ public class ElasticsearchServiceITCase {
         //assert
         Assert.assertEquals(4, fieldStructure.size());
         Map<String, String> test = fieldStructure.get(0);
-        Assert.assertEquals(EventKeys.SEQUENTIAL_TIME_ID.getValue(), test.get("field"));
-        Assert.assertEquals(MappingType.INTEGER_TYPE.getValue(), test.get("type"));
+        Assert.assertEquals(EventKeys.SOURCE_ID.getValue(), test.get("field"));
+        Assert.assertEquals(MappingType.KEYWORD_TYPE.getValue(), test.get("type"));
     }
 
     @Test
