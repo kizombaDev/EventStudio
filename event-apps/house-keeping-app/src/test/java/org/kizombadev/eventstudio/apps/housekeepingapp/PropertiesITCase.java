@@ -19,6 +19,6 @@ public class PropertiesITCase {
 
     @Test
     public void testGetStorageTime() {
-        Assert.assertEquals(30, properties.getStorageTime());
+        Assert.assertEquals(1024, properties.getMaxIndexMbSize());
     }
 }

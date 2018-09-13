@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -34,7 +35,7 @@ public class ElasticsearchServiceITCase {
         elasticSearchService.prepareMappingField(EventKeys.SOURCE_ID, MappingType.KEYWORD_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.TYPE, MappingType.KEYWORD_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.SEQUENTIAL_TIME_ID, MappingType.INTEGER_TYPE);
-        elasticSearchService.deleteEvents(0);
+        elasticSearchService.deleteEventsOfDate(LocalDate.MAX);
         sleep(TIMEOUT);
 
         final Map<EventKeys, Object> pingOne = new HashMap<>();

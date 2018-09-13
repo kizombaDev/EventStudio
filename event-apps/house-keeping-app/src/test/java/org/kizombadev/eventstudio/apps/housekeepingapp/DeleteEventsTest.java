@@ -8,6 +8,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RunWith(MockitoJUnitRunner.class)
 public class DeleteEventsTest {
 
@@ -25,15 +31,52 @@ public class DeleteEventsTest {
     }
 
     @Test
-    public void testRun() {
+    public void testIndexIsTooBig() {
         //arrange
-        final int storageTime = 42;
-        Mockito.when(properties.getStorageTime()).thenReturn(storageTime);
+        final long maxIndexMbSize = 1024;
+        List<Map<String, Object>> response = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("key", "2018-08-14");
+        response.add(map);
+        Mockito.when(elasticsearchService.getIndexSizeInMb()).thenReturn(maxIndexMbSize + 1);
+        Mockito.when(properties.getMaxIndexMbSize()).thenReturn(maxIndexMbSize);
+        Mockito.when(elasticsearchService.getDateHistogram(Mockito.any())).thenReturn(response);
 
         //act
         underTest.run();
 
         //assert
-        Mockito.verify(elasticsearchService, Mockito.times(1)).deleteEvents(Mockito.eq(storageTime));
+        Mockito.verify(elasticsearchService, Mockito.times(1)).deleteEventsOfDate(Mockito.eq(LocalDate.of(2018,8,14)));
     }
+
+    @Test
+    public void testStupidConfiguration() {
+        //arrange
+        final long maxIndexMbSize = 0;
+        Mockito.when(elasticsearchService.getIndexSizeInMb()).thenReturn(maxIndexMbSize);
+        Mockito.when(properties.getMaxIndexMbSize()).thenReturn(maxIndexMbSize);
+        Mockito.when(elasticsearchService.getDateHistogram(Mockito.any())).thenReturn(new ArrayList<>());
+
+        //act
+        underTest.run();
+
+        //assert
+        Mockito.verify(elasticsearchService, Mockito.never()).deleteEventsOfDate(Mockito.any());
+    }
+
+    @Test
+    public void testSmallIndexSize() {
+        //arrange
+        final long maxIndexMbSize = 1024;
+        Mockito.when(elasticsearchService.getIndexSizeInMb()).thenReturn(maxIndexMbSize - 1);
+        Mockito.when(properties.getMaxIndexMbSize()).thenReturn(maxIndexMbSize);
+
+        //act
+        underTest.run();
+
+        //assert
+        Mockito.verify(elasticsearchService, Mockito.never()).deleteEventsOfDate(Mockito.any());
+    }
+
+
 }

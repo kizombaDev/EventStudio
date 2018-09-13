@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Configuration;
 public class Properties {
     private static final String PROPERTY_ROOT = "house-keeping.";
 
-    private int storageTime;
+    private long maxIndexMbSize;
 
-    public int getStorageTime() {
-        PropertyHelper.validateNotEmpty(PROPERTY_ROOT + "storageTime", storageTime);
-        return storageTime;
+    public long getMaxIndexMbSize() {
+        PropertyHelper.validateNotEmpty(PROPERTY_ROOT + "maxIndexMbSize", maxIndexMbSize);
+        return maxIndexMbSize;
     }
 
-    public void setStorageTime(int storageTime) {
-        PropertyHelper.logPropertyValue(PROPERTY_ROOT + "storageTime", storageTime);
-        this.storageTime = storageTime;
+    public void setMaxIndexMbSize(long maxIndexMbSize) {
+        PropertyHelper.logPropertyValue(PROPERTY_ROOT + "maxIndexMbSize", maxIndexMbSize);
+        this.maxIndexMbSize = maxIndexMbSize;
     }
 }

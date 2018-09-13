@@ -6,6 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class DeleteEvents implements Runnable {
@@ -22,7 +27,24 @@ public class DeleteEvents implements Runnable {
 
     @Override
     public void run() {
-        long deletedEvents = elasticSearchService.deleteEvents(properties.getStorageTime());
-        log.info("deletion of events successfully executed. Number of deleted events: {}", deletedEvents);
+        long indexSizeInMb = elasticSearchService.getIndexSizeInMb();
+
+        if (indexSizeInMb < properties.getMaxIndexMbSize()) {
+            log.info("the current index size of {} MB is smaller then the configured max index size of {} MB -> nothing is deleted", indexSizeInMb, properties.getMaxIndexMbSize());
+            return;
+        }
+
+        log.info("the current index size of {} MB is greater then the configured max index size of {} MB -> deletion of events required", indexSizeInMb, properties.getMaxIndexMbSize());
+
+        List<Map<String, Object>> dateHistogram = elasticSearchService.getDateHistogram(new ArrayList<>());
+
+        if(dateHistogram.isEmpty()) {
+            log.info("the index contains no events -> nothing can deleted");
+            return;
+        }
+
+        String date = dateHistogram.get(0).get("key").toString();
+        long deletedEvents = elasticSearchService.deleteEventsOfDate(LocalDate.parse(date));
+        log.info("deletion of events at the {} successfully executed. Number of deleted events: {}", date, deletedEvents);
     }
 }
