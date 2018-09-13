@@ -5,4 +5,5 @@ elasticsearch:
     port: 9200
   indexname: test
 house-keeping:
-  storageTime: 30
+  maxIndexMbSize: 1024
+  repetitionIntervalInMinutes: 1

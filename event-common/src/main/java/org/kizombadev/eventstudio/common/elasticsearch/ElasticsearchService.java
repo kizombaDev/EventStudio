@@ -7,6 +7,7 @@ import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.admin.indices.stats.IndicesStatsResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -18,6 +19,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
+import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -47,7 +49,6 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.*;
 
 @Service
@@ -72,6 +73,7 @@ public class ElasticsearchService {
         searchSourceBuilder.size(size);
         searchSourceBuilder.from(from);
         searchSourceBuilder.sort(new FieldSortBuilder(EventKeys.TIMESTAMP.getValue()).order(SortOrder.DESC));
+        searchRequest.indices(elasticsearchProperties.getIndexName());
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
@@ -126,7 +128,7 @@ public class ElasticsearchService {
                         .dateHistogram(dateGrouping)
                         .dateHistogramInterval(DateHistogramInterval.DAY)
                         .field(EventKeys.TIMESTAMP.getValue())
-                        .format("dd-MM-yyyy").subAggregation(
+                        .format("yyyy-MM-dd").subAggregation(
                                 AggregationBuilders.filters(secondaryFilter,
                                         createBoolFilter(filters, FilterType.SECONDARY))));
 
@@ -134,6 +136,7 @@ public class ElasticsearchService {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.aggregation(filterAggregationBuilder);
         searchSourceBuilder.size(0);
+        searchRequest.indices(elasticsearchProperties.getIndexName());
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
@@ -169,6 +172,7 @@ public class ElasticsearchService {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.aggregation(filterAggregationBuilder);
         searchSourceBuilder.size(0);
+        searchRequest.indices(elasticsearchProperties.getIndexName());
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
@@ -202,6 +206,7 @@ public class ElasticsearchService {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.aggregation(filterAggregationBuilder);
         searchSourceBuilder.size(0);
+        searchRequest.indices(elasticsearchProperties.getIndexName());
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
@@ -227,16 +232,29 @@ public class ElasticsearchService {
     }
 
     //TODO migrate to the restHighLevelClient
-    public long deleteEvents(int numberOfDays) {
+    public long deleteEventsUntilDate(LocalDate date) {
         BulkByScrollResponse response = DeleteByQueryAction.INSTANCE
                 .newRequestBuilder(transportClient)
                 .filter(QueryBuilders
                         .rangeQuery(EventKeys.TIMESTAMP.getValue())
-                        .lt(LocalDate.now().minus(Period.ofDays(numberOfDays)).toString()))
+                        .lt(date.plusDays(1).toString()))
                 .source(elasticsearchProperties.getIndexName())
                 .get();
 
         return response.getDeleted();
+    }
+
+    //TODO migrate to the restHighLevelClient -
+    public long getIndexSizeInMb() {
+
+        IndicesStatsResponse stats = transportClient.admin().indices().prepareStats()
+                .clear()
+                .setIndices(elasticsearchProperties.getIndexName())
+                .setStore(true)
+                .execute().actionGet();
+
+        ByteSizeValue size = stats.getIndex(elasticsearchProperties.getIndexName()).getTotal().getStore().getSize();
+        return size.getMb();
     }
 
     public void prepareIndex() {
@@ -344,12 +362,6 @@ public class ElasticsearchService {
         }
 
         return queryBuilder;
-    }
-
-    private void checkResponse(AcknowledgedResponse response, String message) {
-        if (!response.isAcknowledged()) {
-            throw new ElasticsearchException(message);
-        }
     }
 
     private SearchResponse executeAndValidateRequest(SearchRequest searchRequest) {
