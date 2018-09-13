@@ -12,16 +12,18 @@ import java.util.concurrent.TimeUnit;
 public class SchedulerTaskFactory {
     private ThreadPoolTaskScheduler taskScheduler;
     private DeleteEvents operation;
+    private Properties properties;
 
     @Autowired
-    public SchedulerTaskFactory(ThreadPoolTaskScheduler taskScheduler, DeleteEvents operation) {
+    public SchedulerTaskFactory(ThreadPoolTaskScheduler taskScheduler, DeleteEvents operation, Properties properties) {
         this.taskScheduler = taskScheduler;
         this.operation = operation;
+        this.properties = properties;
     }
 
     @PostConstruct
     public void enableScheduler() {
-        PeriodicTrigger periodicTrigger = new PeriodicTrigger(1, TimeUnit.MINUTES);
+        PeriodicTrigger periodicTrigger = new PeriodicTrigger(properties.getRepetitionIntervalInMinutes(), TimeUnit.MINUTES);
         taskScheduler.schedule(operation, periodicTrigger);
     }
 }

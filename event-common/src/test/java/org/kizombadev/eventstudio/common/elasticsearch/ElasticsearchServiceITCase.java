@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -34,7 +35,7 @@ public class ElasticsearchServiceITCase {
         elasticSearchService.prepareMappingField(EventKeys.SOURCE_ID, MappingType.KEYWORD_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.TYPE, MappingType.KEYWORD_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.SEQUENTIAL_TIME_ID, MappingType.INTEGER_TYPE);
-        elasticSearchService.deleteEvents(0);
+        elasticSearchService.deleteEventsOfDate(LocalDate.of(9999,12,24));
         sleep(TIMEOUT);
 
         final Map<EventKeys, Object> pingOne = new HashMap<>();
@@ -165,10 +166,10 @@ public class ElasticsearchServiceITCase {
 
         //assert
         Assert.assertEquals(2, dateHistogram.size());
-        Assert.assertEquals("14-08-2014", dateHistogram.get(0).get(key));
+        Assert.assertEquals("2014-08-14", dateHistogram.get(0).get(key));
         Assert.assertEquals(1L, dateHistogram.get(0).get(primaryCount));
         Assert.assertEquals(0L, dateHistogram.get(0).get(secondaryCount));
-        Assert.assertEquals("15-08-2014", dateHistogram.get(1).get(key));
+        Assert.assertEquals("2014-08-15", dateHistogram.get(1).get(key));
         Assert.assertEquals(1L, dateHistogram.get(1).get(primaryCount));
         Assert.assertEquals(1L, dateHistogram.get(1).get(secondaryCount));
     }
