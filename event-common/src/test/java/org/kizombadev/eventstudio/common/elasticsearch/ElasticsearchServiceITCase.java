@@ -166,10 +166,10 @@ public class ElasticsearchServiceITCase {
 
         //assert
         Assert.assertEquals(2, dateHistogram.size());
-        Assert.assertEquals("14-08-2014", dateHistogram.get(0).get(key));
+        Assert.assertEquals("2014-08-14", dateHistogram.get(0).get(key));
         Assert.assertEquals(1L, dateHistogram.get(0).get(primaryCount));
         Assert.assertEquals(0L, dateHistogram.get(0).get(secondaryCount));
-        Assert.assertEquals("15-08-2014", dateHistogram.get(1).get(key));
+        Assert.assertEquals("2014-08-15", dateHistogram.get(1).get(key));
         Assert.assertEquals(1L, dateHistogram.get(1).get(primaryCount));
         Assert.assertEquals(1L, dateHistogram.get(1).get(secondaryCount));
     }

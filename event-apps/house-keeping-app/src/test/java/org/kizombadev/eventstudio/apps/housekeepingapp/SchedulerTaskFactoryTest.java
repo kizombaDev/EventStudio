@@ -22,15 +22,20 @@ public class SchedulerTaskFactoryTest {
     @Mock
     private DeleteEvents operation;
 
+    @Mock
+    private Properties properties;
+
     private SchedulerTaskFactory underTest;
 
     @Before
     public void init() {
-        underTest = new SchedulerTaskFactory(taskScheduler, operation);
+        underTest = new SchedulerTaskFactory(taskScheduler, operation, properties);
     }
 
     @Test
     public void enableScheduler() {
+        Mockito.when(properties.getRepetitionIntervalInMinutes()).thenReturn(1L);
+
         underTest.enableScheduler();
 
         ArgumentCaptor<PeriodicTrigger> periodicTriggerCaptor = ArgumentCaptor.forClass(PeriodicTrigger.class);

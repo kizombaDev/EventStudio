@@ -6,3 +6,4 @@ elasticsearch:
   indexname: test
 house-keeping:
   maxIndexMbSize: 1024
+  repetitionIntervalInMinutes: 1
