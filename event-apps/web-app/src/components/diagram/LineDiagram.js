@@ -49,7 +49,7 @@ export default {
             data: this.lineDiagramData.secondaryData
           }
         ]
-      }, {responsive: true, maintainAspectRatio: false})
+      }, {responsive: true, maintainAspectRatio: false, legend: { display: false }})
     }
   }
 }

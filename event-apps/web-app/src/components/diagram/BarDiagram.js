@@ -7,7 +7,7 @@ export default {
   data () {
     return {
       gradient: null,
-      options: {responsive: true, maintainAspectRatio: false}
+      options: {responsive: true, maintainAspectRatio: false, legend: { display: false }}
     }
   },
   props: {
@@ -28,7 +28,6 @@ export default {
         labels: this.lineDiagramData.labels,
         datasets: [
           {
-            label: this.lineDiagramData.primaryLabel,
             borderColor: '#FC2525',
             pointBackgroundColor: 'white',
             borderWidth: 1,
