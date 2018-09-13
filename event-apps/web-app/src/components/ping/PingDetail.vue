@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Ping Detail</h1>
+    <h1>Ping Details</h1>
     <div v-show="ping !== null">
       <b-table striped hover :items="pingKeyValues"></b-table>
     </div>
