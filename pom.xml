@@ -42,8 +42,6 @@
         <module>event-clients</module>
         <module>event-pipeline</module>
         <module>event-apps</module>
-        <!--TODO add event-tests -->
-        <!--<module>event-test</module>-->
     </modules>
 
     <dependencyManagement>
