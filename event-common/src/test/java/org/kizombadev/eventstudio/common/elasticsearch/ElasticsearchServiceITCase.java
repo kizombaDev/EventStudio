@@ -35,7 +35,7 @@ public class ElasticsearchServiceITCase {
         elasticSearchService.prepareMappingField(EventKeys.SOURCE_ID, MappingType.KEYWORD_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.TYPE, MappingType.KEYWORD_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.SEQUENTIAL_TIME_ID, MappingType.INTEGER_TYPE);
-        elasticSearchService.deleteEventsOfDate(LocalDate.MAX);
+        elasticSearchService.deleteEventsOfDate(LocalDate.MAX.minusDays(1));
         sleep(TIMEOUT);
 
         final Map<EventKeys, Object> pingOne = new HashMap<>();
