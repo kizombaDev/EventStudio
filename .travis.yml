@@ -8,21 +8,12 @@ addons:
     organization: "kizombadev-github"
     token:
       secure: $SONAR_TOKEN
-#cache:
-#  directories:
-#  - $HOME/.m2
-#  - $HOME/.sonar
-#  - $HOME/jvm
-#  - $HOME/maven
-#  - $HOME/.mvn
 notifications:
-  email: false
+  email: true
 before_install:
 - chmod +x mvnw
 jobs:
   include:
   - stage: "Builds"
-    name: "mvn verify"
-    script: ./mvnw verify -B
-  - script: ./mvnw clean verify sonar:sonar -B #- script: ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -B
-    name: "SonarQube"
+  - script: ./mvnw clean verify sonar:sonar -B
+    name: "mvn & SonarCloud"
