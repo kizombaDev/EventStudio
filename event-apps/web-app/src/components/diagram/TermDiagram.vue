@@ -49,10 +49,7 @@ export default {
         primaryData: [],
         primaryLabel: 'Primary Filter'
       },
-      filters: [
-        {field: 'type', value: 'access_log', type: 'primary', operator: 'equals'},
-        {field: 'source_id', value: 'fcs_webaccess', type: 'primary', operator: 'equals'}
-      ],
+      filters: [],
       fieldName: 'ip',
       fieldData: [],
       fieldOptions: [],

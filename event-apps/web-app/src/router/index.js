@@ -2,29 +2,27 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import PingDashboard from '@/components/ping/PingDashboard'
 import PingDetail from '@/components/ping/PingDetail'
-import Home from '@/components/Home'
-import DateHistogram from '@/components/diagram/DateHistogram'
+import DateDiagram from '@/components/diagram/DateDiagram'
 import TermDiagram from '@/components/diagram/TermDiagram'
-import Browse from '@/components/browse/Browse'
+import Search from '@/components/search/Search'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
+      path: '/',
+      redirect: { name: 'pingDashboard' }
+    },
+    {
       path: '/ping/dashboard',
       name: 'pingDashboard',
       component: PingDashboard
     },
     {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/browse/:type',
-      name: 'browse',
-      component: Browse
+      path: '/search/:type',
+      name: 'search',
+      component: Search
     },
     {
       path: '/ping/:source_id/detail',
@@ -32,9 +30,9 @@ export default new Router({
       component: PingDetail
     },
     {
-      path: '/date-histogram',
-      name: 'dateHistogram',
-      component: DateHistogram
+      path: '/date-diagram',
+      name: 'dateDiagram',
+      component: DateDiagram
     },
     {
       path: '/term-diagram',

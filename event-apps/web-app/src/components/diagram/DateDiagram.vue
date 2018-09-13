@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Date Histogram</h1>
+    <h1>Date Diagram</h1>
     <b-button :pressed.sync="showResults" variant="primary">{{showResults ?  'Edit' : 'Show results'}}</b-button>
     <div class="pb-4" />
     <FilterCriteria v-if="!showResults" :filters="filters" :choose-types="true"/>
@@ -16,7 +16,7 @@ import FilterCriteria from '../common/FilterCriteria'
 import basicApi from '../../rest/basic-api'
 
 export default {
-  name: 'DateHistogram',
+  name: 'DateDiagram',
   components: {
     LineDiagram,
     BarExample,
@@ -31,11 +31,7 @@ export default {
         primaryLabel: 'Primary Filter',
         secondaryLabel: 'Secondary Filter'
       },
-      filters: [
-        {field: 'type', value: 'access_log', type: 'primary', operator: 'equals'},
-        {field: 'source_id', value: 'fcs_webaccess', type: 'primary', operator: 'equals'},
-        {field: 'length', value: '250', type: 'secondary', operator: 'lt'}
-      ],
+      filters: [],
       showResults: true
     }
   },

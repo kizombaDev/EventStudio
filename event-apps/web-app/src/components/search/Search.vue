@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Browse events</h1>
+    <h1>Search events</h1>
     <b-button :pressed.sync="showResults" variant="primary">{{showResults ? 'Edit' : 'Show results'}}</b-button>
     <div class="pb-4"></div>
     <FilterCriteria v-if="!showResults" :filters="filters"/>
@@ -27,7 +27,7 @@ import FilterCriteria from '../common/FilterCriteria'
 import basicApi from '../../rest/basic-api'
 
 export default {
-  name: 'Browse',
+  name: 'Search',
   data: function () {
     return {
       filters: [],

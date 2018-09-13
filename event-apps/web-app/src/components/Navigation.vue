@@ -8,14 +8,13 @@
     <b-collapse is-nav id="nav_collapse">
 
       <b-navbar-nav>
-        <b-nav-item :to="{ name: 'home' }">Home</b-nav-item>
         <b-nav-item :to="{ name: 'pingDashboard' }">Ping Dashboard</b-nav-item>
-        <b-nav-item :to="{ name: 'dateHistogram' }">Date Histogram</b-nav-item>
+        <b-nav-item :to="{ name: 'dateDiagram' }">Date Diagram</b-nav-item>
         <b-nav-item :to="{ name: 'termDiagram' }">Term Diagram</b-nav-item>
-        <b-nav-item-dropdown text="Browse Events" right >
-          <b-dropdown-item :to="{ name: 'browse', params: { type: 'all' }}" >All</b-dropdown-item>
+        <b-nav-item-dropdown text="Search Events" right >
+          <b-dropdown-item :to="{ name: 'search', params: { type: 'all' }}" >All</b-dropdown-item>
           <b-dropdown-divider></b-dropdown-divider>
-          <b-dropdown-item v-for="(type, index) in types" v-bind:key="index" :to="{ name: 'browse', params: { type: type } }" >{{ type }}</b-dropdown-item>
+          <b-dropdown-item v-for="(type, index) in types" v-bind:key="index" :to="{ name: 'search', params: { type: type } }" >{{ type }}</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
