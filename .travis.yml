@@ -12,8 +12,4 @@ notifications:
   email: true
 before_install:
 - chmod +x mvnw
-jobs:
-  include:
-  - stage: "Builds"
-  - script: ./mvnw clean verify sonar:sonar -B
-    name: "mvn & SonarCloud"
+script: ./mvnw clean verify sonar:sonar -B
