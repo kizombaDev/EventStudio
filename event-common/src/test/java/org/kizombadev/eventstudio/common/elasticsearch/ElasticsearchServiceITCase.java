@@ -153,7 +153,7 @@ public class ElasticsearchServiceITCase {
     }
 
     @Test
-    public void testGetDateHistogram() {
+    public void testGetDateDiagram() {
         //arrange
         FilterCriteriaDto primaryDto = new FilterCriteriaDto(EventKeys.TYPE, "ping", FilterType.PRIMARY, FilterOperation.EQUALS);
         FilterCriteriaDto secondaryDto = new FilterCriteriaDto(EventKeys.SEQUENTIAL_TIME_ID, "2", FilterType.SECONDARY, FilterOperation.GREATER_THEN_OR_EQUAL);
@@ -162,16 +162,16 @@ public class ElasticsearchServiceITCase {
         final String key = "key";
 
         //act
-        List<Map<String, Object>> dateHistogram = elasticSearchService.getDateHistogram(Arrays.asList(primaryDto, secondaryDto));
+        List<Map<String, Object>> dateDiagram = elasticSearchService.getDateDiagram(Arrays.asList(primaryDto, secondaryDto));
 
         //assert
-        Assert.assertEquals(2, dateHistogram.size());
-        Assert.assertEquals("2014-08-14", dateHistogram.get(0).get(key));
-        Assert.assertEquals(1L, dateHistogram.get(0).get(primaryCount));
-        Assert.assertEquals(0L, dateHistogram.get(0).get(secondaryCount));
-        Assert.assertEquals("2014-08-15", dateHistogram.get(1).get(key));
-        Assert.assertEquals(1L, dateHistogram.get(1).get(primaryCount));
-        Assert.assertEquals(1L, dateHistogram.get(1).get(secondaryCount));
+        Assert.assertEquals(2, dateDiagram.size());
+        Assert.assertEquals("2014-08-14", dateDiagram.get(0).get(key));
+        Assert.assertEquals(1L, dateDiagram.get(0).get(primaryCount));
+        Assert.assertEquals(0L, dateDiagram.get(0).get(secondaryCount));
+        Assert.assertEquals("2014-08-15", dateDiagram.get(1).get(key));
+        Assert.assertEquals(1L, dateDiagram.get(1).get(primaryCount));
+        Assert.assertEquals(1L, dateDiagram.get(1).get(secondaryCount));
     }
 
     @Test

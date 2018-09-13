@@ -116,7 +116,7 @@ public class ElasticsearchService {
         return result;
     }
 
-    public List<Map<String, Object>> getDateHistogram(@NotNull List<FilterCriteriaDto> filters) {
+    public List<Map<String, Object>> getDateDiagram(@NotNull List<FilterCriteriaDto> filters) {
         final String primaryFilter = "primaryFilter";
         final String secondaryFilter = "secondaryFilter";
         final String dateGrouping = "dateGrouping";

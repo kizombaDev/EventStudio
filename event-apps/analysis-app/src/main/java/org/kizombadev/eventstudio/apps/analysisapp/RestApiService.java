@@ -82,9 +82,9 @@ public class RestApiService {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/date-histogram", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> getDateHistogram(@RequestBody @NotNull List<FilterCriteriaDto> filters) {
-        List<Map<String, Object>> data = elasticSearchService.getDateHistogram(filters);
+    @PostMapping(path = "/date-diagram", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getDateDiagram(@RequestBody @NotNull List<FilterCriteriaDto> filters) {
+        List<Map<String, Object>> data = elasticSearchService.getDateDiagram(filters);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 

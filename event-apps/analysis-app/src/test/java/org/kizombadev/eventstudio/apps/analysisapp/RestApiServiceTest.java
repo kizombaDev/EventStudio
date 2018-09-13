@@ -138,12 +138,12 @@ public class RestApiServiceTest {
     }
 
     @Test
-    public void testGetDateHistogram() {
+    public void testGetDateDiagram() {
         //Arrange
-        Mockito.when(elasticSearchService.getDateHistogram(filterArgumentCaptor.capture())).thenReturn(getSampleJsonResponse());
+        Mockito.when(elasticSearchService.getDateDiagram(filterArgumentCaptor.capture())).thenReturn(getSampleJsonResponse());
 
         //Act
-        ResponseEntity<String> response = testRestTemplate.postForEntity(BASE_URL + "/date-histogram", getSampleFilterDto(), String.class);
+        ResponseEntity<String> response = testRestTemplate.postForEntity(BASE_URL + "/date-diagram", getSampleFilterDto(), String.class);
 
         //Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

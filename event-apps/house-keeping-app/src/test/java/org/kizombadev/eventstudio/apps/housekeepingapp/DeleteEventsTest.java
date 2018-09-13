@@ -40,7 +40,7 @@ public class DeleteEventsTest {
         response.add(map);
         Mockito.when(elasticsearchService.getIndexSizeInMb()).thenReturn(maxIndexMbSize + 1);
         Mockito.when(properties.getMaxIndexMbSize()).thenReturn(maxIndexMbSize);
-        Mockito.when(elasticsearchService.getDateHistogram(Mockito.any())).thenReturn(response);
+        Mockito.when(elasticsearchService.getDateDiagram(Mockito.any())).thenReturn(response);
 
         //act
         underTest.run();
@@ -55,7 +55,7 @@ public class DeleteEventsTest {
         final long maxIndexMbSize = 0;
         Mockito.when(elasticsearchService.getIndexSizeInMb()).thenReturn(maxIndexMbSize);
         Mockito.when(properties.getMaxIndexMbSize()).thenReturn(maxIndexMbSize);
-        Mockito.when(elasticsearchService.getDateHistogram(Mockito.any())).thenReturn(new ArrayList<>());
+        Mockito.when(elasticsearchService.getDateDiagram(Mockito.any())).thenReturn(new ArrayList<>());
 
         //act
         underTest.run();

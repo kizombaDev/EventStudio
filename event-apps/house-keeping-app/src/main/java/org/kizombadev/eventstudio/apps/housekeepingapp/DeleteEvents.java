@@ -36,14 +36,14 @@ public class DeleteEvents implements Runnable {
 
         log.info("the current index size of {} MB is greater then the configured max index size of {} MB -> deletion of events required", indexSizeInMb, properties.getMaxIndexMbSize());
 
-        List<Map<String, Object>> dateHistogram = elasticSearchService.getDateHistogram(new ArrayList<>());
+        List<Map<String, Object>> dateDiagram = elasticSearchService.getDateDiagram(new ArrayList<>());
 
-        if(dateHistogram.isEmpty()) {
+        if(dateDiagram.isEmpty()) {
             log.info("the index contains no events -> nothing can deleted");
             return;
         }
 
-        String date = dateHistogram.get(0).get("key").toString();
+        String date = dateDiagram.get(0).get("key").toString();
         long deletedEvents = elasticSearchService.deleteEventsUntilDate(LocalDate.parse(date));
         log.info("deletion of events at the {} successfully executed. Number of deleted events: {}", date, deletedEvents);
     }

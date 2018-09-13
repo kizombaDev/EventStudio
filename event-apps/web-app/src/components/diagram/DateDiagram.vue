@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     loadData (filters) {
-      basicApi.getDateHistogram(filters).then(response => {
+      basicApi.getDateDiagram(filters).then(response => {
         this.lineDiagramData.labels = []
         this.lineDiagramData.primaryData = []
         this.lineDiagramData.secondaryData = []

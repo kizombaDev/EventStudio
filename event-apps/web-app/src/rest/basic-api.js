@@ -10,8 +10,8 @@ export default {
   getLastPingBySourceId (sourceId) {
     return HTTP.get('/v1/events/' + sourceId + '/?size=1&from=0')
   },
-  getDateHistogram (filters) {
-    return HTTP.post('/v1/events/date-histogram', filters)
+  getDateDiagram (filters) {
+    return HTTP.post('/v1/events/date-diagram', filters)
   },
   getTermDiagram (filters, termName, count) {
     return HTTP.post('/v1/events/term-diagram?term-name=' + termName + '&count=' + count, filters)
