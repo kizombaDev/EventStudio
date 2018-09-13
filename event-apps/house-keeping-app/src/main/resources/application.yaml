@@ -5,7 +5,7 @@ elasticsearch:
     port: 9200
   indexname: eventstudio
 house-keeping:
-  maxIndexMbSize: 1024
+  maxIndexMbSize: 10
   repetitionIntervalInMinutes: 1
 server:
   port: 8085

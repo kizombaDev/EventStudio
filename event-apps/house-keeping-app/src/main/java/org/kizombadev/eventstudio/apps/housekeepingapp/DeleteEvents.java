@@ -44,7 +44,7 @@ public class DeleteEvents implements Runnable {
         }
 
         String date = dateHistogram.get(0).get("key").toString();
-        long deletedEvents = elasticSearchService.deleteEventsOfDate(LocalDate.parse(date));
+        long deletedEvents = elasticSearchService.deleteEventsUntilDate(LocalDate.parse(date));
         log.info("deletion of events at the {} successfully executed. Number of deleted events: {}", date, deletedEvents);
     }
 }

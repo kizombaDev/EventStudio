@@ -3,7 +3,6 @@ package org.kizombadev.eventstudio.common.elasticsearch;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
-import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
@@ -22,7 +21,6 @@ import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.get.GetStats;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -51,8 +49,6 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.*;
 
 @Service
@@ -77,6 +73,7 @@ public class ElasticsearchService {
         searchSourceBuilder.size(size);
         searchSourceBuilder.from(from);
         searchSourceBuilder.sort(new FieldSortBuilder(EventKeys.TIMESTAMP.getValue()).order(SortOrder.DESC));
+        searchRequest.indices(elasticsearchProperties.getIndexName());
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
@@ -139,6 +136,7 @@ public class ElasticsearchService {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.aggregation(filterAggregationBuilder);
         searchSourceBuilder.size(0);
+        searchRequest.indices(elasticsearchProperties.getIndexName());
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
@@ -174,6 +172,7 @@ public class ElasticsearchService {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.aggregation(filterAggregationBuilder);
         searchSourceBuilder.size(0);
+        searchRequest.indices(elasticsearchProperties.getIndexName());
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
@@ -207,6 +206,7 @@ public class ElasticsearchService {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.aggregation(filterAggregationBuilder);
         searchSourceBuilder.size(0);
+        searchRequest.indices(elasticsearchProperties.getIndexName());
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = executeAndValidateRequest(searchRequest);
@@ -232,12 +232,12 @@ public class ElasticsearchService {
     }
 
     //TODO migrate to the restHighLevelClient
-    public long deleteEventsOfDate(LocalDate localDate) {
+    public long deleteEventsUntilDate(LocalDate date) {
         BulkByScrollResponse response = DeleteByQueryAction.INSTANCE
                 .newRequestBuilder(transportClient)
                 .filter(QueryBuilders
                         .rangeQuery(EventKeys.TIMESTAMP.getValue())
-                        .lt(localDate.plusDays(1).toString()))
+                        .lt(date.plusDays(1).toString()))
                 .source(elasticsearchProperties.getIndexName())
                 .get();
 
@@ -362,12 +362,6 @@ public class ElasticsearchService {
         }
 
         return queryBuilder;
-    }
-
-    private void checkResponse(AcknowledgedResponse response, String message) {
-        if (!response.isAcknowledged()) {
-            throw new ElasticsearchException(message);
-        }
     }
 
     private SearchResponse executeAndValidateRequest(SearchRequest searchRequest) {
