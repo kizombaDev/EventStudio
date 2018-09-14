@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Search events</h1>
+    <h1>Search Events</h1>
     <b-button :pressed.sync="showResults" variant="primary">{{showResults ? 'Edit' : 'Show results'}}</b-button>
     <div class="pb-4"></div>
     <FilterCriteria v-if="!showResults" :filters="filters"/>
