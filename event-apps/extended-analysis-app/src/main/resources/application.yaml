@@ -5,8 +5,8 @@ elasticsearch:
     port: 9200
   indexname: eventstudio
 extended-analysis:
-  eventType: access_log
-  indicatorField: ip
-  referenceField: link
+  maxHistoricalEvents: 100
+  percentile: 10
+  interquartileFactor: 1.5
 server:
   port: 8084

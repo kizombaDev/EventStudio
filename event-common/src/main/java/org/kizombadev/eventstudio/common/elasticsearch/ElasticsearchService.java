@@ -8,6 +8,7 @@ import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.admin.indices.stats.IndicesStatsResponse;
+import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -50,6 +51,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ElasticsearchService {
@@ -227,7 +229,8 @@ public class ElasticsearchService {
 
         BulkByScrollResponse response = updateByQuery.get();
         if (!response.getBulkFailures().isEmpty()) {
-            throw new ElasticsearchException("The update failed");
+            String message = response.getBulkFailures().stream().map(BulkItemResponse.Failure::getMessage).collect(Collectors.joining(","));
+            throw new ElasticsearchException(String.format("The update failed: %s",  message));
         }
     }
 

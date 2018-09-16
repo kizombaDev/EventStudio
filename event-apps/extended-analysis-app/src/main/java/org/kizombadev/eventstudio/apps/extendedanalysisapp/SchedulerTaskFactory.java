@@ -11,17 +11,17 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class SchedulerTaskFactory {
     private ThreadPoolTaskScheduler taskScheduler;
-    private ReferenceAnalysis operation;
+    private PingTimeOutlierAnalysis operation;
 
     @Autowired
-    public SchedulerTaskFactory(ThreadPoolTaskScheduler taskScheduler, ReferenceAnalysis operation) {
+    public SchedulerTaskFactory(ThreadPoolTaskScheduler taskScheduler, PingTimeOutlierAnalysis operation) {
         this.taskScheduler = taskScheduler;
         this.operation = operation;
     }
 
     @PostConstruct
     public void enableScheduler() {
-        PeriodicTrigger periodicTrigger = new PeriodicTrigger(10, TimeUnit.SECONDS);
+        PeriodicTrigger periodicTrigger = new PeriodicTrigger(5, TimeUnit.SECONDS);
         taskScheduler.schedule(operation, periodicTrigger);
     }
 }

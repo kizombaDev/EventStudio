@@ -20,7 +20,7 @@ public class SchedulerTaskFactoryTest {
     private ThreadPoolTaskScheduler taskScheduler;
 
     @Mock
-    private ReferenceAnalysis operation;
+    private PingTimeOutlierAnalysis operation;
 
     private SchedulerTaskFactory underTest;
 
@@ -36,7 +36,7 @@ public class SchedulerTaskFactoryTest {
         ArgumentCaptor<PeriodicTrigger> periodicTriggerCaptor = ArgumentCaptor.forClass(PeriodicTrigger.class);
         Mockito.verify(taskScheduler, Mockito.times(1)).schedule(Mockito.eq(operation), periodicTriggerCaptor.capture());
 
-        Assert.assertEquals(10000, periodicTriggerCaptor.getValue().getPeriod());
+        Assert.assertEquals(5000, periodicTriggerCaptor.getValue().getPeriod());
         Assert.assertEquals(TimeUnit.SECONDS, periodicTriggerCaptor.getValue().getTimeUnit());
     }
 }
