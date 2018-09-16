@@ -218,7 +218,6 @@ public class ElasticsearchService {
         return max.getValue();
     }
 
-    //TODO migrate to the restHighLevelClient
     public void updateField(@NotNull List<FilterCriteriaDto> filters, @NotNull EventKeys field, @NotNull String value) {
         UpdateByQueryRequestBuilder updateByQuery = UpdateByQueryAction.INSTANCE.newRequestBuilder(transportClient);
         updateByQuery.source(elasticsearchProperties.getIndexName())
@@ -233,7 +232,6 @@ public class ElasticsearchService {
         }
     }
 
-    //TODO migrate to the restHighLevelClient
     public long deleteEventsUntilDate(LocalDate date) {
         BulkByScrollResponse response = DeleteByQueryAction.INSTANCE
                 .newRequestBuilder(transportClient)
@@ -246,7 +244,6 @@ public class ElasticsearchService {
         return response.getDeleted();
     }
 
-    //TODO migrate to the restHighLevelClient -
     public long getIndexSizeInMb() {
 
         IndicesStatsResponse stats = transportClient.admin().indices().prepareStats()

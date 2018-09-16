@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Configuration;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * @deprecated uses the {@link RestHighLevelClientFactory} instead of this factory
+ */
 @Configuration
 @Deprecated
 public class TransportClientFactory implements FactoryBean<TransportClient>, InitializingBean, DisposableBean {
