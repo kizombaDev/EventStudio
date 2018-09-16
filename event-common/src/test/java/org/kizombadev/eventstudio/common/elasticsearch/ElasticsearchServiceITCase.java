@@ -192,4 +192,9 @@ public class ElasticsearchServiceITCase {
         Assert.assertEquals(1L, termDiagram.get(1).get(count));
     }
 
+    @Test
+    public void testGetIndexSizeInMb() {
+        long size = elasticSearchService.getIndexSizeInMb();
+        Assert.assertEquals(0, size);
+    }
 }
