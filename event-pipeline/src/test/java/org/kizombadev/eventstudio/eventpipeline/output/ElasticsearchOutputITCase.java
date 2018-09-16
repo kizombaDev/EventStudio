@@ -52,16 +52,6 @@ public class ElasticsearchOutputITCase {
         Assert.assertEquals("ping", data.get(EventKeys.TYPE.getValue()));
     }
 
-    private EventEntry getEventEntry() {
-        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
-            put(EventKeys.SOURCE_ID, "foo");
-            put(EventKeys.TYPE, "ping");
-            put(EventKeys.TIMESTAMP, LocalDateTime.of(2014, 1, 1, 1, 1).toString());
-            put(EventKeys.BYTES, "32");
-        }};
-        return new EventEntry(source);
-    }
-
     @Test(expected = IllegalStateException.class)
     public void writeWithInvalidField() {
         //arrange
@@ -82,7 +72,7 @@ public class ElasticsearchOutputITCase {
 
         //assert
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -90,5 +80,15 @@ public class ElasticsearchOutputITCase {
         FilterCriteriaDto dto = new FilterCriteriaDto(EventKeys.SOURCE_ID, "foo", FilterType.PRIMARY, FilterOperation.EQUALS);
         List<Map<String, Object>> result = elasticsearchService.getElementsByFilter(Collections.singletonList(dto), 0, 2);
         Assert.assertEquals(2, result.size());
+    }
+
+    private EventEntry getEventEntry() {
+        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
+            put(EventKeys.SOURCE_ID, "foo");
+            put(EventKeys.TYPE, "ping");
+            put(EventKeys.TIMESTAMP, LocalDateTime.of(2014, 1, 1, 1, 1).toString());
+            put(EventKeys.BYTES, "32");
+        }};
+        return new EventEntry(source);
     }
 }

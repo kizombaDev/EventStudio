@@ -3,6 +3,7 @@ package org.kizombadev.eventstudio.apps.extendedanalysisapp;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -11,6 +12,13 @@ public class OutlierCalculationTest {
     @Test
     public void testEvaluate() {
         Collection<Integer> historicalValues = Arrays.asList(9, 10, 11);
+        boolean isOutlier = OutlierCalculation.evaluate(historicalValues, 10, 25, 1.5);
+        Assert.assertFalse(isOutlier);
+    }
+
+    @Test
+    public void testEvaluateEmpty() {
+        Collection<Integer> historicalValues = new ArrayList<>();
         boolean isOutlier = OutlierCalculation.evaluate(historicalValues, 10, 25, 1.5);
         Assert.assertFalse(isOutlier);
     }
