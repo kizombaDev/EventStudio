@@ -33,18 +33,9 @@ public class ElasticsearchOutputITCase {
     private ElasticsearchService elasticsearchService;
 
     @Test
-    public void test() {
-        //arrange
-        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
-            put(EventKeys.SOURCE_ID, "foo");
-            put(EventKeys.TYPE, "ping");
-            put(EventKeys.TIMESTAMP, LocalDateTime.of(2014, 1, 1, 1, 1).toString());
-            put(EventKeys.BYTES, "32");
-        }};
-        EventEntry eventEntry = new EventEntry(source);
-
+    public void write() {
         //act
-        elasticsearchOutput.write(Collections.singletonList(eventEntry));
+        elasticsearchOutput.write(Collections.singletonList(getEventEntry()));
 
         //assert
         try {
@@ -59,5 +50,45 @@ public class ElasticsearchOutputITCase {
         Map<String, Object> data = result.get(0);
         Assert.assertEquals("foo", data.get(EventKeys.SOURCE_ID.getValue()));
         Assert.assertEquals("ping", data.get(EventKeys.TYPE.getValue()));
+    }
+
+    private EventEntry getEventEntry() {
+        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
+            put(EventKeys.SOURCE_ID, "foo");
+            put(EventKeys.TYPE, "ping");
+            put(EventKeys.TIMESTAMP, LocalDateTime.of(2014, 1, 1, 1, 1).toString());
+            put(EventKeys.BYTES, "32");
+        }};
+        return new EventEntry(source);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void writeWithInvalidField() {
+        //arrange
+        Map<EventKeys, Object> source = new HashMap<EventKeys, Object>() {{
+            put(EventKeys.forValue("foo"), "foo");
+        }};
+        EventEntry eventEntry = new EventEntry(source);
+
+        //act
+        elasticsearchOutput.write(Collections.singletonList(eventEntry));
+    }
+
+    @Test
+    public void writeWithCache() {
+        //act
+        elasticsearchOutput.write(Collections.singletonList(getEventEntry()));
+        elasticsearchOutput.write(Collections.singletonList(getEventEntry()));
+
+        //assert
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        FilterCriteriaDto dto = new FilterCriteriaDto(EventKeys.SOURCE_ID, "foo", FilterType.PRIMARY, FilterOperation.EQUALS);
+        List<Map<String, Object>> result = elasticsearchService.getElementsByFilter(Collections.singletonList(dto), 0, 2);
+        Assert.assertEquals(2, result.size());
     }
 }

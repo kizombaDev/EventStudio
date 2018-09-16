@@ -17,18 +17,19 @@ public class PropertiesITCase {
     @Autowired
     private Properties properties;
 
+
     @Test
-    public void testGetReferenceField() {
-        Assert.assertEquals("link", properties.getReferenceField());
+    public void testGetInterquartileFactor() {
+        Assert.assertEquals(1.5, properties.getInterquartileFactor(), 0.00001);
     }
 
     @Test
-    public void testGetIndicatorField() {
-        Assert.assertEquals("ip", properties.getIndicatorField());
+    public void testGetMaxHistoricalEvents() {
+        Assert.assertEquals(100, properties.getMaxHistoricalEvents());
     }
 
     @Test
-    public void testGetEventType() {
-        Assert.assertEquals("access_log", properties.getEventType());
+    public void testGetPercentile() {
+        Assert.assertEquals(10, properties.getPercentile());
     }
 }

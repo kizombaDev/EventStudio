@@ -27,6 +27,7 @@ public class RestHighLevelClientFactory implements FactoryBean<RestHighLevelClie
         if (client != null) {
             try {
                 client.close();
+                client = null;
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }

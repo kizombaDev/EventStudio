@@ -1,6 +1,5 @@
 package org.kizombadev.eventstudio.eventpipeline.properties;
 
-import com.google.common.base.MoreObjects;
 import org.kizombadev.eventstudio.common.PropertyHelper;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -57,15 +56,6 @@ public class FilterProperties {
             return result;
         }
 
-
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this)
-                    .add("name", name)
-                    .add("type", type)
-                    .toString();
-        }
-
         public static class KeyValue {
             private static final String PROPERTY_ROOT_FILTER_CONFIGURATION = PROPERTY_ROOT_FILTER + "configuration.";
             private String key;
@@ -89,14 +79,6 @@ public class FilterProperties {
             public void setKey(String key) {
                 PropertyHelper.logPropertyValue(PROPERTY_ROOT_FILTER_CONFIGURATION + "key", key);
                 this.key = key;
-            }
-
-            @Override
-            public String toString() {
-                return MoreObjects.toStringHelper(this)
-                        .add("key", key)
-                        .add("value", value)
-                        .toString();
             }
         }
     }

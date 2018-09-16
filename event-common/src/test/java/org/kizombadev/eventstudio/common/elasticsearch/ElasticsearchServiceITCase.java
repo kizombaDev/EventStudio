@@ -35,7 +35,7 @@ public class ElasticsearchServiceITCase {
         elasticSearchService.prepareMappingField(EventKeys.SOURCE_ID, MappingType.KEYWORD_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.TYPE, MappingType.KEYWORD_TYPE);
         elasticSearchService.prepareMappingField(EventKeys.SEQUENTIAL_TIME_ID, MappingType.INTEGER_TYPE);
-        elasticSearchService.deleteEventsUntilDate(LocalDate.of(9999,12,24));
+        elasticSearchService.deleteEventsUntilDate(LocalDate.of(9999, 12, 24));
         sleep(TIMEOUT);
 
         final Map<EventKeys, Object> pingOne = new HashMap<>();
@@ -192,4 +192,9 @@ public class ElasticsearchServiceITCase {
         Assert.assertEquals(1L, termDiagram.get(1).get(count));
     }
 
+    @Test
+    public void testGetIndexSizeInMb() {
+        long size = elasticSearchService.getIndexSizeInMb();
+        Assert.assertEquals(0, size);
+    }
 }

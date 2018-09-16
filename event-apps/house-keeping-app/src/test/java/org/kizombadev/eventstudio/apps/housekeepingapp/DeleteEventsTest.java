@@ -46,7 +46,7 @@ public class DeleteEventsTest {
         underTest.run();
 
         //assert
-        Mockito.verify(elasticsearchService, Mockito.times(1)).deleteEventsUntilDate(Mockito.eq(LocalDate.of(2018,8,14)));
+        Mockito.verify(elasticsearchService, Mockito.times(1)).deleteEventsUntilDate(Mockito.eq(LocalDate.of(2018, 8, 14)));
     }
 
     @Test

@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CommonTestApp.class)
 @TestConfiguration
-public class ElasticsearchConfigurationITCase {
+public class TransportClientFactoryITCase {
 
     @Autowired
     private TransportClient transportClient;
@@ -22,4 +22,5 @@ public class ElasticsearchConfigurationITCase {
     public void test() {
         transportClient.admin().indices().prepareCreate("foo");
     }
+
 }

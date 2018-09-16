@@ -9,37 +9,37 @@ import org.springframework.context.annotation.Configuration;
 public class Properties {
     private static final String PROPERTY_ROOT = "extended-analysis.";
 
-    private String eventType;
-    private String indicatorField;
-    private String referenceField;
+    private int maxHistoricalEvents;
+    private int percentile;
+    private double interquartileFactor;
 
-    public String getEventType() {
-        PropertyHelper.validateNotEmpty(PROPERTY_ROOT + "eventType", eventType);
-        return eventType;
+    public int getMaxHistoricalEvents() {
+        PropertyHelper.validateNotEmpty(PROPERTY_ROOT + "maxHistoricalEvents", maxHistoricalEvents);
+        return maxHistoricalEvents;
     }
 
-    public void setEventType(String eventType) {
-        PropertyHelper.logPropertyValue(PROPERTY_ROOT + "eventType", eventType);
-        this.eventType = eventType;
+    public void setMaxHistoricalEvents(int maxHistoricalEvents) {
+        PropertyHelper.logPropertyValue(PROPERTY_ROOT + "maxHistoricalEvents", maxHistoricalEvents);
+        this.maxHistoricalEvents = maxHistoricalEvents;
     }
 
-    public String getIndicatorField() {
-        PropertyHelper.validateNotEmpty(PROPERTY_ROOT + "indicatorField", indicatorField);
-        return indicatorField;
+    public int getPercentile() {
+        PropertyHelper.validateNotEmpty(PROPERTY_ROOT + "percentile", percentile);
+        return percentile;
     }
 
-    public void setIndicatorField(String indicatorField) {
-        PropertyHelper.logPropertyValue(PROPERTY_ROOT + "indicatorField", indicatorField);
-        this.indicatorField = indicatorField;
+    public void setPercentile(int percentile) {
+        PropertyHelper.logPropertyValue(PROPERTY_ROOT + "percentile", percentile);
+        this.percentile = percentile;
     }
 
-    public String getReferenceField() {
-        PropertyHelper.validateNotEmpty(PROPERTY_ROOT + "referenceField", referenceField);
-        return referenceField;
+    public double getInterquartileFactor() {
+        PropertyHelper.validateNotEmpty(PROPERTY_ROOT + "interquartileFactor", interquartileFactor);
+        return interquartileFactor;
     }
 
-    public void setReferenceField(String referenceField) {
-        PropertyHelper.logPropertyValue(PROPERTY_ROOT + "referenceField", referenceField);
-        this.referenceField = referenceField;
+    public void setInterquartileFactor(double interquartileFactor) {
+        PropertyHelper.logPropertyValue(PROPERTY_ROOT + "interquartileFactor", interquartileFactor);
+        this.interquartileFactor = interquartileFactor;
     }
 }
