@@ -5,8 +5,6 @@ import org.junit.Test;
 import org.kizombadev.eventstudio.common.EventKeys;
 import org.kizombadev.eventstudio.common.elasticsearch.MappingType;
 
-import static org.junit.Assert.*;
-
 public class FieldMappingTest {
 
     @Test

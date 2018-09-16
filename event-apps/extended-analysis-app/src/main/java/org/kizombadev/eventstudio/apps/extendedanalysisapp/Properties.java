@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class Properties {
     private static final String PROPERTY_ROOT = "extended-analysis.";
 
-    private int  maxHistoricalEvents;
+    private int maxHistoricalEvents;
     private int percentile;
     private double interquartileFactor;
 

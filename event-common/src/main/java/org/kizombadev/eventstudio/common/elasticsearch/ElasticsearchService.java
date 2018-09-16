@@ -229,7 +229,7 @@ public class ElasticsearchService {
         BulkByScrollResponse response = updateByQuery.get();
         if (!response.getBulkFailures().isEmpty()) {
             String message = response.getBulkFailures().stream().map(BulkItemResponse.Failure::getMessage).collect(Collectors.joining(","));
-            throw new ElasticsearchException(String.format("The update failed: %s",  message));
+            throw new ElasticsearchException(String.format("The update failed: %s", message));
         }
     }
 

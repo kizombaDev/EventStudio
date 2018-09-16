@@ -38,7 +38,7 @@ public class DeleteEvents implements Runnable {
 
         List<Map<String, Object>> dateDiagram = elasticSearchService.getDateDiagram(new ArrayList<>());
 
-        if(dateDiagram.isEmpty()) {
+        if (dateDiagram.isEmpty()) {
             log.info("the index contains no events -> nothing can deleted");
             return;
         }

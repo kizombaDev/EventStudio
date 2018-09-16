@@ -6,10 +6,14 @@ import static com.google.common.math.Quantiles.percentiles;
 
 public final class OutlierCalculation {
 
+    private OutlierCalculation() {
+        //nothing to do
+    }
+
     public static boolean evaluate(Collection<Integer> historicalValues, int nextValue, int percentile, double interquartileFactor) {
 
-        if(historicalValues.isEmpty()) {
-            return  false;
+        if (historicalValues.isEmpty()) {
+            return false;
         }
 
         double bottomBoundary = percentiles().index(percentile).compute(historicalValues);
@@ -18,9 +22,5 @@ public final class OutlierCalculation {
         double interquartileRange = topBoundary - bottomBoundary;
 
         return nextValue < bottomBoundary - interquartileRange * interquartileFactor || nextValue > topBoundary + interquartileRange * interquartileFactor;
-    }
-
-    private OutlierCalculation() {
-        //nothing to do
     }
 }

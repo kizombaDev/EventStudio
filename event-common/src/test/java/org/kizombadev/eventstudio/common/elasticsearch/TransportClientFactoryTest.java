@@ -1,6 +1,5 @@
 package org.kizombadev.eventstudio.common.elasticsearch;
 
-import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.junit.Assert;
 import org.junit.Test;
