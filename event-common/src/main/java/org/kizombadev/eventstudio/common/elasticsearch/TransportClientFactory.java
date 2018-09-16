@@ -15,7 +15,7 @@ import java.net.UnknownHostException;
 
 @Configuration
 @Deprecated
-public class ElasticsearchConfiguration implements FactoryBean<TransportClient>, InitializingBean, DisposableBean {
+public class TransportClientFactory implements FactoryBean<TransportClient>, InitializingBean, DisposableBean {
 
     private ElasticsearchProperties elasticsearchProperties;
     private TransportClient transportClient;
@@ -29,6 +29,7 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
     public void destroy() {
         if (transportClient != null) {
             transportClient.close();
+            transportClient = null;
         }
     }
 
